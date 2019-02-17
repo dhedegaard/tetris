@@ -1,28 +1,23 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import { Direction } from './components/shapes'
+import I from './components/shapes/I'
+import O from './components/shapes/O'
+import T from './components/shapes/T'
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+      <svg width="400" height="400" style={{ backgroundColor: '#111' }}>
+        <I x={2} y={2} direction={Direction.UP} />
+        <I x={5} y={2} direction={Direction.LEFT} />
+        <O x={9} y={2} direction={Direction.UP} />
+        <T x={13} y={2} direction={Direction.UP} />
+        <T x={16} y={2} direction={Direction.RIGHT} />
+        <T x={2} y={6} direction={Direction.DOWN} />
+        <T x={6} y={6} direction={Direction.LEFT} />
+      </svg>
+    )
   }
 }
 
-export default App;
+export default App
