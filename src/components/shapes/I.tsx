@@ -2,7 +2,7 @@ import React from 'react'
 import { Direction, ShapeProps } from '.'
 import Block from '../Block'
 
-const COLOR = '#efefef'
+const COLOR = 'cyan'
 
 const I: React.FunctionComponent<ShapeProps> = ({ x, y, direction }) => {
   switch (direction) {
