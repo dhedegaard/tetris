@@ -11,13 +11,19 @@ const App: React.FunctionComponent = () => {
     const keypressHandler = (evt: KeyboardEvent) => {
       switch (evt.keyCode) {
         case 37: // left
-          setPosition({ ...position, x: Math.max(position.x - 1, 0) })
+          setPosition(oldPosition => ({
+            ...oldPosition,
+            x: Math.max(oldPosition.x - 1, 1)
+          }))
           break
         case 39: // right
-          setPosition({ ...position, x: Math.min(position.x + 1, 19) })
+          setPosition(oldPosition => ({
+            ...oldPosition,
+            x: Math.min(oldPosition.x + 1, 20)
+          }))
           break
         case 38: // up
-          setDirection(nextDirection(direction))
+          setDirection(oldDirection => nextDirection(oldDirection))
           break
         default:
           console.log('Unknown keycode:', evt.keyCode)
@@ -28,7 +34,16 @@ const App: React.FunctionComponent = () => {
     return () => document.removeEventListener('keydown', keypressHandler)
   }, [])
 
-  console.log('!!! RENDER')
+  useEffect(() => {
+    const handle = setInterval(() => {
+      setPosition(oldPosition => ({
+        ...oldPosition,
+        y: Math.min(oldPosition.y + 1, 20)
+      }))
+    }, 1000)
+    return () => clearInterval(handle)
+  }, [])
+
   return (
     <Grid>
       <Shape
