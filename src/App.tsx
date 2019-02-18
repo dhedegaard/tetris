@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Direction } from './components/shapes'
 import I from './components/shapes/I'
+import J from './components/shapes/J'
 import O from './components/shapes/O'
 import S from './components/shapes/S'
 import T from './components/shapes/T'
@@ -21,6 +22,10 @@ class App extends Component {
         <S x={12} y={6} direction={Direction.LEFT} />
         <Z x={15} y={6} direction={Direction.UP} />
         <Z x={19} y={6} direction={Direction.LEFT} />
+        <J x={20} y={2} direction={Direction.UP} />
+        <J x={23} y={2} direction={Direction.DOWN} />
+        <J x={26} y={2} direction={Direction.LEFT} />
+        <J x={23} y={7} direction={Direction.RIGHT} />
       </svg>
     )
   }
