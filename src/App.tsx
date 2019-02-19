@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Grid from './components/Grid'
 import {
+  calculateCoordinates,
   Direction,
   getRandomShape,
   nextDirection,
@@ -42,10 +43,29 @@ const App: React.FunctionComponent = () => {
 
   useEffect(() => {
     const handle = setInterval(() => {
-      setPosition(oldPosition => ({
-        ...oldPosition,
-        y: Math.min(oldPosition.y + 1, 20)
-      }))
+      setPosition(oldPosition => {
+        const newY = Math.min(oldPosition.y + 1, 20)
+
+        const newPositions = calculateCoordinates(shape, {
+          direction,
+          x: oldPosition.y,
+          y: newY
+        })
+
+        if (newPositions.find(e => e.y >= 20) != null) {
+          setShape(getRandomShape())
+          setDirection(Direction.UP)
+          return {
+            x: 5,
+            y: 1
+          }
+        }
+
+        return {
+          ...oldPosition,
+          y: newY
+        }
+      })
     }, 1000)
     return () => clearInterval(handle)
   }, [])
