@@ -1,15 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Block from './components/Block'
 import Grid from './components/Grid'
-import { Coordinates } from './components/ShapeDrawer'
-import {
-  calculateCoordinates,
-  Direction,
-  getRandomShape,
-  nextDirection,
-  Shape,
-  Shapes
-} from './components/shapes'
+import { Shape } from './components/shapes'
 import useTetris from './hooks'
 
 const App: React.FunctionComponent = () => {
