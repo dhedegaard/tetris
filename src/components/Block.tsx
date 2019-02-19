@@ -2,7 +2,7 @@ import 'polished'
 import { darken } from 'polished'
 import React from 'react'
 
-const DEFAULT_COLOR = 'grey'
+const DEFAULT_COLOR = '#ccc'
 
 interface Props {
   x: number
@@ -16,8 +16,8 @@ const Block: React.FunctionComponent<Props> = props => (
     height={20} // TODO, fetch from a context or something.
     x={props.x * 20}
     y={props.y * 20}
-    color={props.color}
-    fill={props.color}
+    color={props.color || DEFAULT_COLOR}
+    fill={props.color || DEFAULT_COLOR}
     stroke={darken(0.2, props.color || DEFAULT_COLOR)}
   />
 )
