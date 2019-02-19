@@ -7,6 +7,7 @@ import {
   nextDirection,
   Shapes
 } from '../components/shapes'
+import useInterval from './useInterval'
 
 const useTetris = () => {
   const [position, setPosition] = useState({ x: 5, y: 1 })
@@ -42,49 +43,41 @@ const useTetris = () => {
   }, [])
 
   const intervalHandle = useRef<NodeJS.Timer | undefined>(undefined)
-  useEffect(() => {
-    intervalHandle.current = setInterval(() => {
-      setPosition(oldPosition => {
-        const newY = Math.min(oldPosition.y + 1, 20)
+  useInterval(() => {
+    setPosition(oldPosition => {
+      const newY = Math.min(oldPosition.y + 1, 20)
 
-        const newPositions = calculateCoordinates(shape, {
+      const newPositions = calculateCoordinates(shape, {
+        direction,
+        x: oldPosition.x,
+        y: newY
+      })
+
+      if (
+        newPositions.find(
+          e => e.y >= 20 || blocks.find(b => b.x === e.x && b.y === e.y) != null
+        ) != null
+      ) {
+        const oldPositions = calculateCoordinates(shape, {
           direction,
           x: oldPosition.x,
-          y: newY
+          y: oldPosition.y
         })
-
-        if (
-          newPositions.find(
-            e =>
-              e.y >= 20 || blocks.find(b => b.x === e.x && b.y === e.y) != null
-          ) != null
-        ) {
-          const oldPositions = calculateCoordinates(shape, {
-            direction,
-            x: oldPosition.x,
-            y: oldPosition.y
-          })
-          setShape(getRandomShape())
-          setDirection(Direction.UP)
-          setBlocks([...blocks, ...oldPositions])
-          return {
-            x: 5,
-            y: 1
-          }
-        }
-
+        setShape(getRandomShape())
+        setDirection(Direction.UP)
+        setBlocks([...blocks, ...oldPositions])
         return {
-          ...oldPosition,
-          y: newY
+          x: 5,
+          y: 1
         }
-      })
-    }, 1000)
-    return () => {
-      if (intervalHandle.current) {
-        clearInterval(intervalHandle.current)
       }
-    }
-  }, [])
+
+      return {
+        ...oldPosition,
+        y: newY
+      }
+    })
+  }, 1000)
 
   return {
     blocks,
