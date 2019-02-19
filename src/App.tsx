@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import Grid from './components/Grid'
-import { Direction, nextDirection, Shape, Shapes } from './components/shapes'
+import {
+  Direction,
+  getRandomShape,
+  nextDirection,
+  Shape,
+  Shapes
+} from './components/shapes'
 
 const App: React.FunctionComponent = () => {
   const [position, setPosition] = useState({ x: 5, y: 1 })
-  const [shape, setShape] = useState<Shapes>('J')
+  const [shape, setShape] = useState<Shapes>(getRandomShape())
   const [direction, setDirection] = useState(Direction.UP)
 
   useEffect(() => {

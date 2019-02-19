@@ -35,6 +35,7 @@ export interface ShapeProps {
 }
 
 export type Shapes = 'J' | 'L' | 'O' | 'S' | 'T' | 'Z'
+const shapes: Shapes[] = ['J', 'L', 'O', 'S', 'T', 'Z']
 
 export const Shape: React.FunctionComponent<ShapeProps & { shape: Shapes }> = ({
   shape,
@@ -55,3 +56,6 @@ export const Shape: React.FunctionComponent<ShapeProps & { shape: Shapes }> = ({
       return <Z {...props} />
   }
 }
+
+export const getRandomShape = (): Shapes =>
+  shapes[Math.floor(Math.random() * (shapes.length - 1))]
