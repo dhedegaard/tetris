@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Coordinates } from '../components/ShapeDrawer'
 import {
   calculateCoordinates,
@@ -41,8 +41,9 @@ const useTetris = () => {
     return () => document.removeEventListener('keydown', keypressHandler)
   }, [])
 
+  const intervalHandle = useRef<NodeJS.Timer | undefined>(undefined)
   useEffect(() => {
-    const handle = setInterval(() => {
+    intervalHandle.current = setInterval(() => {
       setPosition(oldPosition => {
         const newY = Math.min(oldPosition.y + 1, 20)
 
@@ -78,7 +79,11 @@ const useTetris = () => {
         }
       })
     }, 1000)
-    return () => clearInterval(handle)
+    return () => {
+      if (intervalHandle.current) {
+        clearInterval(intervalHandle.current)
+      }
+    }
   }, [])
 
   return {
