@@ -1,10 +1,12 @@
 import React from 'react'
-import J from './J'
-import L from './L'
-import O from './O'
-import S from './S'
-import T from './T'
-import Z from './Z'
+import ShapeDrawer, { Coordinates } from '../ShapeDrawer'
+import I, { COLOR_I } from './I'
+import J, { COLOR_J } from './J'
+import L, { COLOR_L } from './L'
+import O, { COLOR_O } from './O'
+import S, { COLOR_S } from './S'
+import T, { COLOR_T } from './T'
+import Z, { COLOR_Z } from './Z'
 
 export enum Direction {
   UP,
@@ -34,28 +36,51 @@ export interface ShapeProps {
   children?: undefined
 }
 
-export type Shapes = 'J' | 'L' | 'O' | 'S' | 'T' | 'Z'
-const shapes: Shapes[] = ['J', 'L', 'O', 'S', 'T', 'Z']
+export type Shapes = 'I' | 'J' | 'L' | 'O' | 'S' | 'T' | 'Z'
+const shapes: Shapes[] = ['I', 'J', 'L', 'O', 'S', 'T', 'Z']
 
+export const calculateCoordinates = (
+  shape: Shapes,
+  shapeProps: ShapeProps
+): Coordinates => {
+  switch (shape) {
+    case 'I':
+      return I(shapeProps)
+    case 'J':
+      return J(shapeProps)
+    case 'L':
+      return L(shapeProps)
+    case 'O':
+      return O(shapeProps)
+    case 'S':
+      return S(shapeProps)
+    case 'T':
+      return T(shapeProps)
+    case 'Z':
+      return Z(shapeProps)
+  }
+}
+
+const colorMap: { [key in Shapes]: string } = {
+  I: COLOR_I,
+  J: COLOR_J,
+  L: COLOR_L,
+  O: COLOR_O,
+  S: COLOR_S,
+  T: COLOR_T,
+  Z: COLOR_Z
+}
+
+/** Renders a given shape. */
 export const Shape: React.FunctionComponent<ShapeProps & { shape: Shapes }> = ({
   shape,
   ...props
-}) => {
-  switch (shape) {
-    case 'J':
-      return <J {...props} />
-    case 'L':
-      return <L {...props} />
-    case 'O':
-      return <O {...props} />
-    case 'S':
-      return <S {...props} />
-    case 'T':
-      return <T {...props} />
-    case 'Z':
-      return <Z {...props} />
-  }
-}
+}) => (
+  <ShapeDrawer
+    coordinates={calculateCoordinates(shape, props)}
+    color={colorMap[shape]}
+  />
+)
 
 export const getRandomShape = (): Shapes =>
   shapes[Math.floor(Math.random() * (shapes.length - 1))]

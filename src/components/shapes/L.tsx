@@ -1,48 +1,37 @@
-import React from 'react'
 import { Direction, ShapeProps } from '.'
-import Block from '../Block'
+import { Coordinates } from '../ShapeDrawer'
 
-const COLOR = 'orange'
+export const COLOR_L = 'orange'
 
-const L: React.FunctionComponent<ShapeProps> = ({ x, y, direction }) => {
+export default ({ direction, x, y }: ShapeProps): Coordinates => {
   switch (direction) {
     case Direction.UP:
-      return (
-        <>
-          <Block x={x} y={y - 1} color={COLOR} />
-          <Block x={x} y={y} color={COLOR} />
-          <Block x={x} y={y + 1} color={COLOR} />
-          <Block x={x + 1} y={y + 1} color={COLOR} />
-        </>
-      )
+      return [
+        { x, y: y - 1 },
+        { x, y },
+        { x, y: y + 1 },
+        { x: x + 1, y: y + 1 }
+      ]
     case Direction.RIGHT:
-      return (
-        <>
-          <Block x={x - 1} y={y + 1} color={COLOR} />
-          <Block x={x - 1} y={y} color={COLOR} />
-          <Block x={x} y={y} color={COLOR} />
-          <Block x={x + 1} y={y} color={COLOR} />
-        </>
-      )
+      return [
+        { x: x - 1, y: y + 1 },
+        { x: x - 1, y },
+        { x, y },
+        { x: x + 1, y }
+      ]
     case Direction.DOWN:
-      return (
-        <>
-          <Block x={x} y={y - 1} color={COLOR} />
-          <Block x={x - 1} y={y - 1} color={COLOR} />
-          <Block x={x} y={y} color={COLOR} />
-          <Block x={x} y={y + 1} color={COLOR} />
-        </>
-      )
+      return [
+        { x, y: y - 1 },
+        { x: x - 1, y: y - 1 },
+        { x, y },
+        { x, y: y + 1 }
+      ]
     case Direction.LEFT:
-      return (
-        <>
-          <Block x={x - 1} y={y} color={COLOR} />
-          <Block x={x} y={y} color={COLOR} />
-          <Block x={x + 1} y={y} color={COLOR} />
-          <Block x={x + 1} y={y + 1} color={COLOR} />
-        </>
-      )
+      return [
+        { x: x - 1, y },
+        { x, y },
+        { x: x + 1, y },
+        { x: x + 1, y: y + 1 }
+      ]
   }
 }
-
-export default L

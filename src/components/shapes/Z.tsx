@@ -1,32 +1,25 @@
-import React from 'react'
 import { Direction, ShapeProps } from '.'
-import Block from '../Block'
+import { Coordinates } from '../ShapeDrawer'
 
-const COLOR = 'red'
+export const COLOR_Z = 'red'
 
-const Z: React.FunctionComponent<ShapeProps> = ({ x, y, direction }) => {
+export default ({ direction, x, y }: ShapeProps): Coordinates => {
   switch (direction) {
     case Direction.UP:
     case Direction.DOWN:
-      return (
-        <>
-          <Block x={x + 1} y={y - 1} color={COLOR} />
-          <Block x={x + 1} y={y} color={COLOR} />
-          <Block x={x} y={y} color={COLOR} />
-          <Block x={x} y={y + 1} color={COLOR} />
-        </>
-      )
+      return [
+        { x: x + 1, y: y - 1 },
+        { x: x + 1, y },
+        { x, y },
+        { x, y: y + 1 }
+      ]
     case Direction.LEFT:
     case Direction.RIGHT:
-      return (
-        <>
-          <Block x={x - 1} y={y} color={COLOR} />
-          <Block x={x} y={y} color={COLOR} />
-          <Block x={x} y={y + 1} color={COLOR} />
-          <Block x={x + 1} y={y + 1} color={COLOR} />
-        </>
-      )
+      return [
+        { x: x - 1, y },
+        { x, y },
+        { x, y: y + 1 },
+        { x: x + 1, y: y + 1 }
+      ]
   }
 }
-
-export default Z

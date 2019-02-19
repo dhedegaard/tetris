@@ -1,17 +1,21 @@
-import React from 'react'
 import { Direction, ShapeProps } from '.'
-import Block from '../Block'
+import { Coordinates } from '../ShapeDrawer'
 
-const COLOR = 'purple'
+export const COLOR_T = 'purple'
 
-const T: React.FunctionComponent<ShapeProps> = ({ x, y, direction }) => (
-  <>
-    <Block x={x} y={y} color={COLOR} />
-    {direction !== Direction.DOWN && <Block x={x} y={y - 1} color={COLOR} />}
-    {direction !== Direction.LEFT && <Block x={x + 1} y={y} color={COLOR} />}
-    {direction !== Direction.UP && <Block x={x} y={y + 1} color={COLOR} />}
-    {direction !== Direction.RIGHT && <Block x={x - 1} y={y} color={COLOR} />}
-  </>
-)
-
-export default T
+export default ({ direction, x, y }: ShapeProps): Coordinates => {
+  const result: Coordinates = [{ x, y }]
+  if (direction !== Direction.DOWN) {
+    result.push({ x, y: y - 1 })
+  }
+  if (direction !== Direction.LEFT) {
+    result.push({ x: x + 1, y })
+  }
+  if (direction !== Direction.UP) {
+    result.push({ x, y: y + 1 })
+  }
+  if (direction !== Direction.RIGHT) {
+    result.push({ x: x - 1, y })
+  }
+  return result
+}
