@@ -42,7 +42,7 @@ const useTetris = () => {
   }, [])
 
   useEffect(() => {
-    const handle = setInterval(() => {
+    const handle = setTimeout(() => {
       setPosition(oldPosition => {
         const newY = Math.min(oldPosition.y + 1, 20)
 
@@ -78,8 +78,8 @@ const useTetris = () => {
         }
       })
     }, 1000)
-    return () => clearInterval(handle)
-  }, [])
+    return () => clearTimeout(handle)
+  }, [position, shape])
 
   return {
     direction,
