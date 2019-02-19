@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import Block from './components/Block'
 import Grid from './components/Grid'
+import { Coordinates } from './components/ShapeDrawer'
 import {
   calculateCoordinates,
   Direction,
@@ -13,6 +15,7 @@ const App: React.FunctionComponent = () => {
   const [position, setPosition] = useState({ x: 5, y: 1 })
   const [shape, setShape] = useState<Shapes>(getRandomShape())
   const [direction, setDirection] = useState(Direction.UP)
+  const [blocks, setBlocks] = useState<Coordinates>([])
 
   useEffect(() => {
     const keypressHandler = (evt: KeyboardEvent) => {
@@ -48,13 +51,24 @@ const App: React.FunctionComponent = () => {
 
         const newPositions = calculateCoordinates(shape, {
           direction,
-          x: oldPosition.y,
+          x: oldPosition.x,
           y: newY
         })
 
-        if (newPositions.find(e => e.y >= 20) != null) {
+        if (
+          newPositions.find(
+            e =>
+              e.y >= 20 || blocks.find(b => b.x === e.x && b.y === e.y) != null
+          ) != null
+        ) {
+          const oldPositions = calculateCoordinates(shape, {
+            direction,
+            x: oldPosition.x,
+            y: oldPosition.y
+          })
           setShape(getRandomShape())
           setDirection(Direction.UP)
+          setBlocks([...blocks, ...oldPositions])
           return {
             x: 5,
             y: 1
@@ -78,6 +92,9 @@ const App: React.FunctionComponent = () => {
         x={position.x}
         y={position.y}
       />
+      {blocks.map(({ x, y }) => (
+        <Block x={x} y={y} key={`block_${x}_${y}`} />
+      ))}
     </Grid>
   )
 }
