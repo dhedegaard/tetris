@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Coordinates } from '../components/ShapeDrawer'
 import { calculateCoordinates } from '../components/shapes'
 import useBlocks from './useBlocks'
 import useDirection from './useDirection'
@@ -18,6 +19,9 @@ const useTetris = () => {
   const { shape, nextShape } = useShape()
   const { blocks, addBlocks, isBlockFree } = useBlocks()
   const { direction, resetDirection, setNextDirection } = useDirection()
+
+  const isFreePositions = (newPositions: Coordinates): boolean =>
+    newPositions.find(e => !isBlockFree(e)) != null
 
   useEffect(() => {
     const keypressHandler = (evt: KeyboardEvent) => {
@@ -49,7 +53,7 @@ const useTetris = () => {
       y: newY
     })
 
-    if (newPositions.find(e => !isBlockFree(e)) != null) {
+    if (isFreePositions(newPositions)) {
       const oldPositions = calculateCoordinates(shape, {
         direction,
         x: position.x,

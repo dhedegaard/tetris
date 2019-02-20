@@ -7,7 +7,7 @@ export default () => {
   const isBlockFree = (coordinate: Coordinate): boolean =>
     coordinate.y < 20 &&
     coordinate.x >= 0 &&
-    coordinate.x <= 10 &&
+    coordinate.x < 10 &&
     blocks.find(b => b.x === coordinate.x && b.y === coordinate.y) == null
 
   const addBlocks = (newBlocks: Coordinates) => {
