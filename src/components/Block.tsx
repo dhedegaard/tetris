@@ -2,7 +2,7 @@ import 'polished'
 import { darken } from 'polished'
 import React from 'react'
 
-const DEFAULT_COLOR = '#ccc'
+const DEFAULT_COLOR = 'grey'
 
 interface Props {
   x: number

@@ -15,7 +15,7 @@ const App: React.FunctionComponent = () => {
         x={position.x}
         y={position.y}
       />
-      {blocks.map(({ x, y }) => (
+      {Array.from(blocks).map(({ x, y }) => (
         <Block x={x} y={y} key={`block_${x}_${y}`} />
       ))}
     </Grid>
