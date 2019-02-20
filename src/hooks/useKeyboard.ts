@@ -3,9 +3,11 @@ import { Coordinate, Coordinates } from '../components/ShapeDrawer'
 import { calculateCoordinates, Direction, Shapes } from '../components/shapes'
 
 export default (
-  direction: Direction,
-  shape: Shapes,
-  positionRef: React.MutableRefObject<Coordinate>,
+  stateRef: React.MutableRefObject<{
+    position: Coordinate
+    direction: Direction
+    shape: Shapes
+  }>,
   isFreePositions: (newPositions: Coordinates) => boolean,
   moveLeft: () => void,
   moveRight: () => void,
@@ -14,7 +16,7 @@ export default (
 ) => {
   useEffect(() => {
     const keypressHandler = (evt: KeyboardEvent) => {
-      const position = positionRef.current
+      const { position, direction, shape } = stateRef.current
       switch (evt.keyCode) {
         case 37: {
           // left

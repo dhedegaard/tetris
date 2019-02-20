@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { Coordinates } from '../components/ShapeDrawer'
+import ShapeDrawer, { Coordinates } from '../components/ShapeDrawer'
 import useBlocks from './useBlocks'
 import useDirection from './useDirection'
 import useKeyboard from './useKeyboard'
@@ -24,7 +24,12 @@ const useTetris = () => {
     setNextDirection,
     getNextDirection
   } = useDirection()
-  const positionRef = useRef(position)
+  const stateRef = useRef({
+    position,
+    direction,
+    shape
+  })
+  stateRef.current = { position, direction, shape }
 
   /** Check that all the positions are free in the grid. */
   const isFreePositions = (newPositions: Coordinates): boolean =>
@@ -32,9 +37,7 @@ const useTetris = () => {
 
   // Handle keyboard events.
   useKeyboard(
-    direction,
-    shape,
-    positionRef,
+    stateRef,
     isFreePositions,
     moveLeft,
     moveRight,
