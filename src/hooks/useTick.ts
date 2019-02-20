@@ -11,7 +11,7 @@ export default (
   moveDown: () => void,
   persistBlock: (position: Coordinates) => void
 ) => {
-  const [interval, setInterval] = useState(1000)
+  const [tick, setTick] = useState(1000)
 
   useInterval(() => {
     const newPositions = calculateCoordinates(shape, {
@@ -33,10 +33,10 @@ export default (
       y: position.y
     })
     persistBlock(oldPositions)
-  }, interval)
+  }, tick)
 
   return {
-    interval,
-    setInterval
+    tick,
+    setTick
   }
 }
