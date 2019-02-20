@@ -16,7 +16,7 @@ const useTetris = () => {
     resetPosition
   } = usePosition()
   const { shape, nextShape } = useShape()
-  const { blocks, addBlocks } = useBlocks()
+  const { blocks, addBlocks, isBlockFree } = useBlocks()
   const { direction, resetDirection, setNextDirection } = useDirection()
 
   useEffect(() => {
@@ -49,11 +49,7 @@ const useTetris = () => {
       y: newY
     })
 
-    if (
-      newPositions.find(
-        e => e.y >= 20 || blocks.find(b => b.x === e.x && b.y === e.y) != null
-      ) != null
-    ) {
+    if (newPositions.find(e => !isBlockFree(e)) != null) {
       const oldPositions = calculateCoordinates(shape, {
         direction,
         x: position.x,
