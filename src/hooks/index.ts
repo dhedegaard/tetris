@@ -1,6 +1,5 @@
 import { useRef } from 'react'
-import ShapeDrawer, { Coordinates } from '../components/ShapeDrawer'
-import { calculateCoordinates } from '../components/shapes'
+import { Coordinates } from '../components/ShapeDrawer'
 import useBlocks from './useBlocks'
 import useDirection from './useDirection'
 import useKeyboard from './useKeyboard'
@@ -37,14 +36,15 @@ const useTetris = () => {
     newPositions.find(e => !isBlockFree(e)) == null
 
   /* While the next position is free, move down fast. */
-  const moveToBottom = () => setTemporaryTick(10)
+  const moveToBottom = () => setTemporaryTick(100)
 
-  const persistBlock = (blocks: Coordinates) => {
-    addBlocks(blocks)
+  /* Call this when we're ready to persist blocks. */
+  const persistBlock = (blocksToPersist: Coordinates) => {
+    addBlocks(blocksToPersist)
     nextShape()
     resetPosition()
     resetDirection()
-    setTemporaryTick(undefined) // Disable any temp ticks.
+    setTemporaryTick(undefined) // Disable any fast temp ticks.
     setTick(oldInterval => Math.floor(oldInterval * 0.9))
   }
 

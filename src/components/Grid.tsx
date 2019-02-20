@@ -34,7 +34,7 @@ const Grid: React.FunctionComponent = props => {
     <svg
       width={WIDTH * 20}
       height={HEIGHT * 20}
-      style={{ backgroundColor: '#333' }}
+      style={{ backgroundColor: '#222' }}
     >
       {lines}
       {props.children}
