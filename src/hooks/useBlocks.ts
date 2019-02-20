@@ -4,6 +4,7 @@ import { Coordinate, Coordinates } from '../components/ShapeDrawer'
 export default () => {
   const [blocks, setBlocks] = useState<Coordinates>([])
 
+  /** Checks to see if the given coordinate is free of blocks, and inside the grid. */
   const isBlockFree = (coordinate: Coordinate): boolean =>
     coordinate.y < 20 &&
     coordinate.x >= 0 &&

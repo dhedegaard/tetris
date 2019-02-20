@@ -11,6 +11,7 @@ export default () => {
   return {
     direction,
     resetDirection,
-    setNextDirection
+    setNextDirection,
+    getNextDirection: () => nextDirection(direction)
   }
 }

@@ -18,23 +18,56 @@ const useTetris = () => {
   } = usePosition()
   const { shape, nextShape } = useShape()
   const { blocks, addBlocks, isBlockFree } = useBlocks()
-  const { direction, resetDirection, setNextDirection } = useDirection()
+  const {
+    direction,
+    resetDirection,
+    setNextDirection,
+    getNextDirection
+  } = useDirection()
 
+  /** Check that all the positions are free in the grid. */
   const isFreePositions = (newPositions: Coordinates): boolean =>
-    newPositions.find(e => !isBlockFree(e)) != null
+    newPositions.find(e => !isBlockFree(e)) == null
 
   useEffect(() => {
     const keypressHandler = (evt: KeyboardEvent) => {
       switch (evt.keyCode) {
-        case 37: // left
-          moveLeft()
+        case 37: {
+          // left
+          const newPositions = calculateCoordinates(shape, {
+            direction,
+            x: position.x - 1,
+            y: position.y
+          })
+          if (isFreePositions(newPositions)) {
+            moveLeft()
+          }
           break
-        case 39: // right
-          moveRight()
+        }
+        case 39: {
+          // right
+          const newPositions = calculateCoordinates(shape, {
+            direction,
+            x: position.x + 1,
+            y: position.y
+          })
+          if (isFreePositions(newPositions)) {
+            moveRight()
+          }
           break
-        case 38: // up
-          setNextDirection()
+        }
+        case 38: {
+          // up
+          const newPositions = calculateCoordinates(shape, {
+            direction: getNextDirection(),
+            x: position.x,
+            y: position.y
+          })
+          if (isFreePositions(newPositions)) {
+            setNextDirection()
+          }
           break
+        }
         default:
           console.log('Unknown keycode:', evt.keyCode)
       }
@@ -45,31 +78,28 @@ const useTetris = () => {
   }, [])
 
   useInterval(() => {
-    const newY = Math.min(position.y + 1, 20)
-
     const newPositions = calculateCoordinates(shape, {
       direction,
       x: position.x,
-      y: newY
+      y: position.y + 1
     })
 
+    // If the next position is free, move down to it.
     if (isFreePositions(newPositions)) {
-      const oldPositions = calculateCoordinates(shape, {
-        direction,
-        x: position.x,
-        y: position.y
-      })
-      addBlocks(oldPositions)
-      nextShape()
-      resetPosition()
-      resetDirection()
-      return {
-        x: 5,
-        y: 1
-      }
+      moveDown()
+      return
     }
 
-    moveDown()
+    // Otherwise, persist the blocks and start a new shape.
+    const oldPositions = calculateCoordinates(shape, {
+      direction,
+      x: position.x,
+      y: position.y
+    })
+    addBlocks(oldPositions)
+    nextShape()
+    resetPosition()
+    resetDirection()
   }, 1000)
 
   return {
