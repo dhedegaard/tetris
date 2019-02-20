@@ -6,9 +6,9 @@ import { Shape } from './components/shapes'
 import useTetris from './hooks'
 
 const GlobalStyle = createGlobalStyle`
-body {
-  margin: 0;
-}
+  body {
+    margin: 0;
+  }
 `
 
 const Container = styled.div`
@@ -19,6 +19,11 @@ const Container = styled.div`
   align-items: center;
 `
 
+const GridContainer = styled.div`
+  margin-top: 10px;
+  border: 4px solid purple;
+`
+
 const App: React.FunctionComponent = () => {
   const { direction, shape, position, blocks } = useTetris()
 
@@ -26,17 +31,19 @@ const App: React.FunctionComponent = () => {
     <>
       <GlobalStyle />
       <Container>
-        <Grid>
-          <Shape
-            direction={direction}
-            shape={shape}
-            x={position.x}
-            y={position.y}
-          />
-          {blocks.map(({ x, y }) => (
-            <Block x={x} y={y} key={`block_${x}_${y}`} />
-          ))}
-        </Grid>
+        <GridContainer>
+          <Grid>
+            <Shape
+              direction={direction}
+              shape={shape}
+              x={position.x}
+              y={position.y}
+            />
+            {blocks.map(({ x, y }) => (
+              <Block x={x} y={y} key={`block_${x}_${y}`} />
+            ))}
+          </Grid>
+        </GridContainer>
       </Container>
     </>
   )
