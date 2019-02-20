@@ -28,6 +28,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@types/styled-components": "^4.1.10",
     "polished": "^3.0.0",
     "styled-components": "^4.1.3",
     "tslint": "^5.12.1",
