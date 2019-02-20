@@ -13,10 +13,10 @@ export default (
   moveRight: () => void,
   setNextDirection: () => void,
   getNextDirection: () => Direction,
-  moveToBottom: () => void
+  setMoveToBottom: (moveToBottom: boolean) => void
 ) => {
   useEffect(() => {
-    const keypressHandler = (evt: KeyboardEvent) => {
+    const keydownHandler = (evt: KeyboardEvent) => {
       const { position, direction, shape } = stateRef.current
       switch (evt.keyCode) {
         case 37: {
@@ -57,15 +57,26 @@ export default (
         }
         case 40: {
           // down
-          moveToBottom()
+          setMoveToBottom(true)
           break
         }
-        default:
-          console.log('Unknown keycode:', evt.keyCode)
+      }
+    }
+    const keyupHandler = (evt: KeyboardEvent) => {
+      switch (evt.keyCode) {
+        case 40: {
+          // down
+          setMoveToBottom(false)
+          break
+        }
       }
     }
 
-    document.addEventListener('keydown', keypressHandler)
-    return () => document.removeEventListener('keydown', keypressHandler)
+    document.addEventListener('keydown', keydownHandler)
+    document.addEventListener('keyup', keyupHandler)
+    return () => {
+      document.removeEventListener('keydown', keydownHandler)
+      document.removeEventListener('keyup', keyupHandler)
+    }
   }, [])
 }

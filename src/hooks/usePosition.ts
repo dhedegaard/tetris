@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Direction } from '../components/shapes'
 
-const DEFAULT_POSITION = Object.freeze({ x: 5, y: 1 })
+const DEFAULT_POSITION = Object.freeze({ x: 4, y: 1 })
 
 export default () => {
   const [position, setPosition] = useState<{ x: number; y: number }>(

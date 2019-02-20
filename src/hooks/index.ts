@@ -35,9 +35,6 @@ const useTetris = () => {
   const isFreePositions = (newPositions: Coordinates): boolean =>
     newPositions.find(e => !isBlockFree(e)) == null
 
-  /* While the next position is free, move down fast. */
-  const moveToBottom = () => setTemporaryTick(100)
-
   /* Call this when we're ready to persist blocks. */
   const persistBlock = (blocksToPersist: Coordinates) => {
     addBlocks(blocksToPersist)
@@ -48,17 +45,6 @@ const useTetris = () => {
     setTick(oldInterval => Math.floor(oldInterval * 0.9))
   }
 
-  // Handle keyboard events.
-  useKeyboard(
-    stateRef,
-    isFreePositions,
-    moveLeft,
-    moveRight,
-    setNextDirection,
-    getNextDirection,
-    moveToBottom
-  )
-
   // Handle ticks
   const { setTick, setTemporaryTick } = useTick(
     shape,
@@ -67,6 +53,22 @@ const useTetris = () => {
     isFreePositions,
     moveDown,
     persistBlock
+  )
+
+  /* While the next position is free, move down fast. */
+  const setMoveToBottom = (moveToBottom: boolean) => {
+    setTemporaryTick(moveToBottom ? 60 : undefined)
+  }
+
+  // Handle keyboard events.
+  useKeyboard(
+    stateRef,
+    isFreePositions,
+    moveLeft,
+    moveRight,
+    setNextDirection,
+    getNextDirection,
+    setMoveToBottom
   )
 
   return {
