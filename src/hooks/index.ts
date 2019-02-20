@@ -3,9 +3,9 @@ import { Coordinates } from '../components/ShapeDrawer'
 import { calculateCoordinates } from '../components/shapes'
 import useBlocks from './useBlocks'
 import useDirection from './useDirection'
-import useInterval from './useInterval'
 import usePosition from './usePosition'
 import useShape from './useShape'
+import useTick from './useTick'
 
 /** A hook that contains all the logic regarding tetris. */
 const useTetris = () => {
@@ -77,30 +77,19 @@ const useTetris = () => {
     return () => document.removeEventListener('keydown', keypressHandler)
   }, [])
 
-  useInterval(() => {
-    const newPositions = calculateCoordinates(shape, {
-      direction,
-      x: position.x,
-      y: position.y + 1
-    })
-
-    // If the next position is free, move down to it.
-    if (isFreePositions(newPositions)) {
-      moveDown()
-      return
+  useTick(
+    shape,
+    direction,
+    position,
+    isFreePositions,
+    moveDown,
+    oldPositions => {
+      addBlocks(oldPositions)
+      nextShape()
+      resetPosition()
+      resetDirection()
     }
-
-    // Otherwise, persist the blocks and start a new shape.
-    const oldPositions = calculateCoordinates(shape, {
-      direction,
-      x: position.x,
-      y: position.y
-    })
-    addBlocks(oldPositions)
-    nextShape()
-    resetPosition()
-    resetDirection()
-  }, 1000)
+  )
 
   return {
     blocks,
