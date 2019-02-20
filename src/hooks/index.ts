@@ -1,11 +1,19 @@
 import { useRef } from 'react'
-import { Coordinates } from '../components/ShapeDrawer'
+import { Coordinate, Coordinates } from '../components/ShapeDrawer'
+import { Direction, Shapes } from '../components/shapes'
 import useBlocks from './useBlocks'
 import useDirection from './useDirection'
 import useKeyboard from './useKeyboard'
 import usePosition from './usePosition'
 import useShape from './useShape'
 import useTick from './useTick'
+
+export type StateRef = React.MutableRefObject<{
+  position: Coordinate
+  direction: Direction
+  shape: Shapes
+  isFreePositions: (newPositions: Coordinates) => boolean
+}>
 
 /** A hook that contains all the logic regarding tetris. */
 const useTetris = () => {
@@ -17,27 +25,32 @@ const useTetris = () => {
     resetPosition
   } = usePosition()
   const { shape, nextShape } = useShape()
-  const { blocks, addBlocks, isBlockFree } = useBlocks()
+  const { blocks, addBlocks, clearFilledRows, isFreePositions } = useBlocks()
   const {
     direction,
     resetDirection,
     setNextDirection,
     getNextDirection
   } = useDirection()
-  const stateRef = useRef({
+
+  // Build a ref os state, for various cases.
+  const stateRef: StateRef = useRef({
     position,
     direction,
-    shape
+    shape,
+    isFreePositions
   })
-  stateRef.current = { position, direction, shape }
-
-  /** Check that all the positions are free in the grid. */
-  const isFreePositions = (newPositions: Coordinates): boolean =>
-    newPositions.find(e => !isBlockFree(e)) == null
+  stateRef.current = {
+    position,
+    direction,
+    shape,
+    isFreePositions
+  }
 
   /* Call this when we're ready to persist blocks. */
   const persistBlock = (blocksToPersist: Coordinates) => {
     addBlocks(blocksToPersist)
+    clearFilledRows()
     nextShape()
     resetPosition()
     resetDirection()
@@ -47,10 +60,7 @@ const useTetris = () => {
 
   // Handle ticks
   const { setTick, setTemporaryTick } = useTick(
-    shape,
-    direction,
-    position,
-    isFreePositions,
+    stateRef,
     moveDown,
     persistBlock
   )
@@ -63,7 +73,6 @@ const useTetris = () => {
   // Handle keyboard events.
   useKeyboard(
     stateRef,
-    isFreePositions,
     moveLeft,
     moveRight,
     setNextDirection,

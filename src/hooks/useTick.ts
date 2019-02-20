@@ -1,13 +1,11 @@
 import { useState } from 'react'
-import { Coordinate, Coordinates } from '../components/ShapeDrawer'
-import { calculateCoordinates, Direction, Shapes } from '../components/shapes'
+import { StateRef } from '.'
+import { Coordinates } from '../components/ShapeDrawer'
+import { calculateCoordinates } from '../components/shapes'
 import useInterval from './useInterval'
 
 export default (
-  shape: Shapes,
-  direction: Direction,
-  position: Coordinate,
-  isFreePositions: (positions: Coordinates) => boolean,
+  stateRef: StateRef,
   moveDown: () => void,
   persistBlock: (position: Coordinates) => void
 ) => {
@@ -18,6 +16,7 @@ export default (
 
   useInterval(
     () => {
+      const { shape, direction, position, isFreePositions } = stateRef.current
       const newPositions = calculateCoordinates(shape, {
         direction,
         x: position.x,

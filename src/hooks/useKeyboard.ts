@@ -1,14 +1,10 @@
 import { useEffect } from 'react'
-import { Coordinate, Coordinates } from '../components/ShapeDrawer'
+import { StateRef } from '.'
+import { Coordinates } from '../components/ShapeDrawer'
 import { calculateCoordinates, Direction, Shapes } from '../components/shapes'
 
 export default (
-  stateRef: React.MutableRefObject<{
-    position: Coordinate
-    direction: Direction
-    shape: Shapes
-  }>,
-  isFreePositions: (newPositions: Coordinates) => boolean,
+  stateRef: StateRef,
   moveLeft: () => void,
   moveRight: () => void,
   setNextDirection: () => void,
@@ -17,7 +13,7 @@ export default (
 ) => {
   useEffect(() => {
     const keydownHandler = (evt: KeyboardEvent) => {
-      const { position, direction, shape } = stateRef.current
+      const { position, direction, shape, isFreePositions } = stateRef.current
       switch (evt.keyCode) {
         case 37: {
           // left

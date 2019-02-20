@@ -48,12 +48,17 @@ export default () => {
       }
       return oldBlocks
     })
-    clearFilledRows()
   }
+
+  /** Check that all the given positions are free in the grid. */
+  const isFreePositions = (newPositions: Coordinates): boolean =>
+    newPositions.find(e => !isBlockFree(e)) == null
 
   return {
     blocks,
     isBlockFree,
-    addBlocks
+    addBlocks,
+    clearFilledRows,
+    isFreePositions
   }
 }
