@@ -6,7 +6,8 @@
     "member-access": false,
     "no-console": false,
     "jsx-no-multiline-js": false,
-    "interface-name": false
+    "interface-name": false,
+    "object-literal-sort-keys": false
   },
   "rulesDirectory": []
 }

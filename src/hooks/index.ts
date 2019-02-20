@@ -1,19 +1,15 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Coordinates } from '../components/ShapeDrawer'
-import {
-  calculateCoordinates,
-  Direction,
-  getRandomShape,
-  nextDirection,
-  Shapes
-} from '../components/shapes'
+import { calculateCoordinates, getRandomShape } from '../components/shapes'
+import useDirection from './useDirection'
 import useInterval from './useInterval'
+import useShape from './useShape'
 
 const useTetris = () => {
   const [position, setPosition] = useState({ x: 5, y: 1 })
-  const [shape, setShape] = useState<Shapes>(getRandomShape())
-  const [direction, setDirection] = useState(Direction.UP)
+  const { shape, nextShape } = useShape()
   const [blocks, setBlocks] = useState<Coordinates>([])
+  const { direction, resetDirection, setNextDirection } = useDirection()
 
   useEffect(() => {
     const keypressHandler = (evt: KeyboardEvent) => {
@@ -31,7 +27,7 @@ const useTetris = () => {
           }))
           break
         case 38: // up
-          setDirection(oldDirection => nextDirection(oldDirection))
+          setNextDirection()
           break
         default:
           console.log('Unknown keycode:', evt.keyCode)
@@ -62,8 +58,8 @@ const useTetris = () => {
           x: oldPosition.x,
           y: oldPosition.y
         })
-        setShape(getRandomShape())
-        setDirection(Direction.UP)
+        nextShape()
+        resetDirection()
         setBlocks([...blocks, ...oldPositions])
         return {
           x: 5,
