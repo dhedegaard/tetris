@@ -42,7 +42,6 @@ const useTetris = () => {
     return () => document.removeEventListener('keydown', keypressHandler)
   }, [])
 
-  const intervalHandle = useRef<NodeJS.Timer | undefined>(undefined)
   useInterval(() => {
     setPosition(oldPosition => {
       const newY = Math.min(oldPosition.y + 1, 20)
