@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Coordinates } from '../components/ShapeDrawer'
 import { calculateCoordinates, getRandomShape } from '../components/shapes'
+import useBlocks from './useBlocks'
 import useDirection from './useDirection'
 import useInterval from './useInterval'
 import useShape from './useShape'
@@ -8,7 +9,7 @@ import useShape from './useShape'
 const useTetris = () => {
   const [position, setPosition] = useState({ x: 5, y: 1 })
   const { shape, nextShape } = useShape()
-  const [blocks, setBlocks] = useState<Coordinates>([])
+  const { blocks, addBlocks } = useBlocks()
   const { direction, resetDirection, setNextDirection } = useDirection()
 
   useEffect(() => {
@@ -60,7 +61,7 @@ const useTetris = () => {
         })
         nextShape()
         resetDirection()
-        setBlocks([...blocks, ...oldPositions])
+        addBlocks(oldPositions)
         return {
           x: 5,
           y: 1
