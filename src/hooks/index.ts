@@ -42,7 +42,7 @@ const useTetris = () => {
     resetPosition()
     resetDirection()
     setTemporaryTick(undefined) // Disable any fast temp ticks.
-    setTick(oldInterval => Math.floor(oldInterval * 0.9))
+    setTick(oldInterval => Math.floor(oldInterval * 0.95))
   }
 
   // Handle ticks
@@ -57,7 +57,7 @@ const useTetris = () => {
 
   /* While the next position is free, move down fast. */
   const setMoveToBottom = (moveToBottom: boolean) => {
-    setTemporaryTick(moveToBottom ? 60 : undefined)
+    setTemporaryTick(moveToBottom ? 40 : undefined)
   }
 
   // Handle keyboard events.
