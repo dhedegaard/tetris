@@ -12,7 +12,8 @@ export default (
   moveLeft: () => void,
   moveRight: () => void,
   setNextDirection: () => void,
-  getNextDirection: () => Direction
+  getNextDirection: () => Direction,
+  moveToBottom: () => void
 ) => {
   useEffect(() => {
     const keypressHandler = (evt: KeyboardEvent) => {
@@ -52,6 +53,11 @@ export default (
           if (isFreePositions(newPositions)) {
             setNextDirection()
           }
+          break
+        }
+        case 40: {
+          // down
+          moveToBottom()
           break
         }
         default:

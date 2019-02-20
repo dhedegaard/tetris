@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import ShapeDrawer, { Coordinates } from '../components/ShapeDrawer'
+import { calculateCoordinates } from '../components/shapes'
 import useBlocks from './useBlocks'
 import useDirection from './useDirection'
 import useKeyboard from './useKeyboard'
@@ -35,6 +36,18 @@ const useTetris = () => {
   const isFreePositions = (newPositions: Coordinates): boolean =>
     newPositions.find(e => !isBlockFree(e)) == null
 
+  /* While the next position is free, move down fast. */
+  const moveToBottom = () => setTemporaryTick(10)
+
+  const persistBlock = (blocks: Coordinates) => {
+    addBlocks(blocks)
+    nextShape()
+    resetPosition()
+    resetDirection()
+    setTemporaryTick(undefined) // Disable any temp ticks.
+    setTick(oldInterval => Math.floor(oldInterval * 0.9))
+  }
+
   // Handle keyboard events.
   useKeyboard(
     stateRef,
@@ -42,23 +55,18 @@ const useTetris = () => {
     moveLeft,
     moveRight,
     setNextDirection,
-    getNextDirection
+    getNextDirection,
+    moveToBottom
   )
 
   // Handle ticks
-  const { setTick } = useTick(
+  const { setTick, setTemporaryTick } = useTick(
     shape,
     direction,
     position,
     isFreePositions,
     moveDown,
-    oldPositions => {
-      addBlocks(oldPositions)
-      nextShape()
-      resetPosition()
-      resetDirection()
-      setTick(oldInterval => Math.floor(oldInterval * 0.9))
-    }
+    persistBlock
   )
 
   return {
