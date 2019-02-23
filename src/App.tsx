@@ -6,6 +6,7 @@ import { Shape } from './components/shapes'
 import FontLoader from './FontLoader'
 import GameOver from './GameOver'
 import useTetris from './hooks'
+import NextShape from './NextShape'
 import Score from './Score'
 
 const GlobalStyle = createGlobalStyle`
@@ -37,10 +38,19 @@ const LegendContainer = styled.div`
   padding: 8px;
   align-self: normal;
   margin-top: 10px;
+  justify-content: space-between;
 `
 
 const App: React.FunctionComponent = () => {
-  const { direction, shape, position, blocks, gamestate, score } = useTetris()
+  const {
+    direction,
+    shape,
+    position,
+    blocks,
+    gamestate,
+    score,
+    peekShapes
+  } = useTetris()
 
   return (
     <>
@@ -65,6 +75,7 @@ const App: React.FunctionComponent = () => {
         </GridContainer>
         <LegendContainer>
           <Score score={score} />
+          <NextShape nextShape={peekShapes[peekShapes.length - 1]} />
         </LegendContainer>
       </Container>
     </>
