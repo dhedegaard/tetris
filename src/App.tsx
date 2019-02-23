@@ -34,12 +34,14 @@ const App: React.FunctionComponent = () => {
       <Container>
         <GridContainer>
           <Grid>
-            <Shape
-              direction={direction}
-              shape={shape}
-              x={position.x}
-              y={position.y}
-            />
+            {gamestate !== 'gameover' && (
+              <Shape
+                direction={direction}
+                shape={shape}
+                x={position.x}
+                y={position.y}
+              />
+            )}
             {blocks.map(({ x, y }) => (
               <Block x={x} y={y} key={`block_${x}_${y}`} />
             ))}

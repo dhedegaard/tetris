@@ -13,7 +13,18 @@ export default (
 ) => {
   useEffect(() => {
     const keydownHandler = (evt: KeyboardEvent) => {
-      const { position, direction, shape, isFreePositions } = stateRef.current
+      const {
+        position,
+        direction,
+        shape,
+        isFreePositions,
+        gamestate
+      } = stateRef.current
+      // If the game is over, ignore all keyboard inputs.
+      if (gamestate === 'gameover') {
+        return
+      }
+
       switch (evt.keyCode) {
         case 37: {
           // left
