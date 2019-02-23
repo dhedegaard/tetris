@@ -30,7 +30,7 @@ const GameOver: React.FunctionComponent = () => (
     <RetryText x={20 * 2 - 10} y={20 * 11 - 5} fill="#fff" width={20 * 7}>
       Press 'r' to
     </RetryText>
-    <RetryText x={20 * 2 - 10} y={20 * 12 - 5} fill="#fff" width={20 * 7}>
+    <RetryText x={20 * 2 + 10} y={20 * 12 - 5} fill="#fff" width={20 * 7}>
       try again
     </RetryText>
   </>
