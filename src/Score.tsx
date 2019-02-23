@@ -4,8 +4,8 @@ import styled from 'styled-components'
 const Container = styled.div`
   border: 1px double #fff;
   border-radius: 5px;
-  border-top-left-radius: 0;
-  border-bottom-right-radius: 0;
+  border-top-left-radius: 2px;
+  border-bottom-right-radius: 2px;
   padding: 8px;
 `
 
@@ -13,10 +13,14 @@ const Title = styled.div`
   color: #fff;
   border-bottom: 1px solid #fff;
   margin-bottom: 5px;
+  text-transform: uppercase;
+  padding-bottom: 5px;
 `
 
 const Text = styled.div`
+  padding-top: 4px;
   color: #fff;
+  text-transform: uppercase;
 `
 
 interface Props {
