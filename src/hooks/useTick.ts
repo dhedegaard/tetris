@@ -4,6 +4,8 @@ import { Coordinates } from '../components/ShapeDrawer'
 import { calculateCoordinates } from '../components/shapes'
 import useInterval from './useInterval'
 
+const INITIAL_TICKS = 1000
+
 export default (
   stateRef: StateRef,
   moveDown: () => void,
@@ -12,7 +14,7 @@ export default (
   const [temporaryTick, setTemporaryTick] = useState<number | undefined>(
     undefined
   )
-  const [tick, setTick] = useState(1000)
+  const [tick, setTick] = useState(INITIAL_TICKS)
 
   useInterval(
     () => {
@@ -57,9 +59,15 @@ export default (
       : tick
   )
 
+  const resetTick = () => {
+    setTick(INITIAL_TICKS)
+    setTemporaryTick(undefined)
+  }
+
   return {
     tick,
     setTick,
-    setTemporaryTick
+    setTemporaryTick,
+    resetTick: () => setTick(INITIAL_TICKS)
   }
 }

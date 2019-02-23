@@ -9,7 +9,8 @@ export default (
   moveRight: () => void,
   setNextDirection: () => void,
   getNextDirection: () => Direction,
-  setMoveToBottom: (moveToBottom: boolean) => void
+  setMoveToBottom: (moveToBottom: boolean) => void,
+  newGame: () => void
 ) => {
   useEffect(() => {
     const keydownHandler = (evt: KeyboardEvent) => {
@@ -20,8 +21,12 @@ export default (
         isFreePositions,
         gamestate
       } = stateRef.current
-      // If the game is over, ignore all keyboard inputs.
+      // If the game is over, allow a different set of keybinds.
       if (gamestate === 'gameover') {
+        switch (evt.keyCode) {
+          case 82: // 'r'
+            newGame()
+        }
         return
       }
 

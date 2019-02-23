@@ -19,7 +19,7 @@ export type StateRef = React.MutableRefObject<{
 
 /** A hook that contains all the logic regarding tetris. */
 const useTetris = () => {
-  const { gamestate, setGameover } = useGamestate()
+  const { gamestate, setGameover, setAlive } = useGamestate()
   const {
     position,
     moveLeft,
@@ -28,9 +28,13 @@ const useTetris = () => {
     resetPosition
   } = usePosition()
   const { shape, nextShape } = useShape()
-  const { blocks, addBlocks, clearFilledRows, isFreePositions } = useBlocks(
-    setGameover
-  )
+  const {
+    blocks,
+    addBlocks,
+    clearFilledRows,
+    isFreePositions,
+    clearAllBlocks
+  } = useBlocks(setGameover)
   const {
     direction,
     resetDirection,
@@ -66,11 +70,21 @@ const useTetris = () => {
   }
 
   // Handle ticks
-  const { setTick, setTemporaryTick } = useTick(
+  const { setTick, setTemporaryTick, resetTick } = useTick(
     stateRef,
     moveDown,
     persistBlock
   )
+
+  /* Start a new game, setup the board again. */
+  const newGame = () => {
+    clearAllBlocks()
+    nextShape()
+    resetPosition()
+    resetDirection()
+    setAlive()
+    resetTick()
+  }
 
   /* While the next position is free, move down fast. */
   const setMoveToBottom = (moveToBottom: boolean) => {
@@ -84,7 +98,8 @@ const useTetris = () => {
     moveRight,
     setNextDirection,
     getNextDirection,
-    setMoveToBottom
+    setMoveToBottom,
+    newGame
   )
 
   return {

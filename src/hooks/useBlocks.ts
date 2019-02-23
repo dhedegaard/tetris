@@ -62,6 +62,7 @@ export default (setGameover: () => void) => {
     isBlockFree,
     addBlocks,
     clearFilledRows,
-    isFreePositions
+    isFreePositions,
+    clearAllBlocks: () => setBlocks([])
   }
 }
