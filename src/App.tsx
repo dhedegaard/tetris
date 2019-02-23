@@ -3,6 +3,7 @@ import styled, { createGlobalStyle } from 'styled-components'
 import Block from './components/Block'
 import Grid from './components/Grid'
 import { Shape } from './components/shapes'
+import FontLoader from './FontLoader'
 import GameOver from './GameOver'
 import useTetris from './hooks'
 
@@ -31,6 +32,7 @@ const App: React.FunctionComponent = () => {
   return (
     <>
       <GlobalStyle />
+      <FontLoader />
       <Container>
         <GridContainer>
           <Grid>
