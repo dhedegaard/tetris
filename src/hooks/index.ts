@@ -15,6 +15,8 @@ export type StateRef = React.MutableRefObject<{
   direction: Direction
   shape: Shapes
   gamestate: Gamestate
+  score: number
+  increaseScore: (amount: number) => void
   isFreePositions: (newPositions: Coordinates) => boolean
 }>
 
@@ -30,40 +32,50 @@ const useTetris = () => {
   } = usePosition()
   const { shape, nextShape } = useShape()
   const {
-    blocks,
-    addBlocks,
-    clearFilledRows,
-    isFreePositions,
-    clearAllBlocks
-  } = useBlocks(setGameover)
-  const {
     direction,
     resetDirection,
     setNextDirection,
     getNextDirection
   } = useDirection()
   const { score, increaseScore } = useScore()
-
-  // Build a ref os state, for various cases.
   const stateRef: StateRef = useRef({
     position,
     direction,
     shape,
-    isFreePositions,
-    gamestate
+    gamestate,
+    score,
+    isFreePositions: () => {
+      throw new Error('initial state ref')
+    },
+    increaseScore
   })
+  const {
+    blocks,
+    addBlocks,
+    clearFilledRows,
+    isFreePositions,
+    clearAllBlocks
+  } = useBlocks(stateRef, setGameover)
+
+  // Build a ref os state, for various cases.
+
   stateRef.current = {
     position,
     direction,
     shape,
     isFreePositions,
-    gamestate
+    gamestate,
+    score,
+    increaseScore
   }
 
   /* Call this when we're ready to persist blocks. */
   const persistBlock = (blocksToPersist: Coordinates) => {
     addBlocks(blocksToPersist)
-    clearFilledRows(increaseScore)
+    const rowsCleared = clearFilledRows()
+    if (rowsCleared > 0) {
+      increaseScore(rowsCleared ** 2 * 100)
+    }
     nextShape()
     resetPosition()
     resetDirection()

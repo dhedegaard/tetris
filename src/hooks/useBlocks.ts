@@ -1,7 +1,8 @@
 import { useState } from 'react'
+import { StateRef } from '.'
 import { Coordinate, Coordinates } from '../components/ShapeDrawer'
 
-export default (setGameover: () => void) => {
+export default (stateRef: StateRef, setGameover: () => void) => {
   const [blocks, setBlocks] = useState<Coordinates>([])
 
   /** Checks to see if the given coordinate is free of blocks, and inside the grid. */
@@ -11,17 +12,22 @@ export default (setGameover: () => void) => {
     coordinate.x < 10 &&
     blocks.find(b => b.x === coordinate.x && b.y === coordinate.y) == null
 
-  const isRowFilled = (y: number, blocks: Coordinates): boolean =>
-    blocks.filter(b => b.y === y).length === 10
+  const isRowFilled = (y: number, blockState: Coordinates): boolean =>
+    blockState.filter(b => b.y === y).length === 10
 
-  /** Clears filled rows from the blocks, moving all the blocks above down as well. */
-  const clearFilledRows = (increaseScore: (amount: number) => void) => {
+  /**
+   * Clears filled rows from the blocks, moving all the blocks above down as well.
+   * @returns The number of rows cleared.
+   */
+  const clearFilledRows = (): number => {
+    let numberOfRowsCleared = 0
     // The number of rows to move the blocks down by.
     setBlocks(oldBlocks => {
       let result: typeof oldBlocks = []
       let dy = 0
       for (let y = 19; y >= 0; y--) {
         if (isRowFilled(y, oldBlocks)) {
+          numberOfRowsCleared++
           dy++
         } else {
           result = [
@@ -35,12 +41,9 @@ export default (setGameover: () => void) => {
           ]
         }
       }
-      // Increase the users score.
-      if (dy > 0) {
-        increaseScore(dy ** 2 * 100)
-      }
       return result
     })
+    return numberOfRowsCleared
   }
 
   const addBlocks = (newBlocks: Coordinates) => {
