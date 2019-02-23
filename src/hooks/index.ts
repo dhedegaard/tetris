@@ -37,7 +37,7 @@ const useTetris = () => {
     setNextDirection,
     getNextDirection
   } = useDirection()
-  const { score, increaseScore } = useScore()
+  const { score, increaseScore, resetScore } = useScore()
   const stateRef: StateRef = useRef({
     position,
     direction,
@@ -97,6 +97,7 @@ const useTetris = () => {
     resetPosition()
     resetDirection()
     setAlive()
+    resetScore()
     resetTick()
   }
 
