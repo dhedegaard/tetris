@@ -91,7 +91,8 @@ const useTetris = () => {
     blocks,
     direction,
     position,
-    shape
+    shape,
+    gamestate
   }
 }
 

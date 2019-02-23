@@ -3,6 +3,7 @@ import styled, { createGlobalStyle } from 'styled-components'
 import Block from './components/Block'
 import Grid from './components/Grid'
 import { Shape } from './components/shapes'
+import GameOver from './GameOver'
 import useTetris from './hooks'
 
 const GlobalStyle = createGlobalStyle`
@@ -25,7 +26,7 @@ const GridContainer = styled.div`
 `
 
 const App: React.FunctionComponent = () => {
-  const { direction, shape, position, blocks } = useTetris()
+  const { direction, shape, position, blocks, gamestate } = useTetris()
 
   return (
     <>
@@ -42,6 +43,7 @@ const App: React.FunctionComponent = () => {
             {blocks.map(({ x, y }) => (
               <Block x={x} y={y} key={`block_${x}_${y}`} />
             ))}
+            {gamestate === 'gameover' && <GameOver />}
           </Grid>
         </GridContainer>
       </Container>
