@@ -6,6 +6,7 @@ import { Shape } from './components/shapes'
 import FontLoader from './FontLoader'
 import GameOver from './GameOver'
 import useTetris from './hooks'
+import Score from './Score'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -26,8 +27,20 @@ const GridContainer = styled.div`
   border: 4px solid purple;
 `
 
+const LegendContainer = styled.div`
+  background-color: #000;
+  border: 3px solid purple;
+  border-left: none;
+  font-size: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  align-self: normal;
+  margin-top: 10px;
+`
+
 const App: React.FunctionComponent = () => {
-  const { direction, shape, position, blocks, gamestate } = useTetris()
+  const { direction, shape, position, blocks, gamestate, score } = useTetris()
 
   return (
     <>
@@ -50,6 +63,9 @@ const App: React.FunctionComponent = () => {
             {gamestate === 'gameover' && <GameOver />}
           </Grid>
         </GridContainer>
+        <LegendContainer>
+          <Score score={score} />
+        </LegendContainer>
       </Container>
     </>
   )

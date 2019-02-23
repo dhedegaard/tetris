@@ -15,7 +15,7 @@ export default (setGameover: () => void) => {
     blocks.filter(b => b.y === y).length === 10
 
   /** Clears filled rows from the blocks, moving all the blocks above down as well. */
-  const clearFilledRows = () => {
+  const clearFilledRows = (increaseScore: (amount: number) => void) => {
     // The number of rows to move the blocks down by.
     setBlocks(oldBlocks => {
       let result: typeof oldBlocks = []
@@ -34,6 +34,10 @@ export default (setGameover: () => void) => {
               }))
           ]
         }
+      }
+      // Increase the users score.
+      if (dy > 0) {
+        increaseScore(dy ** 2 * 100)
       }
       return result
     })

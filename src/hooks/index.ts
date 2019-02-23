@@ -6,6 +6,7 @@ import useDirection from './useDirection'
 import useGamestate, { Gamestate } from './useGamestate'
 import useKeyboard from './useKeyboard'
 import usePosition from './usePosition'
+import useScore from './useScore'
 import useShape from './useShape'
 import useTick from './useTick'
 
@@ -41,6 +42,7 @@ const useTetris = () => {
     setNextDirection,
     getNextDirection
   } = useDirection()
+  const { score, increaseScore } = useScore()
 
   // Build a ref os state, for various cases.
   const stateRef: StateRef = useRef({
@@ -61,7 +63,7 @@ const useTetris = () => {
   /* Call this when we're ready to persist blocks. */
   const persistBlock = (blocksToPersist: Coordinates) => {
     addBlocks(blocksToPersist)
-    clearFilledRows()
+    clearFilledRows(increaseScore)
     nextShape()
     resetPosition()
     resetDirection()
@@ -107,7 +109,8 @@ const useTetris = () => {
     direction,
     position,
     shape,
-    gamestate
+    gamestate,
+    score
   }
 }
 
