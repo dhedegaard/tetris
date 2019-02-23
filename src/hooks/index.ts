@@ -80,7 +80,7 @@ const useTetris = () => {
     resetPosition()
     resetDirection()
     setTemporaryTick(undefined) // Disable any fast temp ticks.
-    setTick(oldInterval => Math.max(Math.floor(oldInterval * 0.95), 60))
+    setTick(oldInterval => Math.max(Math.floor(oldInterval * 0.96), 60))
   }
 
   // Handle ticks

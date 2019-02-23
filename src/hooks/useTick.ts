@@ -68,6 +68,6 @@ export default (
     tick,
     setTick,
     setTemporaryTick,
-    resetTick: () => setTick(INITIAL_TICKS)
+    resetTick
   }
 }
