@@ -37,7 +37,15 @@ export interface ShapeProps {
 }
 
 export type Shapes = 'I' | 'J' | 'L' | 'O' | 'S' | 'T' | 'Z'
-const shapes: Shapes[] = ['I', 'J', 'L', 'O', 'S', 'T', 'Z']
+export const SHAPES = Object.freeze([
+  'I',
+  'J',
+  'L',
+  'O',
+  'S',
+  'T',
+  'Z'
+] as Shapes[])
 
 export const calculateCoordinates = (
   shape: Shapes,
@@ -83,4 +91,4 @@ export const Shape: React.FunctionComponent<ShapeProps & { shape: Shapes }> = ({
 )
 
 export const getRandomShape = (): Shapes =>
-  shapes[Math.floor(Math.random() * (shapes.length - 1))]
+  SHAPES[Math.floor(Math.random() * (SHAPES.length - 1))]
