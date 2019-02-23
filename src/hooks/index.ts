@@ -3,6 +3,7 @@ import { Coordinate, Coordinates } from '../components/ShapeDrawer'
 import { Direction, Shapes } from '../components/shapes'
 import useBlocks from './useBlocks'
 import useDirection from './useDirection'
+import useGamestate, { Gamestate } from './useGamestate'
 import useKeyboard from './useKeyboard'
 import usePosition from './usePosition'
 import useShape from './useShape'
@@ -12,11 +13,13 @@ export type StateRef = React.MutableRefObject<{
   position: Coordinate
   direction: Direction
   shape: Shapes
+  gamestate: Gamestate
   isFreePositions: (newPositions: Coordinates) => boolean
 }>
 
 /** A hook that contains all the logic regarding tetris. */
 const useTetris = () => {
+  const { gamestate, setGameover } = useGamestate()
   const {
     position,
     moveLeft,
@@ -25,7 +28,9 @@ const useTetris = () => {
     resetPosition
   } = usePosition()
   const { shape, nextShape } = useShape()
-  const { blocks, addBlocks, clearFilledRows, isFreePositions } = useBlocks()
+  const { blocks, addBlocks, clearFilledRows, isFreePositions } = useBlocks(
+    setGameover
+  )
   const {
     direction,
     resetDirection,
@@ -38,13 +43,15 @@ const useTetris = () => {
     position,
     direction,
     shape,
-    isFreePositions
+    isFreePositions,
+    gamestate
   })
   stateRef.current = {
     position,
     direction,
     shape,
-    isFreePositions
+    isFreePositions,
+    gamestate
   }
 
   /* Call this when we're ready to persist blocks. */

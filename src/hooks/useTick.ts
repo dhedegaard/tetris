@@ -16,7 +16,20 @@ export default (
 
   useInterval(
     () => {
-      const { shape, direction, position, isFreePositions } = stateRef.current
+      const {
+        shape,
+        direction,
+        position,
+        isFreePositions,
+        gamestate
+      } = stateRef.current
+
+      // If the game is over, don't do anything.
+      if (gamestate === 'gameover') {
+        return
+      }
+
+      // Calculate the new position of the currently active shape.
       const newPositions = calculateCoordinates(shape, {
         direction,
         x: position.x,
@@ -37,7 +50,11 @@ export default (
       })
       persistBlock(oldPositions)
     },
-    temporaryTick != null ? temporaryTick : tick
+    stateRef.current.gamestate === 'gameover'
+      ? 1000
+      : temporaryTick != null
+      ? temporaryTick
+      : tick
   )
 
   return {

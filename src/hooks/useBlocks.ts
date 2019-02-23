@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Coordinate, Coordinates } from '../components/ShapeDrawer'
 
-export default () => {
+export default (setGameover: () => void) => {
   const [blocks, setBlocks] = useState<Coordinates>([])
 
   /** Checks to see if the given coordinate is free of blocks, and inside the grid. */
@@ -44,6 +44,9 @@ export default () => {
       for (const newBlock of newBlocks) {
         if (isBlockFree(newBlock)) {
           oldBlocks.push(newBlock)
+        } else {
+          // If we're trying to persist a block, that's not free, the game is over.
+          setGameover()
         }
       }
       return oldBlocks
