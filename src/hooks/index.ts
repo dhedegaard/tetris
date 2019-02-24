@@ -31,12 +31,7 @@ const useTetris = () => {
     resetPosition
   } = usePosition()
   const { shape, nextShape, peekShapes } = useShape()
-  const {
-    direction,
-    resetDirection,
-    setNextDirection,
-    getNextDirection
-  } = useDirection()
+  const { direction, resetDirection, setNextDirection } = useDirection()
   const { score, increaseScore, resetScore } = useScore()
   const {
     blocks,
@@ -111,7 +106,6 @@ const useTetris = () => {
     moveLeft,
     moveRight,
     setNextDirection,
-    getNextDirection,
     setMoveToBottom,
     newGame
   )

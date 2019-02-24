@@ -1,13 +1,12 @@
 import { useEffect } from 'react'
 import { StateRef } from '.'
-import { calculateCoordinates, Direction, Shapes } from '../components/shapes'
+import { calculateCoordinates, nextDirection } from '../components/shapes'
 
 export default (
   stateRef: StateRef,
   moveLeft: () => void,
   moveRight: () => void,
   setNextDirection: () => void,
-  getNextDirection: () => Direction,
   setMoveToBottom: (moveToBottom: boolean) => void,
   newGame: () => void
 ) => {
@@ -57,7 +56,7 @@ export default (
         case 38: {
           // up
           const newPositions = calculateCoordinates(shape, {
-            direction: getNextDirection(),
+            direction: nextDirection(direction),
             x: position.x,
             y: position.y
           })

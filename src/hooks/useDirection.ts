@@ -13,7 +13,6 @@ export default () => {
   return {
     direction,
     resetDirection,
-    setNextDirection,
-    getNextDirection: () => nextDirection(direction)
+    setNextDirection
   }
 }
