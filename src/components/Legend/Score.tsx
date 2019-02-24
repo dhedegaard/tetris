@@ -29,7 +29,11 @@ interface Props {
 const Score: React.FunctionComponent<Props> = ({ score }) => (
   <Container>
     <Title>Score:</Title>
-    <Text>{score.toString().padStart(10, '0')}</Text>
+    <Text>
+      {Math.min(score, 9999999999)
+        .toString()
+        .padStart(10, '0')}
+    </Text>
   </Container>
 )
 
