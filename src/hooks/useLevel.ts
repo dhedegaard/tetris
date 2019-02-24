@@ -41,12 +41,19 @@ export const calculateTickRate = (level: number): number => {
   return tickrate
 }
 
+/** Each level progresses when 10 rows have been cleared. */
+const calculateLevel = (rowsCleared: number) => Math.floor(rowsCleared / 10)
+
 /** The level of the game */
 export default () => {
-  const [level, setLevel] = useState(0)
+  const [rowsCleared, setRowsCleared] = useState(0)
+
+  /** Call this to increase the number of rows cleared, and maybe the level. */
+  const incrementRowsCleared = (amount: number) =>
+    setRowsCleared(rowsCleared + amount)
 
   return {
-    level,
-    setLevel
+    level: calculateLevel(rowsCleared),
+    incrementRowsCleared
   }
 }

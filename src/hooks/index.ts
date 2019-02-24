@@ -5,7 +5,7 @@ import useBlocks from './useBlocks'
 import useDirection from './useDirection'
 import useGamestate, { Gamestate } from './useGamestate'
 import useKeyboard from './useKeyboard'
-import useLevel from './useLevel'
+import useLevel, { calculateTickRate } from './useLevel'
 import usePosition from './usePosition'
 import useScore from './useScore'
 import useShape from './useShape'
@@ -41,7 +41,7 @@ const useTetris = () => {
     isFreePositions,
     clearAllBlocks
   } = useBlocks(setGameover)
-  const { level, setLevel } = useLevel()
+  const { level, incrementRowsCleared } = useLevel()
 
   // Build a ref os state, for various cases.
   const stateRef: StateRef = useRef({
@@ -71,12 +71,13 @@ const useTetris = () => {
     const rowsCleared = clearFilledRows()
     if (rowsCleared > 0) {
       increaseScore(rowsCleared ** 2 * 100)
+      incrementRowsCleared(rowsCleared)
     }
     nextShape()
     resetPosition()
     resetDirection()
     setTemporaryTick(undefined) // Disable any fast temp ticks.
-    setTick(oldInterval => Math.max(Math.floor(oldInterval * 0.96), 60))
+    setTick(calculateTickRate(level) * 1000)
   }
 
   // Handle ticks
