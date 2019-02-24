@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Direction, Shape, Shapes } from './components/shapes'
+import { Direction, Shape, Shapes } from '../shapes'
 
 const Container = styled.div`
   border: 1px double #fff;

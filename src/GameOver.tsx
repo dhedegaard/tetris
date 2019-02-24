@@ -25,7 +25,7 @@ const GameOver: React.FunctionComponent = () => (
       height={20 * 5}
     />
     <Text x={20 * 2 - 10} y={20 * 9 + 5} fill="#fff">
-      Game-over
+      Game over
     </Text>
     <RetryText x={20 * 2 - 10} y={20 * 11 - 5} fill="#fff" width={20 * 7}>
       Press 'r' to

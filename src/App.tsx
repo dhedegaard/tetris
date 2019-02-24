@@ -2,12 +2,11 @@ import React from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 import Block from './components/Block'
 import Grid from './components/Grid'
+import Legend from './components/Legend'
 import { Shape } from './components/shapes'
 import FontLoader from './FontLoader'
 import GameOver from './GameOver'
 import useTetris from './hooks'
-import NextShape from './NextShape'
-import Score from './Score'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -26,19 +25,6 @@ const Container = styled.div`
 const GridContainer = styled.div`
   margin-top: 10px;
   border: 4px solid purple;
-`
-
-const LegendContainer = styled.div`
-  background-color: #000;
-  border: 3px solid purple;
-  border-left: none;
-  font-size: 10px;
-  display: flex;
-  flex-direction: column;
-  padding: 8px;
-  align-self: normal;
-  margin-top: 10px;
-  justify-content: space-between;
 `
 
 const App: React.FunctionComponent = () => {
@@ -73,10 +59,7 @@ const App: React.FunctionComponent = () => {
             {gamestate === 'gameover' && <GameOver />}
           </Grid>
         </GridContainer>
-        <LegendContainer>
-          <Score score={score} />
-          <NextShape nextShape={peekShapes[peekShapes.length - 1]} />
-        </LegendContainer>
+        <Legend score={score} peekShapes={peekShapes} />
       </Container>
     </>
   )
