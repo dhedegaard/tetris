@@ -4,7 +4,7 @@ import { Coordinates } from '../components/ShapeDrawer'
 import { calculateCoordinates } from '../components/shapes'
 import useInterval from './useInterval'
 
-const INITIAL_TICKS = 1000
+const INITIAL_TICKS = 800
 
 export default (
   stateRef: StateRef,
