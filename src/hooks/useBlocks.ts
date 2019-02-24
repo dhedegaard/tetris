@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import { StateRef } from '.'
 import { Coordinate, Coordinates } from '../components/ShapeDrawer'
 
-export default (stateRef: StateRef, setGameover: () => void) => {
+export default (setGameover: () => void) => {
   const [blocks, setBlocks] = useState<Coordinates>([])
 
   /** Checks to see if the given coordinate is free of blocks, and inside the grid. */

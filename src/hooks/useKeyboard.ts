@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { StateRef } from '.'
-import { Coordinates } from '../components/ShapeDrawer'
 import { calculateCoordinates, Direction, Shapes } from '../components/shapes'
 
 export default (

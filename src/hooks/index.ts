@@ -38,6 +38,15 @@ const useTetris = () => {
     getNextDirection
   } = useDirection()
   const { score, increaseScore, resetScore } = useScore()
+  const {
+    blocks,
+    addBlocks,
+    clearFilledRows,
+    isFreePositions,
+    clearAllBlocks
+  } = useBlocks(setGameover)
+
+  // Build a ref os state, for various cases.
   const stateRef: StateRef = useRef({
     position,
     direction,
@@ -49,16 +58,6 @@ const useTetris = () => {
     },
     increaseScore
   })
-  const {
-    blocks,
-    addBlocks,
-    clearFilledRows,
-    isFreePositions,
-    clearAllBlocks
-  } = useBlocks(stateRef, setGameover)
-
-  // Build a ref os state, for various cases.
-
   stateRef.current = {
     position,
     direction,
