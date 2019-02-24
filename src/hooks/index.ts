@@ -5,6 +5,7 @@ import useBlocks from './useBlocks'
 import useDirection from './useDirection'
 import useGamestate, { Gamestate } from './useGamestate'
 import useKeyboard from './useKeyboard'
+import useLevel from './useLevel'
 import usePosition from './usePosition'
 import useScore from './useScore'
 import useShape from './useShape'
@@ -40,6 +41,7 @@ const useTetris = () => {
     isFreePositions,
     clearAllBlocks
   } = useBlocks(setGameover)
+  const { level, setLevel } = useLevel()
 
   // Build a ref os state, for various cases.
   const stateRef: StateRef = useRef({
@@ -117,7 +119,8 @@ const useTetris = () => {
     shape,
     gamestate,
     score,
-    peekShapes
+    peekShapes,
+    level
   }
 }
 

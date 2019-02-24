@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Shapes } from '../shapes'
+import Level from './Level'
 import NextShape from './NextShape'
 import Score from './Score'
 
@@ -19,13 +20,21 @@ const LegendContainer = styled.div`
 
 interface Props {
   score: number
+  level: number
   peekShapes: Shapes[]
 }
 
-const Legend: React.FunctionComponent<Props> = ({ score, peekShapes }) => (
+const Legend: React.FunctionComponent<Props> = ({
+  score,
+  level,
+  peekShapes
+}) => (
   <LegendContainer>
-    <Score score={score} />
-    <NextShape nextShapes={peekShapes.slice(peekShapes.length - 3)} />
+    <div>
+      <Score score={score} />
+      <Level level={level} />
+    </div>
+    <NextShape nextShapes={peekShapes.slice(peekShapes.length - 2)} />
   </LegendContainer>
 )
 

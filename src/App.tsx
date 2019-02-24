@@ -35,7 +35,8 @@ const App: React.FunctionComponent = () => {
     blocks,
     gamestate,
     score,
-    peekShapes
+    peekShapes,
+    level
   } = useTetris()
 
   return (
@@ -59,7 +60,7 @@ const App: React.FunctionComponent = () => {
             {gamestate === 'gameover' && <GameOver />}
           </Grid>
         </GridContainer>
-        <Legend score={score} peekShapes={peekShapes} />
+        <Legend score={score} peekShapes={peekShapes} level={level} />
       </Container>
     </>
   )

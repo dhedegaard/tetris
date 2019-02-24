@@ -7,7 +7,6 @@ const Container = styled.div`
   border-top-left-radius: 2px;
   border-bottom-right-radius: 2px;
   padding: 8px;
-  margin-bottom: 8px;
 `
 
 const Title = styled.div`
@@ -22,20 +21,21 @@ const Text = styled.div`
   padding-top: 4px;
   color: #fff;
   text-transform: uppercase;
+  text-align: right;
 `
 
 interface Props {
-  score: number
+  level: number
 }
-const Score: React.FunctionComponent<Props> = ({ score }) => (
+const Level: React.FunctionComponent<Props> = ({ level: level }) => (
   <Container>
-    <Title>Score:</Title>
+    <Title>Level:</Title>
     <Text>
-      {Math.min(score, 9999999999)
+      {Math.min(level, 99)
         .toString()
-        .padStart(10, '0')}
+        .padStart(2, '0')}
     </Text>
   </Container>
 )
 
-export default Score
+export default Level
