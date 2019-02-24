@@ -8,9 +8,12 @@ const Container = styled.div`
   border-top-left-radius: 2px;
   border-bottom-right-radius: 2px;
   padding: 8px;
+  display: flex;
+  flex-direction: column;
 `
 
 const Title = styled.div`
+  display: block;
   color: #fff;
   border-bottom: 1px solid #fff;
   margin-bottom: 5px;
@@ -18,16 +21,26 @@ const Title = styled.div`
   padding-bottom: 5px;
 `
 
+const ShapeContainer = styled.svg`
+  display: block;
+  margin: 10px;
+`
+
 interface Props {
-  nextShape: Shapes
+  nextShapes: Shapes[]
 }
 
-const NextShape: React.FunctionComponent<Props> = ({ nextShape }) => (
+const NextShape: React.FunctionComponent<Props> = ({ nextShapes }) => (
   <Container>
     <Title>Next:</Title>
-    <svg width={4 * 20} height={3 * 20}>
-      <Shape direction={Direction.RIGHT} shape={nextShape} x={1} y={1} />
-    </svg>
+    {nextShapes
+      .slice()
+      .reverse()
+      .map((shape, idx) => (
+        <ShapeContainer width={4 * 20} height={3 * 20} key={shape + idx}>
+          <Shape direction={Direction.RIGHT} shape={shape} x={1} y={1} />
+        </ShapeContainer>
+      ))}
   </Container>
 )
 

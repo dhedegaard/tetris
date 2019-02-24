@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { Direction, nextDirection } from '../components/shapes'
 
-export default () => {
-  const [direction, setDirection] = useState(Direction.UP)
+const DEFAULT_DIRECTION = Direction.RIGHT
 
-  const resetDirection = () => setDirection(Direction.UP)
+export default () => {
+  const [direction, setDirection] = useState(DEFAULT_DIRECTION)
+
+  const resetDirection = () => setDirection(DEFAULT_DIRECTION)
   const setNextDirection = () =>
     setDirection(oldDirection => nextDirection(oldDirection))
 

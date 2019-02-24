@@ -25,7 +25,7 @@ interface Props {
 const Legend: React.FunctionComponent<Props> = ({ score, peekShapes }) => (
   <LegendContainer>
     <Score score={score} />
-    <NextShape nextShape={peekShapes[peekShapes.length - 1]} />
+    <NextShape nextShapes={peekShapes.slice(peekShapes.length - 3)} />
   </LegendContainer>
 )
 
