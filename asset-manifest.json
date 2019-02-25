@@ -1,11 +1,11 @@
 {
-  "main.js": "/tetris/static/js/main.1d8fd606.chunk.js",
-  "main.js.map": "/tetris/static/js/main.1d8fd606.chunk.js.map",
+  "main.js": "/tetris/static/js/main.787bcc97.chunk.js",
+  "main.js.map": "/tetris/static/js/main.787bcc97.chunk.js.map",
   "runtime~main.js": "/tetris/static/js/runtime~main.18d269b3.js",
   "runtime~main.js.map": "/tetris/static/js/runtime~main.18d269b3.js.map",
   "static/js/2.468c7cef.chunk.js": "/tetris/static/js/2.468c7cef.chunk.js",
   "static/js/2.468c7cef.chunk.js.map": "/tetris/static/js/2.468c7cef.chunk.js.map",
   "index.html": "/tetris/index.html",
-  "precache-manifest.45720fb7d5612218a198825f81a97664.js": "/tetris/precache-manifest.45720fb7d5612218a198825f81a97664.js",
+  "precache-manifest.9901f2b4fdcf815c40d68ab34d43d00d.js": "/tetris/precache-manifest.9901f2b4fdcf815c40d68ab34d43d00d.js",
   "service-worker.js": "/tetris/service-worker.js"
 }
