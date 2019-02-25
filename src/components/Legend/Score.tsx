@@ -22,6 +22,7 @@ const Text = styled.div`
   padding-top: 4px;
   color: #fff;
   text-transform: uppercase;
+  text-align: right;
 `
 
 interface Props {
@@ -31,9 +32,9 @@ const Score: React.FunctionComponent<Props> = ({ score }) => (
   <Container>
     <Title>Score:</Title>
     <Text>
-      {Math.min(score, 9999999999)
+      {Math.min(score, 99999999)
         .toString()
-        .padStart(10, '0')}
+        .padStart(8, '0')}
     </Text>
   </Container>
 )

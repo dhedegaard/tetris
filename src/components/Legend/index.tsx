@@ -9,7 +9,7 @@ const LegendContainer = styled.div`
   background-color: #000;
   border: 3px solid purple;
   border-left: none;
-  font-size: 10px;
+  font-size: 12px;
   display: flex;
   flex-direction: column;
   padding: 8px;
