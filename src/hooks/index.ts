@@ -7,7 +7,7 @@ import useGamestate, { Gamestate } from './useGamestate'
 import useKeyboard from './useKeyboard'
 import useLevel, { calculateTickRate } from './useLevel'
 import usePosition from './usePosition'
-import useScore from './useScore'
+import useScore, { calculateScore } from './useScore'
 import useShape from './useShape'
 import useTick from './useTick'
 
@@ -70,7 +70,7 @@ const useTetris = () => {
     addBlocks(blocksToPersist)
     const rowsCleared = clearFilledRows()
     if (rowsCleared > 0) {
-      increaseScore(rowsCleared ** 2 * 100)
+      increaseScore(calculateScore(level, rowsCleared))
       incrementRowsCleared(rowsCleared)
     }
     nextShape()
