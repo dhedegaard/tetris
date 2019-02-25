@@ -52,8 +52,12 @@ export default () => {
   const incrementRowsCleared = (amount: number) =>
     setRowsCleared(rowsCleared + amount)
 
+  /** Call this to reset the level state. */
+  const resetLevel = () => setRowsCleared(0)
+
   return {
     level: calculateLevel(rowsCleared),
-    incrementRowsCleared
+    incrementRowsCleared,
+    resetLevel
   }
 }

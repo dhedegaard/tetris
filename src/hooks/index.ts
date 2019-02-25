@@ -41,7 +41,7 @@ const useTetris = () => {
     isFreePositions,
     clearAllBlocks
   } = useBlocks(setGameover)
-  const { level, incrementRowsCleared } = useLevel()
+  const { level, incrementRowsCleared, resetLevel } = useLevel()
 
   // Build a ref os state, for various cases.
   const stateRef: StateRef = useRef({
@@ -94,6 +94,7 @@ const useTetris = () => {
     resetPosition()
     resetDirection()
     setAlive()
+    resetLevel()
     resetScore()
     resetTick()
   }
