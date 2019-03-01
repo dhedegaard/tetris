@@ -12,6 +12,10 @@ export default (
 ) => {
   useEffect(() => {
     const keydownHandler = (evt: KeyboardEvent) => {
+      if (evt.repeat) {
+        return
+      }
+
       const {
         position,
         direction,
