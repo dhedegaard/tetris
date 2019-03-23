@@ -8,7 +8,6 @@ import GameOver from './GameOver'
 import useTetris from './hooks'
 
 const GridContainer = styled.div`
-  margin-top: 10px;
   border: 4px solid purple;
 `
 

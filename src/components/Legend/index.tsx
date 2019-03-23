@@ -14,7 +14,6 @@ const LegendContainer = styled.div`
   flex-direction: column;
   padding: 8px;
   align-self: normal;
-  margin-top: 10px;
   justify-content: space-between;
 `
 
