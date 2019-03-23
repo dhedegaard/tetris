@@ -3,6 +3,7 @@ import styled, { createGlobalStyle } from 'styled-components'
 import Block from './components/Block'
 import Grid from './components/Grid'
 import Legend from './components/Legend'
+import Music from './components/Music'
 import { Shape } from './components/shapes'
 import FontLoader from './FontLoader'
 import GameOver from './GameOver'
@@ -43,6 +44,7 @@ const App: React.FunctionComponent = () => {
     <>
       <GlobalStyle />
       <FontLoader />
+      <Music />
       <Container>
         <GridContainer>
           <Grid>
