@@ -30,16 +30,16 @@ const App: React.FunctionComponent = () => {
     <>
       <GlobalStyle />
       <FontLoader />
-      {musicEnabled && <Music />}23
+      {musicEnabled && <Music />}
       <Container key={gameMode}>
-        {gameMode === 'local-coop' && <Game />}
+        {gameMode === 'local-coop' && <Game player="keyboard2" />}
         <GlobalPanel
           musicEnabled={musicEnabled}
           toggleMusic={enabled => setMusicEnabled(enabled)}
           gameMode={gameMode}
           setGameMode={gameMode => setGameMode(gameMode)}
         />
-        <Game />
+        <Game player="keyboard1" />
       </Container>
     </>
   )

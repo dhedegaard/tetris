@@ -4,7 +4,7 @@ import { Direction, Shapes } from '../components/shapes'
 import useBlocks from './useBlocks'
 import useDirection from './useDirection'
 import useGamestate, { Gamestate } from './useGamestate'
-import useKeyboard from './useKeyboard'
+import useKeyboard, { Player } from './useKeyboard'
 import useLevel, { calculateTickRate } from './useLevel'
 import usePosition from './usePosition'
 import useScore, { calculateScore } from './useScore'
@@ -21,8 +21,11 @@ export type StateRef = React.MutableRefObject<{
   isFreePositions: (newPositions: Coordinates) => boolean
 }>
 
+interface Input {
+  player: Player
+}
 /** A hook that contains all the logic regarding tetris. */
-const useTetris = () => {
+const useTetris = ({ player }: Input) => {
   const { gamestate, setGameover, setAlive } = useGamestate()
   const {
     position,
@@ -111,7 +114,8 @@ const useTetris = () => {
     moveRight,
     setNextDirection,
     setMoveToBottom,
-    newGame
+    newGame,
+    player
   )
 
   return {

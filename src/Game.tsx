@@ -6,12 +6,17 @@ import Legend from './components/Legend'
 import { Shape } from './components/shapes'
 import GameOver from './GameOver'
 import useTetris from './hooks'
+import { Player } from './hooks/useKeyboard'
 
 const GridContainer = styled.div`
   border: 4px solid purple;
 `
 
-const Game: React.FunctionComponent<{}> = () => {
+interface Props {
+  player: Player
+}
+
+const Game: React.FunctionComponent<Props> = ({ player }) => {
   const {
     direction,
     shape,
@@ -21,7 +26,7 @@ const Game: React.FunctionComponent<{}> = () => {
     score,
     peekShapes,
     level
-  } = useTetris()
+  } = useTetris({ player })
 
   return (
     <>
