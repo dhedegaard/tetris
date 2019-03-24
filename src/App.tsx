@@ -20,18 +20,24 @@ const Container = styled.div`
   align-items: stretch;
 `
 
+export type GameMode = 'single' | 'local-coop'
+
 const App: React.FunctionComponent = () => {
+  const [gameMode, setGameMode] = useState<GameMode>('single')
   const [musicEnabled, setMusicEnabled] = useState(false)
 
   return (
     <>
       <GlobalStyle />
       <FontLoader />
-      {musicEnabled && <Music />}
-      <Container>
+      {musicEnabled && <Music />}23
+      <Container key={gameMode}>
+        {gameMode === 'local-coop' && <Game />}
         <GlobalPanel
           musicEnabled={musicEnabled}
           toggleMusic={enabled => setMusicEnabled(enabled)}
+          gameMode={gameMode}
+          setGameMode={gameMode => setGameMode(gameMode)}
         />
         <Game />
       </Container>
