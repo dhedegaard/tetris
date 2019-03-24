@@ -2,14 +2,45 @@ import { useEffect } from 'react'
 import { StateRef } from '.'
 import { calculateCoordinates, nextDirection } from '../components/shapes'
 
+export interface Keybinds {
+  moveLeft: string
+  moveRight: string
+  rotate: string
+  moveDown: string
+}
+
+export const keyboard1: Keybinds = {
+  moveLeft: 'ArrowLeft',
+  moveRight: 'ArrowRight',
+  rotate: 'ArrowUp',
+  moveDown: 'ArrowDown'
+}
+
+export const keyboard2: Keybinds = {
+  moveLeft: 'a',
+  moveRight: 'd',
+  rotate: 'w',
+  moveDown: 's'
+}
+
+const getKeybinds = (player: Player): Keybinds =>
+  (({
+    keyboard1,
+    keyboard2
+  } as { [key in Player]: Keybinds })[player])
+
+export type Player = 'keyboard1' | 'keyboard2'
+
 export default (
   stateRef: StateRef,
   moveLeft: () => void,
   moveRight: () => void,
   setNextDirection: () => void,
   setMoveToBottom: (moveToBottom: boolean) => void,
-  newGame: () => void
+  newGame: () => void,
+  player: Player = 'keyboard1'
 ) => {
+  const keybinds = getKeybinds(player)
   useEffect(() => {
     const keydownHandler = (evt: KeyboardEvent) => {
       if (evt.repeat) {
@@ -25,15 +56,15 @@ export default (
       } = stateRef.current
       // If the game is over, allow a different set of keybinds.
       if (gamestate === 'gameover') {
-        switch (evt.keyCode) {
-          case 82: // 'r'
+        switch (evt.key) {
+          case 'r':
             newGame()
         }
         return
       }
 
-      switch (evt.keyCode) {
-        case 37: {
+      switch (evt.key) {
+        case keybinds.moveLeft: {
           // left
           const newPositions = calculateCoordinates(shape, {
             direction,
@@ -45,7 +76,7 @@ export default (
           }
           break
         }
-        case 39: {
+        case keybinds.moveRight: {
           // right
           const newPositions = calculateCoordinates(shape, {
             direction,
@@ -57,7 +88,7 @@ export default (
           }
           break
         }
-        case 38: {
+        case keybinds.rotate: {
           // up
           const newPositions = calculateCoordinates(shape, {
             direction: nextDirection(direction),
@@ -69,7 +100,7 @@ export default (
           }
           break
         }
-        case 40: {
+        case keybinds.moveDown: {
           // down
           setMoveToBottom(true)
           break
