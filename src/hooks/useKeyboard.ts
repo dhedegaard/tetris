@@ -108,8 +108,8 @@ export default (
       }
     }
     const keyupHandler = (evt: KeyboardEvent) => {
-      switch (evt.keyCode) {
-        case 40: {
+      switch (evt.key) {
+        case keybinds.moveDown: {
           // down
           setMoveToBottom(false)
           break
