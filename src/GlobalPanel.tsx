@@ -6,8 +6,9 @@ const Panel = styled.div`
   height: 392px;
   border: 4px solid purple;
   border-right-width: 0;
-  padding: 4px;
+  padding: 8px;
   min-width: 150px;
+  font-size: 12px;
 `
 
 const Container = styled.div`
