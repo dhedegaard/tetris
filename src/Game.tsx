@@ -8,6 +8,11 @@ import GameOver from './GameOver'
 import useTetris from './hooks'
 import { Player } from './hooks/useKeyboard'
 
+const Container = styled.div`
+  position: relative;
+  display: flex;
+`
+
 const GridContainer = styled.div`
   border: 4px solid purple;
 `
@@ -29,7 +34,7 @@ const Game: React.FunctionComponent<Props> = ({ player }) => {
   } = useTetris({ player })
 
   return (
-    <>
+    <Container>
       <GridContainer>
         <Grid>
           {gamestate !== 'gameover' && (
@@ -47,7 +52,7 @@ const Game: React.FunctionComponent<Props> = ({ player }) => {
         </Grid>
       </GridContainer>
       <Legend score={score} peekShapes={peekShapes} level={level} />
-    </>
+    </Container>
   )
 }
 
