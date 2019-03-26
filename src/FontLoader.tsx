@@ -3,7 +3,7 @@ import { createGlobalStyle } from 'styled-components'
 
 const GlobalFontStyle = createGlobalStyle`
   html * {
-    font-family: 'Press Start 2P', cursive !important;
+    font-family: 'Press Start 2P', 'Courier New', Courier, monospace !important;
   }
 `
 

@@ -42,6 +42,12 @@ const Text = styled.div`
   cursor: pointer;
 `
 
+const Toggle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 0 8px;
+`
+
 interface Props {
   musicEnabled: boolean
   toggleMusic: (enabled: boolean) => void
@@ -53,9 +59,16 @@ const GlobalPanel: React.FunctionComponent<Props> = props => (
   <Panel noBorderLeft={props.gameMode === 'local-coop'}>
     <Container>
       <Title>Music:</Title>
-      <Text onClick={() => props.toggleMusic(!props.musicEnabled)}>
-        {props.musicEnabled ? 'disable' : 'enable'}
-      </Text>
+      <Toggle>
+        <Text onClick={() => props.toggleMusic(true)}>
+          {props.musicEnabled ? <>&gt; </> : <>&nbsp; </>}
+          On
+        </Text>{' '}
+        <Text onClick={() => props.toggleMusic(false)}>
+          {!props.musicEnabled ? <>&gt; </> : <>&nbsp; </>}
+          Off
+        </Text>
+      </Toggle>
     </Container>
     <Container>
       <Title>Player mode:</Title>
