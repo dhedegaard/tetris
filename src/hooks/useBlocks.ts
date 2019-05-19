@@ -33,6 +33,7 @@ export default (setGameover: () => void) => {
             ...result,
             ...oldBlocks
               .filter(b => b.y === y)
+              // eslint-disable-next-line no-loop-func
               .map(b => ({
                 ...b,
                 y: y + dy

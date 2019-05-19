@@ -27,7 +27,7 @@ const Text = styled.div`
 interface Props {
   level: number
 }
-const Level: React.FunctionComponent<Props> = ({ level: level }) => (
+const Level: React.FunctionComponent<Props> = ({ level }) => (
   <Container>
     <Title>Level:</Title>
     <Text>

@@ -123,5 +123,6 @@ export default (
       document.removeEventListener('keydown', keydownHandler)
       document.removeEventListener('keyup', keyupHandler)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 }
