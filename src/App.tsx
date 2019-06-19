@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 import Music from './components/Music'
-import FontLoader from './FontLoader'
 import Game from './Game'
 import GlobalPanel from './GlobalPanel'
 
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
+  }
+  html * {
+    font-family: 'Press Start 2P', 'Courier New', Courier, monospace !important;
   }
 `
 
@@ -29,7 +31,6 @@ const App: React.FunctionComponent = () => {
   return (
     <>
       <GlobalStyle />
-      <FontLoader />
       {musicEnabled && <Music />}
       <Container key={gameMode}>
         {gameMode === 'local-coop' && <Game player="keyboard2" />}
