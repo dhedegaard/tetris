@@ -7,6 +7,7 @@ import GlobalPanel from './GlobalPanel'
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
+    user-select: none;
   }
   html * {
     font-family: 'Press Start 2P', 'Courier New', Courier, monospace !important;

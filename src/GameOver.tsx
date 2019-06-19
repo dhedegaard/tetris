@@ -4,19 +4,20 @@ import styled from 'styled-components'
 const Text = styled.text`
   text-transform: uppercase;
   font-size: 16px;
-  user-select: none;
   pointer-events: none;
 `
 const RetryText = styled.text`
   text-transform: uppercase;
   font-size: 12px;
-  user-select: none;
   pointer-events: none;
 `
 
-const GameOver: React.FunctionComponent = () => (
+type Props = React.SVGProps<SVGRectElement>
+
+const GameOver: React.FC<Props> = props => (
   <>
     <rect
+      {...props}
       fill="#000"
       stroke="#fff"
       x={20 * 1 - 10}

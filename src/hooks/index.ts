@@ -119,7 +119,7 @@ const useTetris = ({ player }: Input) => {
     player
   )
 
-  const swipeableHander = useSwipeable({
+  const swipeableHandler = useSwipeable({
     onSwipedDown: () => setMoveToBottom(true),
     onSwipedLeft: () => moveLeft(),
     onSwipedRight: () => moveRight(),
@@ -135,7 +135,8 @@ const useTetris = ({ player }: Input) => {
     score,
     peekShapes,
     level,
-    swipeableHander
+    swipeableHandler,
+    startNewGame: newGame
   }
 }
 
