@@ -10,6 +10,7 @@ import usePosition from './usePosition'
 import useScore, { calculateScore } from './useScore'
 import useShape from './useShape'
 import useTick from './useTick'
+import { useSwipeable } from 'react-swipeable'
 
 export type StateRef = React.MutableRefObject<{
   position: Coordinate
@@ -118,6 +119,13 @@ const useTetris = ({ player }: Input) => {
     player
   )
 
+  const swipeableHander = useSwipeable({
+    onSwipedDown: () => setMoveToBottom(true),
+    onSwipedLeft: () => moveLeft(),
+    onSwipedRight: () => moveRight(),
+    onSwipedUp: () => setNextDirection()
+  })
+
   return {
     blocks,
     direction,
@@ -126,7 +134,8 @@ const useTetris = ({ player }: Input) => {
     gamestate,
     score,
     peekShapes,
-    level
+    level,
+    swipeableHander
   }
 }
 

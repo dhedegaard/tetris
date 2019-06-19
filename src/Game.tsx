@@ -30,11 +30,12 @@ const Game: React.FunctionComponent<Props> = ({ player }) => {
     gamestate,
     score,
     peekShapes,
-    level
+    level,
+    swipeableHander
   } = useTetris({ player })
 
   return (
-    <Container>
+    <Container {...swipeableHander}>
       <GridContainer>
         <Grid>
           {gamestate !== 'gameover' && (
