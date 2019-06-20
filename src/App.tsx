@@ -10,7 +10,7 @@ const GlobalStyle = createGlobalStyle`
     user-select: none;
   }
   html * {
-    font-family: 'Press Start 2P', 'Courier New', Courier, monospace !important;
+    font-family: 'Press Start 2P', cursive !important;
   }
 `
 
