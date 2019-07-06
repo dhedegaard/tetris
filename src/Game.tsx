@@ -39,19 +39,23 @@ const Game: React.FunctionComponent<Props> = ({ player }) => {
     <Container {...swipeableHandler}>
       <GridContainer>
         <Grid>
-          {gamestate !== 'gameover' && (
-            <Shape
-              direction={direction}
-              shape={shape}
-              x={position.x}
-              y={position.y}
-            />
-          )}
-          {blocks.map(({ x, y }) => (
-            <Block x={x} y={y} key={`block_${x}_${y}`} />
-          ))}
-          {gamestate === 'gameover' && (
-            <GameOver onClick={() => startNewGame()} />
+          {navigator.userAgent !== 'ReactSnap' && (
+            <>
+              {gamestate !== 'gameover' && (
+                <Shape
+                  direction={direction}
+                  shape={shape}
+                  x={position.x}
+                  y={position.y}
+                />
+              )}
+              {blocks.map(({ x, y }) => (
+                <Block x={x} y={y} key={`block_${x}_${y}`} />
+              ))}
+              {gamestate === 'gameover' && (
+                <GameOver onClick={() => startNewGame()} />
+              )}
+            </>
           )}
         </Grid>
       </GridContainer>
