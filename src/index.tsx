@@ -3,7 +3,13 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import WebFont from 'webfontloader'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+const rootElem = document.getElementById('root')
+
+if (rootElem != null && rootElem.hasChildNodes()) {
+  ReactDOM.hydrate(<App />, rootElem)
+} else {
+  ReactDOM.render(<App />, rootElem)
+}
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
@@ -13,6 +19,6 @@ ReactDOM.render(<App />, document.getElementById('root'))
 // serviceWorker.unregister()
 WebFont.load({
   google: {
-    families: ['Press Start 2P&display=fallback']
+    families: ['Press Start 2P&display=auto']
   }
 })
