@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "bb422af439c43f53ec7dbe83d6df07d8",
+    "revision": "5135aca9186f28a267e53243b6b759c1",
     "url": "/tetris/index.html"
   },
   {
-    "revision": "07939174f32d09447c6c",
-    "url": "/tetris/static/js/2.a2133e2e.chunk.js"
+    "revision": "f835880a07af0814d79d",
+    "url": "/tetris/static/js/2.2981d4b2.chunk.js"
   },
   {
     "revision": "0602e59fa95e9360f34f",
