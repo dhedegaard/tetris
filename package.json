@@ -4,17 +4,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/jest": "^24.0.15",
-    "@types/node": "11.11.6",
-    "@types/react": "^16.8.23",
-    "@types/react-dom": "^16.8.4",
+    "@types/jest": "^24.0.18",
+    "@types/node": "12.7.2",
+    "@types/react": "^16.9.2",
+    "@types/react-dom": "^16.9.0",
     "cross-env": "^5.2.0",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-scripts": "^3.0.1",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-scripts": "^3.1.1",
     "react-snap": "^1.23.0",
-    "react-swipeable": "^5.3.0",
-    "typescript": "^3.5.2",
+    "react-swipeable": "^5.4.0",
+    "typescript": "^3.5.3",
     "webfontloader": "^1.6.28"
   },
   "scripts": {
@@ -36,9 +36,9 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@types/styled-components": "^4.1.16",
+    "@types/styled-components": "^4.1.18",
     "@types/webfontloader": "^1.6.29",
-    "gh-pages": "^2.0.1",
+    "gh-pages": "^2.1.1",
     "polished": "^3.4.1",
     "styled-components": "^4.3.2"
   }
