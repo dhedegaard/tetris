@@ -14,14 +14,10 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/tetris/precache-manifest.bf8ddf4331beea45f9c91f9150284d78.js"
+  "/tetris/precache-manifest.587cb5e9b9f7aef3aae65686f3f637a0.js"
 );
 
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-});
+workbox.core.skipWaiting();
 
 workbox.core.clientsClaim();
 
@@ -37,3 +33,5 @@ workbox.routing.registerNavigationRoute(workbox.precaching.getCacheKeyForURL("/t
   
   blacklist: [/^\/_/,/\/[^\/?]+\.[^\/]+$/],
 });
+
+workbox.routing.registerRoute(/.*/, new workbox.strategies.NetworkFirst(), 'GET');
