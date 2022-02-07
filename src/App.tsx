@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Global, css } from "@emotion/react";
 import Music from "./components/Music";
@@ -34,6 +34,9 @@ const App: React.FunctionComponent = () => {
   const [gameMode, setGameMode] = useState<GameMode>("single");
   const [musicEnabled, setMusicEnabled] = useState(false);
 
+  const [isBrowser, setIsBrowser] = useState(false);
+  useEffect(() => setIsBrowser(true), []);
+
   return (
     <>
       <GlobalStyle />
@@ -46,7 +49,7 @@ const App: React.FunctionComponent = () => {
           gameMode={gameMode}
           setGameMode={(gameMode) => setGameMode(gameMode)}
         />
-        <Game player="keyboard1" />
+        {isBrowser && <Game player="keyboard1" />}
       </Container>
     </>
   );
