@@ -1,16 +1,15 @@
-import 'polished'
-import { darken } from 'polished'
-import React from 'react'
+import { darken } from "polished";
+import React from "react";
 
-const DEFAULT_COLOR = '#ccc'
+const DEFAULT_COLOR = "#ccc";
 
 interface Props {
-  x: number
-  y: number
-  color?: string
+  x: number;
+  y: number;
+  color?: string;
 }
 
-const Block: React.FunctionComponent<Props> = props => (
+const Block: React.FunctionComponent<Props> = (props) => (
   <rect
     width={20} // TODO, fetch from a context or something.
     height={20} // TODO, fetch from a context or something.
@@ -20,6 +19,6 @@ const Block: React.FunctionComponent<Props> = props => (
     fill={props.color || DEFAULT_COLOR}
     stroke={darken(0.2, props.color || DEFAULT_COLOR)}
   />
-)
+);
 
-export default Block
+export default Block;

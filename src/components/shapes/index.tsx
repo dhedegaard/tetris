@@ -1,73 +1,73 @@
-import React from 'react'
-import ShapeDrawer, { Coordinates } from '../ShapeDrawer'
-import I, { COLOR_I } from './I'
-import J, { COLOR_J } from './J'
-import L, { COLOR_L } from './L'
-import O, { COLOR_O } from './O'
-import S, { COLOR_S } from './S'
-import T, { COLOR_T } from './T'
-import Z, { COLOR_Z } from './Z'
+import React from "react";
+import ShapeDrawer, { Coordinates } from "../ShapeDrawer";
+import I, { COLOR_I } from "./I";
+import J, { COLOR_J } from "./J";
+import L, { COLOR_L } from "./L";
+import O, { COLOR_O } from "./O";
+import S, { COLOR_S } from "./S";
+import T, { COLOR_T } from "./T";
+import Z, { COLOR_Z } from "./Z";
 
 export enum Direction {
   UP,
   DOWN,
   LEFT,
-  RIGHT
+  RIGHT,
 }
 
 /** Returns the new direction based on a current direction. */
 export const nextDirection = (direction: Direction): Direction => {
   switch (direction) {
     case Direction.UP:
-      return Direction.RIGHT
+      return Direction.RIGHT;
     case Direction.RIGHT:
-      return Direction.DOWN
+      return Direction.DOWN;
     case Direction.DOWN:
-      return Direction.LEFT
+      return Direction.LEFT;
     case Direction.LEFT:
-      return Direction.UP
+      return Direction.UP;
   }
-}
+};
 
 export interface ShapeProps {
-  x: number
-  y: number
-  direction: Direction
-  children?: undefined
+  x: number;
+  y: number;
+  direction: Direction;
+  children?: undefined;
 }
 
-export type Shapes = 'I' | 'J' | 'L' | 'O' | 'S' | 'T' | 'Z'
+export type Shapes = "I" | "J" | "L" | "O" | "S" | "T" | "Z";
 export const SHAPES = Object.freeze([
-  'I',
-  'J',
-  'L',
-  'O',
-  'S',
-  'T',
-  'Z'
-] as Shapes[])
+  "I",
+  "J",
+  "L",
+  "O",
+  "S",
+  "T",
+  "Z",
+] as Shapes[]);
 
 export const calculateCoordinates = (
   shape: Shapes,
   shapeProps: ShapeProps
 ): Coordinates => {
   switch (shape) {
-    case 'I':
-      return I(shapeProps)
-    case 'J':
-      return J(shapeProps)
-    case 'L':
-      return L(shapeProps)
-    case 'O':
-      return O(shapeProps)
-    case 'S':
-      return S(shapeProps)
-    case 'T':
-      return T(shapeProps)
-    case 'Z':
-      return Z(shapeProps)
+    case "I":
+      return I(shapeProps);
+    case "J":
+      return J(shapeProps);
+    case "L":
+      return L(shapeProps);
+    case "O":
+      return O(shapeProps);
+    case "S":
+      return S(shapeProps);
+    case "T":
+      return T(shapeProps);
+    case "Z":
+      return Z(shapeProps);
   }
-}
+};
 
 const colorMap: { [key in Shapes]: string } = {
   I: COLOR_I,
@@ -76,8 +76,8 @@ const colorMap: { [key in Shapes]: string } = {
   O: COLOR_O,
   S: COLOR_S,
   T: COLOR_T,
-  Z: COLOR_Z
-}
+  Z: COLOR_Z,
+};
 
 /** Renders a given shape. */
 export const Shape: React.FunctionComponent<ShapeProps & { shape: Shapes }> = ({
@@ -88,7 +88,7 @@ export const Shape: React.FunctionComponent<ShapeProps & { shape: Shapes }> = ({
     coordinates={calculateCoordinates(shape, props)}
     color={colorMap[shape]}
   />
-)
+);
 
 export const getRandomShape = (): Shapes =>
-  SHAPES[Math.floor(Math.random() * (SHAPES.length - 1))]
+  SHAPES[Math.floor(Math.random() * (SHAPES.length - 1))]!;
