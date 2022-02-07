@@ -1,66 +1,64 @@
-import { useEffect } from 'react'
-import { StateRef } from '.'
-import { calculateCoordinates, nextDirection } from '../components/shapes'
+import { useEffect, useMemo } from "react";
+import { StateRef } from ".";
+import { calculateCoordinates, nextDirection } from "../components/shapes";
 
 export interface Keybinds {
-  moveLeft: string
-  moveRight: string
-  rotate: string
-  moveDown: string
+  moveLeft: string;
+  moveRight: string;
+  rotate: string;
+  moveDown: string;
 }
 
 export const keyboard1: Keybinds = {
-  moveLeft: 'ArrowLeft',
-  moveRight: 'ArrowRight',
-  rotate: 'ArrowUp',
-  moveDown: 'ArrowDown'
-}
+  moveLeft: "ArrowLeft",
+  moveRight: "ArrowRight",
+  rotate: "ArrowUp",
+  moveDown: "ArrowDown",
+};
 
 export const keyboard2: Keybinds = {
-  moveLeft: 'a',
-  moveRight: 'd',
-  rotate: 'w',
-  moveDown: 's'
-}
+  moveLeft: "a",
+  moveRight: "d",
+  rotate: "w",
+  moveDown: "s",
+};
 
 const getKeybinds = (player: Player): Keybinds =>
-  (({
-    keyboard1,
-    keyboard2
-  } as { [key in Player]: Keybinds })[player])
+  ((
+    {
+      keyboard1,
+      keyboard2,
+    } as { [key in Player]: Keybinds }
+  )[player]);
 
-export type Player = 'keyboard1' | 'keyboard2'
+export type Player = "keyboard1" | "keyboard2";
 
-export default (
+const useKeyboard = (
   stateRef: StateRef,
   moveLeft: () => void,
   moveRight: () => void,
   setNextDirection: () => void,
   setMoveToBottom: (moveToBottom: boolean) => void,
   newGame: () => void,
-  player: Player = 'keyboard1'
+  player: Player = "keyboard1"
 ) => {
-  const keybinds = getKeybinds(player)
+  const keybinds = useMemo(() => getKeybinds(player), [player]);
+
   useEffect(() => {
     const keydownHandler = (evt: KeyboardEvent) => {
       if (evt.repeat) {
-        return
+        return;
       }
 
-      const {
-        position,
-        direction,
-        shape,
-        isFreePositions,
-        gamestate
-      } = stateRef.current
+      const { position, direction, shape, isFreePositions, gamestate } =
+        stateRef.current;
       // If the game is over, allow a different set of keybinds.
-      if (gamestate === 'gameover') {
+      if (gamestate === "gameover") {
         switch (evt.key) {
-          case 'r':
-            newGame()
+          case "r":
+            newGame();
         }
-        return
+        return;
       }
 
       switch (evt.key) {
@@ -69,60 +67,69 @@ export default (
           const newPositions = calculateCoordinates(shape, {
             direction,
             x: position.x - 1,
-            y: position.y
-          })
+            y: position.y,
+          });
           if (isFreePositions(newPositions)) {
-            moveLeft()
+            moveLeft();
           }
-          break
+          break;
         }
         case keybinds.moveRight: {
           // right
           const newPositions = calculateCoordinates(shape, {
             direction,
             x: position.x + 1,
-            y: position.y
-          })
+            y: position.y,
+          });
           if (isFreePositions(newPositions)) {
-            moveRight()
+            moveRight();
           }
-          break
+          break;
         }
         case keybinds.rotate: {
           // up
           const newPositions = calculateCoordinates(shape, {
             direction: nextDirection(direction),
             x: position.x,
-            y: position.y
-          })
+            y: position.y,
+          });
           if (isFreePositions(newPositions)) {
-            setNextDirection()
+            setNextDirection();
           }
-          break
+          break;
         }
         case keybinds.moveDown: {
           // down
-          setMoveToBottom(true)
-          break
+          setMoveToBottom(true);
+          break;
         }
       }
-    }
+    };
     const keyupHandler = (evt: KeyboardEvent) => {
       switch (evt.key) {
         case keybinds.moveDown: {
           // down
-          setMoveToBottom(false)
-          break
+          setMoveToBottom(false);
+          break;
         }
       }
-    }
+    };
 
-    document.addEventListener('keydown', keydownHandler)
-    document.addEventListener('keyup', keyupHandler)
+    document.addEventListener("keydown", keydownHandler);
+    document.addEventListener("keyup", keyupHandler);
     return () => {
-      document.removeEventListener('keydown', keydownHandler)
-      document.removeEventListener('keyup', keyupHandler)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-}
+      document.removeEventListener("keydown", keydownHandler);
+      document.removeEventListener("keyup", keyupHandler);
+    };
+  }, [
+    keybinds,
+    moveLeft,
+    moveRight,
+    newGame,
+    setMoveToBottom,
+    setNextDirection,
+    stateRef,
+  ]);
+};
+
+export default useKeyboard;
