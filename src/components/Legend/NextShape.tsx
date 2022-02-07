@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import styled from "@emotion/styled";
 import { Direction, Shape, Shapes } from "../shapes";
 
@@ -44,4 +44,4 @@ const NextShape: React.FunctionComponent<Props> = ({ nextShapes }) => (
   </Container>
 );
 
-export default NextShape;
+export default memo(NextShape);

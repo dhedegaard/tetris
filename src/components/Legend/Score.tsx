@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import styled from "@emotion/styled";
 
 const Container = styled.div`
@@ -35,4 +35,4 @@ const Score: React.FunctionComponent<Props> = ({ score }) => (
   </Container>
 );
 
-export default Score;
+export default memo(Score);

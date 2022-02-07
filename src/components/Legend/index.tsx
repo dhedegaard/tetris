@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "@emotion/styled";
 import { Shapes } from "../shapes";
 import Level from "./Level";
@@ -27,14 +27,20 @@ const Legend: React.FunctionComponent<Props> = ({
   score,
   level,
   peekShapes,
-}) => (
-  <LegendContainer>
-    <div>
-      <Score score={score} />
-      <Level level={level} />
-    </div>
-    <NextShape nextShapes={peekShapes.slice(peekShapes.length - 2)} />
-  </LegendContainer>
-);
+}) => {
+  const nextShapes = useMemo(
+    () => peekShapes.slice(peekShapes.length - 2),
+    [peekShapes]
+  );
+  return (
+    <LegendContainer>
+      <div>
+        <Score score={score} />
+        <Level level={level} />
+      </div>
+      <NextShape nextShapes={nextShapes} />
+    </LegendContainer>
+  );
+};
 
 export default Legend;

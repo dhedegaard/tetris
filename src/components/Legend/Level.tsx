@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import styled from "@emotion/styled";
 
 const Container = styled.div`
@@ -34,4 +34,4 @@ const Level: React.FunctionComponent<Props> = ({ level }) => (
   </Container>
 );
 
-export default Level;
+export default memo(Level);
