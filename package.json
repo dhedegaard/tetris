@@ -21,10 +21,8 @@
     "watch": "next dev",
     "build": "next build && next export",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "deploy": "gh-pages -d build",
+    "lint": "next lint"
   },
   "browserslist": [
     ">0.2%",
@@ -33,6 +31,8 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "eslint": "^8.8.0",
+    "eslint-config-next": "12.0.10",
     "gh-pages": "^2.2.0",
     "polished": "^4.1.4"
   }
