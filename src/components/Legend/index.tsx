@@ -1,9 +1,9 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Shapes } from '../shapes'
-import Level from './Level'
-import NextShape from './NextShape'
-import Score from './Score'
+import React from "react";
+import styled from "@emotion/styled";
+import { Shapes } from "../shapes";
+import Level from "./Level";
+import NextShape from "./NextShape";
+import Score from "./Score";
 
 const LegendContainer = styled.div`
   background-color: #000;
@@ -15,18 +15,18 @@ const LegendContainer = styled.div`
   padding: 8px;
   align-self: normal;
   justify-content: space-between;
-`
+`;
 
 interface Props {
-  score: number
-  level: number
-  peekShapes: Shapes[]
+  score: number;
+  level: number;
+  peekShapes: Shapes[];
 }
 
 const Legend: React.FunctionComponent<Props> = ({
   score,
   level,
-  peekShapes
+  peekShapes,
 }) => (
   <LegendContainer>
     <div>
@@ -35,6 +35,6 @@ const Legend: React.FunctionComponent<Props> = ({
     </div>
     <NextShape nextShapes={peekShapes.slice(peekShapes.length - 2)} />
   </LegendContainer>
-)
+);
 
-export default Legend
+export default Legend;

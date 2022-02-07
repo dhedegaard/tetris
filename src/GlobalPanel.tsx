@@ -1,13 +1,14 @@
-import React from 'react'
-import styled, { css } from 'styled-components'
-import { GameMode } from './App'
+import React from "react";
+import styled from "@emotion/styled";
+import { css } from "@emotion/react";
+import { GameMode } from "./App";
 
 const Panel = styled.div<{ noBorderLeft: boolean }>`
   background: #000;
   height: ${400 - 8 * 2}px;
   border: 4px solid purple;
   border-right-width: 0;
-  ${p =>
+  ${(p) =>
     p.noBorderLeft &&
     css`
       border-left-width: 0;
@@ -15,7 +16,7 @@ const Panel = styled.div<{ noBorderLeft: boolean }>`
   padding: 8px;
   min-width: 150px;
   font-size: 12px;
-`
+`;
 
 const Container = styled.div`
   border: 1px double #fff;
@@ -24,7 +25,7 @@ const Container = styled.div`
   border-bottom-right-radius: 2px;
   padding: 8px;
   margin-bottom: 8px;
-`
+`;
 
 const Title = styled.div`
   color: #fff;
@@ -32,7 +33,7 @@ const Title = styled.div`
   margin-bottom: 5px;
   text-transform: uppercase;
   padding-bottom: 5px;
-`
+`;
 
 const Text = styled.div`
   padding-top: 4px;
@@ -40,30 +41,30 @@ const Text = styled.div`
   text-transform: uppercase;
   text-align: right;
   cursor: pointer;
-`
+`;
 
 const Toggle = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 0 8px;
-`
+`;
 
 interface Props {
-  musicEnabled: boolean
-  toggleMusic: (enabled: boolean) => void
-  gameMode: GameMode
-  setGameMode: (gameMode: GameMode) => void
+  musicEnabled: boolean;
+  toggleMusic: (enabled: boolean) => void;
+  gameMode: GameMode;
+  setGameMode: (gameMode: GameMode) => void;
 }
 
-const GlobalPanel: React.FunctionComponent<Props> = props => (
-  <Panel noBorderLeft={props.gameMode === 'local-coop'}>
+const GlobalPanel: React.FunctionComponent<Props> = (props) => (
+  <Panel noBorderLeft={props.gameMode === "local-coop"}>
     <Container>
       <Title>Music:</Title>
       <Toggle>
         <Text onClick={() => props.toggleMusic(true)}>
           {props.musicEnabled ? <>&gt; </> : <>&nbsp; </>}
           On
-        </Text>{' '}
+        </Text>{" "}
         <Text onClick={() => props.toggleMusic(false)}>
           {!props.musicEnabled ? <>&gt; </> : <>&nbsp; </>}
           Off
@@ -72,16 +73,16 @@ const GlobalPanel: React.FunctionComponent<Props> = props => (
     </Container>
     <Container>
       <Title>Player mode:</Title>
-      <Text onClick={() => props.setGameMode('single')}>
-        {props.gameMode === 'single' ? <>&gt; </> : null}
+      <Text onClick={() => props.setGameMode("single")}>
+        {props.gameMode === "single" ? <>&gt; </> : null}
         Single
       </Text>
-      <Text onClick={() => props.setGameMode('local-coop')}>
-        {props.gameMode === 'local-coop' ? <>&gt; </> : null}
+      <Text onClick={() => props.setGameMode("local-coop")}>
+        {props.gameMode === "local-coop" ? <>&gt; </> : null}
         Local coop
       </Text>
     </Container>
   </Panel>
-)
+);
 
-export default GlobalPanel
+export default GlobalPanel;

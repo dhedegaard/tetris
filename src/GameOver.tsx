@@ -1,20 +1,20 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "@emotion/styled";
 
 const Text = styled.text`
   text-transform: uppercase;
   font-size: 16px;
   pointer-events: none;
-`
+`;
 const RetryText = styled.text`
   text-transform: uppercase;
   font-size: 12px;
   pointer-events: none;
-`
+`;
 
-type Props = React.SVGProps<SVGRectElement>
+type Props = React.SVGProps<SVGRectElement>;
 
-const GameOver: React.FC<Props> = props => (
+const GameOver: React.FC<Props> = (props) => (
   <>
     <rect
       {...props}
@@ -35,6 +35,6 @@ const GameOver: React.FC<Props> = props => (
       try again
     </RetryText>
   </>
-)
+);
 
-export default GameOver
+export default GameOver;

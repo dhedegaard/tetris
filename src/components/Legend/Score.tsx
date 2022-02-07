@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "@emotion/styled";
 
 const Container = styled.div`
   border: 1px double #fff;
@@ -8,7 +8,7 @@ const Container = styled.div`
   border-bottom-right-radius: 2px;
   padding: 8px;
   margin-bottom: 8px;
-`
+`;
 
 const Title = styled.div`
   color: #fff;
@@ -16,27 +16,23 @@ const Title = styled.div`
   margin-bottom: 5px;
   text-transform: uppercase;
   padding-bottom: 5px;
-`
+`;
 
 const Text = styled.div`
   padding-top: 4px;
   color: #fff;
   text-transform: uppercase;
   text-align: right;
-`
+`;
 
 interface Props {
-  score: number
+  score: number;
 }
 const Score: React.FunctionComponent<Props> = ({ score }) => (
   <Container>
     <Title>Score:</Title>
-    <Text>
-      {Math.min(score, 99999999)
-        .toString()
-        .padStart(8, '0')}
-    </Text>
+    <Text>{Math.min(score, 99999999).toString().padStart(8, "0")}</Text>
   </Container>
-)
+);
 
-export default Score
+export default Score;
