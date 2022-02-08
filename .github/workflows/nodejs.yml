@@ -19,6 +19,7 @@ jobs:
       - run: npm install -g yarn
       - run: yarn
       - run: CI=true yarn test
+      - run: CI=true yarn lint
       - run: yarn build
         env:
           CI: true
