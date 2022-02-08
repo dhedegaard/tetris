@@ -115,8 +115,8 @@ const useKeyboard = (
       }
     };
 
-    document.addEventListener("keydown", keydownHandler);
-    document.addEventListener("keyup", keyupHandler);
+    document.addEventListener("keydown", keydownHandler, { passive: true });
+    document.addEventListener("keyup", keyupHandler, { passive: true });
     return () => {
       document.removeEventListener("keydown", keydownHandler);
       document.removeEventListener("keyup", keyupHandler);
