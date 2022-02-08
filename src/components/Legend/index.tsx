@@ -29,6 +29,7 @@ const Legend: FC<Props> = ({ score, level, peekShapes }) => {
     () => peekShapes.slice(peekShapes.length - 2),
     [peekShapes]
   );
+
   return (
     <LegendContainer>
       <div>
@@ -40,4 +41,4 @@ const Legend: FC<Props> = ({ score, level, peekShapes }) => {
   );
 };
 
-export default Legend;
+export default memo(Legend, isEqual);
