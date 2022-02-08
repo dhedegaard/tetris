@@ -1,6 +1,7 @@
 import { FC, memo } from "react";
 import styled from "@emotion/styled";
 import { Direction, Shape, Shapes } from "../shapes";
+import isEqual from "lodash/isEqual";
 
 const Container = styled.div`
   border: 1px double #fff;
@@ -44,4 +45,4 @@ const NextShape: FC<Props> = ({ nextShapes }) => (
   </Container>
 );
 
-export default memo(NextShape);
+export default memo(NextShape, isEqual);

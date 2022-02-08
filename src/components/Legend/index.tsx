@@ -1,9 +1,10 @@
-import { FC, useMemo } from "react";
+import { FC, memo, useMemo } from "react";
 import styled from "@emotion/styled";
 import { Shapes } from "../shapes";
 import Level from "./Level";
 import NextShape from "./NextShape";
 import Score from "./Score";
+import isEqual from "lodash/isEqual";
 
 const LegendContainer = styled.div`
   background-color: #000;
