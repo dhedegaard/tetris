@@ -1,11 +1,11 @@
-import React from 'react'
+import { FC } from "react";
 
-const HEIGHT = 20
-const WIDTH = 10
-const COLOR = '#efefef'
+const HEIGHT = 20;
+const WIDTH = 10;
+const COLOR = "#efefef";
 
-const Grid: React.FunctionComponent = props => {
-  const lines = []
+const Grid: FC = (props) => {
+  const lines = [];
   for (let x = 20; x < WIDTH * 20; x += 20) {
     lines.push(
       <line
@@ -16,7 +16,7 @@ const Grid: React.FunctionComponent = props => {
         y2={HEIGHT * 20}
         stroke={COLOR}
       />
-    )
+    );
   }
   for (let y = 20; y < HEIGHT * 20; y += 20) {
     lines.push(
@@ -28,21 +28,21 @@ const Grid: React.FunctionComponent = props => {
         y2={y}
         stroke={COLOR}
       />
-    )
+    );
   }
   return (
     <svg
       width={WIDTH * 20}
       height={HEIGHT * 20}
       style={{
-        backgroundColor: '#222',
-        display: 'block'
+        backgroundColor: "#222",
+        display: "block",
       }}
     >
       {lines}
       {props.children}
     </svg>
-  )
-}
+  );
+};
 
-export default Grid
+export default Grid;

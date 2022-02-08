@@ -1,13 +1,21 @@
-import { useState } from 'react'
+import { useCallback, useMemo, useState } from "react";
 
-export type Gamestate = 'alive' | 'gameover'
+export type Gamestate = "alive" | "gameover";
 
-export default () => {
-  const [gamestate, setGamestate] = useState<Gamestate>('alive')
+const useGamestate = () => {
+  const [gamestate, setGamestate] = useState<Gamestate>("alive");
 
-  return {
-    gamestate,
-    setAlive: () => setGamestate('alive'),
-    setGameover: () => setGamestate('gameover')
-  }
-}
+  const setAlive = useCallback(() => setGamestate("alive"), []);
+  const setGameover = useCallback(() => setGamestate("gameover"), []);
+
+  return useMemo(
+    () => ({
+      gamestate,
+      setAlive,
+      setGameover,
+    }),
+    [gamestate, setAlive, setGameover]
+  );
+};
+
+export default useGamestate;

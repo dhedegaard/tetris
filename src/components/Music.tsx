@@ -1,14 +1,14 @@
-import React from 'react'
-import styled from 'styled-components'
+import { FC } from "react";
+import styled from "@emotion/styled";
 
 const MusicIframe = styled.iframe`
   position: absolute;
   top: -20px;
   right: -20px;
-`
+`;
 
 /** Handles playing music, whenever the prop is true. */
-const Music: React.FunctionComponent<{}> = () => (
+const Music: FC<{}> = () => (
   <MusicIframe
     width="10"
     height="10"
@@ -16,6 +16,6 @@ const Music: React.FunctionComponent<{}> = () => (
     frameBorder={0}
     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
   />
-)
+);
 
-export default Music
+export default Music;

@@ -1,15 +1,27 @@
-import { Direction, ShapeProps } from '.'
-import { Coordinates } from '../ShapeDrawer'
+import { Direction, ShapeProps } from ".";
+import { Coordinates } from "../ShapeDrawer";
 
-export const COLOR_I = 'cyan'
+export const COLOR_I = "cyan";
 
-export default ({ direction, x, y }: ShapeProps): Coordinates => {
+const I = ({ direction, x, y }: ShapeProps): Coordinates => {
   switch (direction) {
     case Direction.UP:
     case Direction.DOWN:
-      return [{ x, y: y - 1 }, { x, y }, { x, y: y + 1 }, { x, y: y + 2 }]
+      return [
+        { x, y: y - 1 },
+        { x, y },
+        { x, y: y + 1 },
+        { x, y: y + 2 },
+      ];
     case Direction.LEFT:
     case Direction.RIGHT:
-      return [{ x: x - 1, y }, { x, y }, { x: x + 1, y }, { x: x + 2, y }]
+      return [
+        { x: x - 1, y },
+        { x, y },
+        { x: x + 1, y },
+        { x: x + 2, y },
+      ];
   }
-}
+};
+
+export default I;

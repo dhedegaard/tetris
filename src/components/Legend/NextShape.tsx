@@ -1,6 +1,7 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Direction, Shape, Shapes } from '../shapes'
+import { FC, memo } from "react";
+import styled from "@emotion/styled";
+import { Direction, Shape, Shapes } from "../shapes";
+import isEqual from "lodash/isEqual";
 
 const Container = styled.div`
   border: 1px double #fff;
@@ -10,7 +11,7 @@ const Container = styled.div`
   padding: 8px;
   display: flex;
   flex-direction: column;
-`
+`;
 
 const Title = styled.div`
   display: block;
@@ -19,18 +20,18 @@ const Title = styled.div`
   margin-bottom: 5px;
   text-transform: uppercase;
   padding-bottom: 5px;
-`
+`;
 
 const ShapeContainer = styled.svg`
   display: block;
   margin: 10px;
-`
+`;
 
 interface Props {
-  nextShapes: Shapes[]
+  nextShapes: Shapes[];
 }
 
-const NextShape: React.FunctionComponent<Props> = ({ nextShapes }) => (
+const NextShape: FC<Props> = ({ nextShapes }) => (
   <Container>
     <Title>Next:</Title>
     {nextShapes
@@ -42,6 +43,6 @@ const NextShape: React.FunctionComponent<Props> = ({ nextShapes }) => (
         </ShapeContainer>
       ))}
   </Container>
-)
+);
 
-export default NextShape
+export default memo(NextShape, isEqual);

@@ -1,51 +1,46 @@
-import { useRef } from 'react'
-import { Coordinate, Coordinates } from '../components/ShapeDrawer'
-import { Direction, Shapes } from '../components/shapes'
-import useBlocks from './useBlocks'
-import useDirection from './useDirection'
-import useGamestate, { Gamestate } from './useGamestate'
-import useKeyboard, { Player } from './useKeyboard'
-import useLevel, { calculateTickRate } from './useLevel'
-import usePosition from './usePosition'
-import useScore, { calculateScore } from './useScore'
-import useShape from './useShape'
-import useTick from './useTick'
-import { useSwipeable } from 'react-swipeable'
+import { MutableRefObject, useCallback, useMemo, useRef } from "react";
+import { Coordinate, Coordinates } from "../components/ShapeDrawer";
+import { Direction, Shapes } from "../components/shapes";
+import useBlocks from "./useBlocks";
+import useDirection from "./useDirection";
+import useGamestate, { Gamestate } from "./useGamestate";
+import useKeyboard, { Player } from "./useKeyboard";
+import useLevel, { calculateTickRate } from "./useLevel";
+import usePosition from "./usePosition";
+import useScore, { calculateScore } from "./useScore";
+import useShape from "./useShape";
+import useTick from "./useTick";
+import { useSwipeable } from "react-swipeable";
 
-export type StateRef = React.MutableRefObject<{
-  position: Coordinate
-  direction: Direction
-  shape: Shapes
-  gamestate: Gamestate
-  score: number
-  increaseScore: (amount: number) => void
-  isFreePositions: (newPositions: Coordinates) => boolean
-}>
+export type StateRef = MutableRefObject<{
+  position: Coordinate;
+  direction: Direction;
+  shape: Shapes;
+  gamestate: Gamestate;
+  score: number;
+  increaseScore: (amount: number) => void;
+  isFreePositions: (newPositions: Coordinates) => boolean;
+}>;
 
 interface Input {
-  player: Player
+  player: Player;
 }
 /** A hook that contains all the logic regarding tetris. */
 const useTetris = ({ player }: Input) => {
-  const { gamestate, setGameover, setAlive } = useGamestate()
-  const {
-    position,
-    moveLeft,
-    moveRight,
-    moveDown,
-    resetPosition
-  } = usePosition()
-  const { shape, nextShape, peekShapes } = useShape()
-  const { direction, resetDirection, setNextDirection } = useDirection()
-  const { score, increaseScore, resetScore } = useScore()
+  const { gamestate, setGameover, setAlive } = useGamestate();
+  const { position, moveLeft, moveRight, moveDown, resetPosition } =
+    usePosition();
+  const { shape, nextShape, peekShapes } = useShape();
+  const { direction, resetDirection, setNextDirection } = useDirection();
+  const { score, increaseScore, resetScore } = useScore();
   const {
     blocks,
     addBlocks,
     clearFilledRows,
     isFreePositions,
-    clearAllBlocks
-  } = useBlocks(setGameover)
-  const { level, incrementRowsCleared, resetLevel } = useLevel()
+    clearAllBlocks,
+  } = useBlocks(setGameover);
+  const { level, incrementRowsCleared, resetLevel } = useLevel();
 
   // Build a ref os state, for various cases.
   const stateRef: StateRef = useRef({
@@ -55,10 +50,10 @@ const useTetris = ({ player }: Input) => {
     gamestate,
     score,
     isFreePositions: () => {
-      throw new Error('initial state ref')
+      throw new Error("initial state ref");
     },
-    increaseScore
-  })
+    increaseScore,
+  });
   stateRef.current = {
     position,
     direction,
@@ -66,47 +61,73 @@ const useTetris = ({ player }: Input) => {
     isFreePositions,
     gamestate,
     score,
-    increaseScore
-  }
+    increaseScore,
+  };
 
   /* Call this when we're ready to persist blocks. */
-  const persistBlock = (blocksToPersist: Coordinates) => {
-    addBlocks(blocksToPersist)
-    const rowsCleared = clearFilledRows()
-    if (rowsCleared > 0) {
-      increaseScore(calculateScore(level, rowsCleared))
-      incrementRowsCleared(rowsCleared)
-    }
-    nextShape()
-    resetPosition()
-    resetDirection()
-    setTemporaryTick(undefined) // Disable any fast temp ticks.
-    setTick(calculateTickRate(level) * 1000)
-  }
+  const persistBlock = useCallback(
+    (blocksToPersist: Coordinates) => {
+      addBlocks(blocksToPersist);
+      const rowsCleared = clearFilledRows();
+      if (rowsCleared > 0) {
+        increaseScore(calculateScore(level, rowsCleared));
+        incrementRowsCleared(rowsCleared);
+      }
+      nextShape();
+      resetPosition();
+      resetDirection();
+      setTemporaryTick(undefined); // Disable any fast temp ticks.
+      setTick(calculateTickRate(level) * 1000);
+    },
+    // TODO: Fix circular dependency later :)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      addBlocks,
+      clearFilledRows,
+      increaseScore,
+      incrementRowsCleared,
+      level,
+      nextShape,
+      resetDirection,
+      resetPosition,
+    ]
+  );
 
   // Handle ticks
   const { setTick, setTemporaryTick, resetTick } = useTick(
     stateRef,
     moveDown,
     persistBlock
-  )
+  );
 
   /* Start a new game, setup the board again. */
-  const newGame = () => {
-    clearAllBlocks()
-    nextShape()
-    resetPosition()
-    resetDirection()
-    setAlive()
-    resetLevel()
-    resetScore()
-    resetTick()
-  }
+  const newGame = useCallback(() => {
+    clearAllBlocks();
+    nextShape();
+    resetPosition();
+    resetDirection();
+    setAlive();
+    resetLevel();
+    resetScore();
+    resetTick();
+  }, [
+    clearAllBlocks,
+    nextShape,
+    resetDirection,
+    resetLevel,
+    resetPosition,
+    resetScore,
+    resetTick,
+    setAlive,
+  ]);
 
   /* While the next position is free, move down fast. */
-  const setMoveToBottom = (moveToBottom: boolean) => {
-    setTemporaryTick(moveToBottom ? 40 : undefined)
-  }
+  const setMoveToBottom = useCallback(
+    (moveToBottom: boolean) => {
+      setTemporaryTick(moveToBottom ? 40 : undefined);
+    },
+    [setTemporaryTick]
+  );
 
   // Handle keyboard events.
   useKeyboard(
@@ -117,27 +138,41 @@ const useTetris = ({ player }: Input) => {
     setMoveToBottom,
     newGame,
     player
-  )
+  );
 
   const swipeableHandler = useSwipeable({
     onSwipedDown: () => setMoveToBottom(true),
     onSwipedLeft: () => moveLeft(),
     onSwipedRight: () => moveRight(),
-    onSwipedUp: () => setNextDirection()
-  })
+    onSwipedUp: () => setNextDirection(),
+  });
 
-  return {
-    blocks,
-    direction,
-    position,
-    shape,
-    gamestate,
-    score,
-    peekShapes,
-    level,
-    swipeableHandler,
-    startNewGame: newGame
-  }
-}
+  return useMemo(
+    () => ({
+      blocks,
+      direction,
+      position,
+      shape,
+      gamestate,
+      score,
+      peekShapes,
+      level,
+      swipeableHandler,
+      startNewGame: newGame,
+    }),
+    [
+      blocks,
+      direction,
+      gamestate,
+      level,
+      newGame,
+      peekShapes,
+      position,
+      score,
+      shape,
+      swipeableHandler,
+    ]
+  );
+};
 
-export default useTetris
+export default useTetris;

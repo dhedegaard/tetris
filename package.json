@@ -4,31 +4,27 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/jest": "^25.1.1",
-    "@types/node": "13.7.0",
-    "@types/react": "^16.9.19",
-    "@types/react-dom": "^16.9.5",
-    "cross-env": "^7.0.0",
-    "react": "^16.12.0",
-    "react-app-rewired": "^2.1.5",
-    "react-dom": "^16.12.0",
-    "react-scripts": "^3.3.1",
-    "react-snap": "^1.23.0",
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@types/node": "17.0.15",
+    "@types/react": "^17.0.39",
+    "@types/react-dom": "^17.0.11",
+    "lodash": "^4.17.21",
+    "next": "^12.0.10",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-swipeable": "^5.5.0",
-    "typescript": "^3.7.5",
-    "webfontloader": "^1.6.28"
+    "react-use": "^17.3.2",
+    "typescript": "^4.5.5"
   },
   "scripts": {
-    "start": "cross-env HTTPS=true react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-app-rewired eject",
-    "postbuild": "react-snap",
+    "start": "next start",
+    "watch": "next dev",
+    "build": "next build && next export",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "test": "jest",
+    "deploy": "gh-pages -d out",
+    "lint": "next lint"
   },
   "browserslist": [
     ">0.2%",
@@ -37,10 +33,12 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@types/styled-components": "^4.4.2",
-    "@types/webfontloader": "^1.6.29",
+    "@types/jest": "^27.4.0",
+    "@types/lodash": "^4.14.178",
+    "eslint": "^8.8.0",
+    "eslint-config-next": "12.0.10",
     "gh-pages": "^2.2.0",
-    "polished": "^3.4.4",
-    "styled-components": "^5.0.0"
+    "jest": "^27.5.1",
+    "polished": "^4.1.4"
   }
 }
