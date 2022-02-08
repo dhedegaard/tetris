@@ -30,9 +30,10 @@ const useBlocks = (setGameover: () => void) => {
     setBlocks((oldBlocks) => {
       let result: typeof oldBlocks = [];
       let dy = 0;
+      let rowsCleared = 0;
       for (let y = 19; y >= 0; y--) {
         if (isRowFilled(y, oldBlocks)) {
-          numberOfRowsCleared++;
+          rowsCleared++;
           dy++;
         } else {
           result = [
@@ -47,6 +48,7 @@ const useBlocks = (setGameover: () => void) => {
           ];
         }
       }
+      numberOfRowsCleared = rowsCleared;
       return result;
     });
     return numberOfRowsCleared;

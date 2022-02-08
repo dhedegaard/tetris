@@ -4,9 +4,22 @@ const useInterval = (callback: () => void, delay: number) => {
   const callbackRef = useRef(callback);
   callbackRef.current = callback;
 
+  const timerRef = useRef<ReturnType<typeof setInterval> | undefined>(
+    undefined
+  );
+
   useEffect(() => {
-    const id = setInterval(() => callbackRef.current(), delay);
-    return () => clearInterval(id);
+    if (timerRef.current != null) {
+      clearInterval(timerRef.current);
+      timerRef.current = undefined;
+    }
+    timerRef.current = setInterval(() => callbackRef.current(), delay);
+    return () => {
+      if (timerRef.current != null) {
+        clearInterval(timerRef.current);
+        timerRef.current = undefined;
+      }
+    };
   }, [delay]);
 };
 
