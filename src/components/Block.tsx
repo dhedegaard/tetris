@@ -1,5 +1,5 @@
 import { darken } from "polished";
-import React from "react";
+import { FC, memo } from "react";
 
 const DEFAULT_COLOR = "#ccc";
 
@@ -9,7 +9,7 @@ interface Props {
   color?: string;
 }
 
-const Block: React.FunctionComponent<Props> = (props) => (
+const Block: FC<Props> = (props) => (
   <rect
     width={20} // TODO, fetch from a context or something.
     height={20} // TODO, fetch from a context or something.
@@ -21,4 +21,4 @@ const Block: React.FunctionComponent<Props> = (props) => (
   />
 );
 
-export default Block;
+export default memo(Block);

@@ -1,4 +1,4 @@
-import React from "react";
+import { FC, SVGProps } from "react";
 import styled from "@emotion/styled";
 
 const Text = styled.text`
@@ -12,9 +12,9 @@ const RetryText = styled.text`
   pointer-events: none;
 `;
 
-type Props = React.SVGProps<SVGRectElement>;
+type Props = SVGProps<SVGRectElement>;
 
-const GameOver: React.FC<Props> = (props) => (
+const GameOver: FC<Props> = (props) => (
   <>
     <rect
       {...props}

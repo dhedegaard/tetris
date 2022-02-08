@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { FC, memo } from "react";
 import styled from "@emotion/styled";
 
 const Container = styled.div`
@@ -28,7 +28,7 @@ const Text = styled.div`
 interface Props {
   score: number;
 }
-const Score: React.FunctionComponent<Props> = ({ score }) => (
+const Score: FC<Props> = ({ score }) => (
   <Container>
     <Title>Score:</Title>
     <Text>{Math.min(score, 99999999).toString().padStart(8, "0")}</Text>

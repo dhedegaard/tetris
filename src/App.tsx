@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Global, css } from "@emotion/react";
 import Music from "./components/Music";
@@ -30,7 +30,7 @@ const Container = styled.div`
 
 export type GameMode = "single" | "local-coop";
 
-const App: React.FunctionComponent = () => {
+const App: FC = () => {
   const [gameMode, setGameMode] = useState<GameMode>("single");
   const [musicEnabled, setMusicEnabled] = useState(false);
 

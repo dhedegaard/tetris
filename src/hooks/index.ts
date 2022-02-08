@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from "react";
+import { MutableRefObject, useCallback, useMemo, useRef } from "react";
 import { Coordinate, Coordinates } from "../components/ShapeDrawer";
 import { Direction, Shapes } from "../components/shapes";
 import useBlocks from "./useBlocks";
@@ -12,7 +12,7 @@ import useShape from "./useShape";
 import useTick from "./useTick";
 import { useSwipeable } from "react-swipeable";
 
-export type StateRef = React.MutableRefObject<{
+export type StateRef = MutableRefObject<{
   position: Coordinate;
   direction: Direction;
   shape: Shapes;

@@ -1,23 +1,23 @@
-import React, { FunctionComponent } from 'react'
-import Block from './Block'
+import { FC } from "react";
+import Block from "./Block";
 
 export interface Coordinate {
-  x: number
-  y: number
+  x: number;
+  y: number;
 }
 
-export type Coordinates = Coordinate[]
+export type Coordinates = Coordinate[];
 
 interface Props {
-  color: string
-  coordinates: Coordinates
+  color: string;
+  coordinates: Coordinates;
 }
-const ShapeDrawer: FunctionComponent<Props> = ({ color, coordinates }) => (
+const ShapeDrawer: FC<Props> = ({ color, coordinates }) => (
   <>
-    {coordinates.map(coord => (
+    {coordinates.map((coord) => (
       <Block key={`elem_${coord.x}_${coord.y}`} {...coord} color={color} />
     ))}
   </>
-)
+);
 
-export default ShapeDrawer
+export default ShapeDrawer;

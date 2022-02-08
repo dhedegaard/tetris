@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { GameMode } from "./App";
@@ -56,7 +56,7 @@ interface Props {
   setGameMode: (gameMode: GameMode) => void;
 }
 
-const GlobalPanel: React.FunctionComponent<Props> = (props) => (
+const GlobalPanel: FC<Props> = (props) => (
   <Panel noBorderLeft={props.gameMode === "local-coop"}>
     <Container>
       <Title>Music:</Title>

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { FC, useMemo } from "react";
 import styled from "@emotion/styled";
 import { Shapes } from "../shapes";
 import Level from "./Level";
@@ -23,11 +23,7 @@ interface Props {
   peekShapes: Shapes[];
 }
 
-const Legend: React.FunctionComponent<Props> = ({
-  score,
-  level,
-  peekShapes,
-}) => {
+const Legend: FC<Props> = ({ score, level, peekShapes }) => {
   const nextShapes = useMemo(
     () => peekShapes.slice(peekShapes.length - 2),
     [peekShapes]

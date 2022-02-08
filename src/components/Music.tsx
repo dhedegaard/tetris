@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import styled from "@emotion/styled";
 
 const MusicIframe = styled.iframe`
@@ -8,7 +8,7 @@ const MusicIframe = styled.iframe`
 `;
 
 /** Handles playing music, whenever the prop is true. */
-const Music: React.FunctionComponent<{}> = () => (
+const Music: FC<{}> = () => (
   <MusicIframe
     width="10"
     height="10"

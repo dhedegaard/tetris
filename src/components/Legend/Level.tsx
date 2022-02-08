@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { FC, memo } from "react";
 import styled from "@emotion/styled";
 
 const Container = styled.div`
@@ -27,7 +27,7 @@ const Text = styled.div`
 interface Props {
   level: number;
 }
-const Level: React.FunctionComponent<Props> = ({ level }) => (
+const Level: FC<Props> = ({ level }) => (
   <Container>
     <Title>Level:</Title>
     <Text>{Math.min(level, 99).toString().padStart(2, "0")}</Text>

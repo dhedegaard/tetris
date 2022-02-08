@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { FC } from "react";
 import Block from "./components/Block";
 import Grid from "./components/Grid";
 import Legend from "./components/Legend";
@@ -20,7 +21,7 @@ interface Props {
   player: Player;
 }
 
-const Game: React.FunctionComponent<Props> = ({ player }) => {
+const Game: FC<Props> = ({ player }) => {
   const {
     direction,
     shape,

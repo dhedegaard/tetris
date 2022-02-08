@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import ShapeDrawer, { Coordinates } from "../ShapeDrawer";
 import I, { COLOR_I } from "./I";
 import J, { COLOR_J } from "./J";
@@ -80,7 +80,7 @@ const colorMap: { [key in Shapes]: string } = {
 };
 
 /** Renders a given shape. */
-export const Shape: React.FunctionComponent<ShapeProps & { shape: Shapes }> = ({
+export const Shape: FC<ShapeProps & { shape: Shapes }> = ({
   shape,
   ...props
 }) => (

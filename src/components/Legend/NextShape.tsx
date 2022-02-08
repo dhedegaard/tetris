@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { FC, memo } from "react";
 import styled from "@emotion/styled";
 import { Direction, Shape, Shapes } from "../shapes";
 
@@ -30,7 +30,7 @@ interface Props {
   nextShapes: Shapes[];
 }
 
-const NextShape: React.FunctionComponent<Props> = ({ nextShapes }) => (
+const NextShape: FC<Props> = ({ nextShapes }) => (
   <Container>
     <Title>Next:</Title>
     {nextShapes
