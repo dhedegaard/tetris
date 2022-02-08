@@ -11,8 +11,8 @@ interface Props {
 
 const Block: FC<Props> = (props) => (
   <rect
-    width={20} // TODO, fetch from a context or something.
-    height={20} // TODO, fetch from a context or something.
+    width={20}
+    height={20}
     x={props.x * 20}
     y={props.y * 20}
     color={props.color || DEFAULT_COLOR}
