@@ -55,15 +55,16 @@ const useBlocks = (setGameover: () => void) => {
   const addBlocks = useCallback(
     (newBlocks: Coordinates) => {
       setBlocks((oldBlocks) => {
+        const result = [...oldBlocks];
         for (const newBlock of newBlocks) {
           if (isBlockFree(newBlock)) {
-            oldBlocks.push(newBlock);
+            result.push(newBlock);
           } else {
             // If we're trying to persist a block, that's not free, the game is over.
             setGameover();
           }
         }
-        return oldBlocks;
+        return result;
       });
     },
     [isBlockFree, setGameover]
@@ -76,6 +77,8 @@ const useBlocks = (setGameover: () => void) => {
     [isBlockFree]
   );
 
+  const clearAllBlocks = useCallback(() => setBlocks([]), []);
+
   return useMemo(
     () => ({
       blocks,
@@ -83,9 +86,16 @@ const useBlocks = (setGameover: () => void) => {
       addBlocks,
       clearFilledRows,
       isFreePositions,
-      clearAllBlocks: () => setBlocks([]),
+      clearAllBlocks,
     }),
-    [addBlocks, blocks, clearFilledRows, isBlockFree, isFreePositions]
+    [
+      addBlocks,
+      blocks,
+      clearAllBlocks,
+      clearFilledRows,
+      isBlockFree,
+      isFreePositions,
+    ]
   );
 };
 

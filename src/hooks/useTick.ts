@@ -16,43 +16,48 @@ const useTick = (
   );
   const [tick, setTick] = useState(INITIAL_TICKS);
 
-  useInterval(
-    () => {
-      const { shape, direction, position, isFreePositions, gamestate } =
-        stateRef.current;
+  const intervalCallback = useCallback(() => {
+    const { shape, direction, position, isFreePositions, gamestate } =
+      stateRef.current;
 
-      // If the game is over, don't do anything.
-      if (gamestate === "gameover") {
-        return;
-      }
+    // If the game is over, don't do anything.
+    if (gamestate === "gameover") {
+      return;
+    }
 
-      // Calculate the new position of the currently active shape.
-      const newPositions = calculateCoordinates(shape, {
-        direction,
-        x: position.x,
-        y: position.y + 1,
-      });
+    // Calculate the new position of the currently active shape.
+    const newPositions = calculateCoordinates(shape, {
+      direction,
+      x: position.x,
+      y: position.y + 1,
+    });
 
-      // If the next position is free, move down to it.
-      if (isFreePositions(newPositions)) {
-        moveDown();
-        return;
-      }
+    // If the next position is free, move down to it.
+    if (isFreePositions(newPositions)) {
+      moveDown();
+      return;
+    }
 
-      // Otherwise, persist the blocks and start a new shape.
-      const oldPositions = calculateCoordinates(shape, {
-        direction,
-        x: position.x,
-        y: position.y,
-      });
-      persistBlock(oldPositions);
-    },
-    stateRef.current.gamestate === "gameover"
-      ? 1000
-      : temporaryTick != null
-      ? temporaryTick
-      : tick
+    // Otherwise, persist the blocks and start a new shape.
+    const oldPositions = calculateCoordinates(shape, {
+      direction,
+      x: position.x,
+      y: position.y,
+    });
+    persistBlock(oldPositions);
+  }, [moveDown, persistBlock, stateRef]);
+
+  const delay = useMemo(
+    () =>
+      stateRef.current.gamestate === "gameover"
+        ? 1000
+        : temporaryTick != null
+        ? temporaryTick
+        : tick,
+    [stateRef, temporaryTick, tick]
   );
+
+  useInterval(intervalCallback, delay);
 
   const resetTick = useCallback(() => {
     setTick(INITIAL_TICKS);

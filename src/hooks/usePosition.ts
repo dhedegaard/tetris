@@ -24,15 +24,29 @@ const usePosition = () => {
     []
   );
 
+  const moveLeft = useCallback(
+    () => movePosition(Direction.LEFT),
+    [movePosition]
+  );
+  const moveRight = useCallback(
+    () => movePosition(Direction.RIGHT),
+    [movePosition]
+  );
+  const moveDown = useCallback(
+    () => movePosition(Direction.DOWN),
+    [movePosition]
+  );
+  const resetPosition = useCallback(() => setPosition(DEFAULT_POSITION), []);
+
   return useMemo(
     () => ({
       position,
-      moveLeft: () => movePosition(Direction.LEFT),
-      moveRight: () => movePosition(Direction.RIGHT),
-      moveDown: () => movePosition(Direction.DOWN),
-      resetPosition: () => setPosition(DEFAULT_POSITION),
+      moveLeft,
+      moveRight,
+      moveDown,
+      resetPosition,
     }),
-    [movePosition, position]
+    [moveDown, moveLeft, moveRight, position, resetPosition]
   );
 };
 
