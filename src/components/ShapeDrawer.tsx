@@ -14,8 +14,8 @@ interface Props {
 }
 const ShapeDrawer: FC<Props> = ({ color, coordinates }) => (
   <>
-    {coordinates.map((coord) => (
-      <Block key={`elem_${coord.x}_${coord.y}`} {...coord} color={color} />
+    {coordinates.map((coord, index) => (
+      <Block key={`elem_${color}_${index}`} {...coord} color={color} />
     ))}
   </>
 );
