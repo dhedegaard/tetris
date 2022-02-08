@@ -17,7 +17,7 @@ const Block: FC<Props> = (props) => (
     y={props.y * 20}
     color={props.color || DEFAULT_COLOR}
     fill={props.color || DEFAULT_COLOR}
-    stroke={darken(0.2, props.color || DEFAULT_COLOR)}
+    stroke={darken(0.1, props.color || DEFAULT_COLOR)}
   />
 );
 
