@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { Global, css } from "@emotion/react";
 import Music from "./components/Music";
@@ -19,13 +19,15 @@ const GlobalStyle: FC = () => (
   />
 );
 
-const Container = styled.div`
-  margin-top: 10px;
+const Container = styled.div<{ $zoom: number }>`
+  box-sizing: border-box;
   display: flex;
-  width: 100%;
-  height: 80%;
+  max-height: 100vh;
+  max-width: 100vw;
+  margin: 0 auto;
   justify-content: center;
   align-items: stretch;
+  zoom: ${({ $zoom }) => $zoom};
 `;
 
 export type GameMode = "single" | "local-coop";
@@ -37,11 +39,30 @@ const App: FC = () => {
   const [isBrowser, setIsBrowser] = useState(false);
   useEffect(() => setIsBrowser(true), []);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [zoom, setZoom] = useState(1);
+  useEffect(() => {
+    if (typeof window === "undefined" || containerRef.current == null) {
+      return;
+    }
+    const calculateZoom = () => {
+      if (containerRef.current == null) {
+        return;
+      }
+      const heightAspect =
+        window.innerHeight / containerRef.current.clientHeight;
+      setZoom(heightAspect);
+    };
+    calculateZoom();
+    window.addEventListener("resize", calculateZoom, { passive: true });
+    return () => window.removeEventListener("resize", calculateZoom);
+  }, []);
+
   return (
     <>
       <GlobalStyle />
       {musicEnabled && <Music />}
-      <Container key={gameMode}>
+      <Container ref={containerRef} $zoom={zoom} key={gameMode}>
         {gameMode === "local-coop" && <Game player="keyboard2" />}
         <GlobalPanel
           musicEnabled={musicEnabled}
