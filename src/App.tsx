@@ -11,6 +11,7 @@ const GlobalStyle: FC = () => (
       body {
         margin: 0;
         user-select: none;
+        background-color: rgb(34, 34, 34);
       }
       html * {
         font-family: "Press Start 2P", cursive !important;
