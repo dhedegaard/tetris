@@ -52,6 +52,7 @@ const App: FC = () => {
       }
       const heightAspect =
         window.innerHeight / containerRef.current.clientHeight;
+      // TODO: Avoid going outside 100vw.
       setZoom(heightAspect);
     };
     calculateZoom();
