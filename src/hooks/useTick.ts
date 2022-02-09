@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { StateRef } from ".";
-import { Coordinates } from "../components/ShapeDrawer";
-import { calculateCoordinates } from "../components/shapes";
+import { calculateCoordinates, colorFromShape } from "../components/shapes";
+import { Block } from "./useBlocks";
 import useInterval from "./useInterval";
 
 const INITIAL_TICKS = 800;
@@ -9,7 +9,7 @@ const INITIAL_TICKS = 800;
 const useTick = (
   stateRef: StateRef,
   moveDown: () => void,
-  persistBlock: (position: Coordinates) => void
+  persistBlock: (position: Block[]) => void
 ) => {
   const [temporaryTick, setTemporaryTick] = useState<number | undefined>(
     undefined
@@ -44,7 +44,13 @@ const useTick = (
       x: position.x,
       y: position.y,
     });
-    persistBlock(oldPositions);
+    const blockColor = colorFromShape(shape);
+    persistBlock(
+      oldPositions.map((block) => ({
+        ...block,
+        color: blockColor,
+      }))
+    );
   }, [moveDown, persistBlock, stateRef]);
 
   const delay = useMemo(

@@ -1,7 +1,8 @@
 import { MutableRefObject, useCallback, useMemo, useRef } from "react";
+import { useSwipeable } from "react-swipeable";
 import { Coordinate, Coordinates } from "../components/ShapeDrawer";
 import { Direction, Shapes } from "../components/shapes";
-import useBlocks from "./useBlocks";
+import useBlocks, { Block } from "./useBlocks";
 import useDirection from "./useDirection";
 import useGamestate, { Gamestate } from "./useGamestate";
 import useKeyboard, { Player } from "./useKeyboard";
@@ -10,7 +11,6 @@ import usePosition from "./usePosition";
 import useScore, { calculateScore } from "./useScore";
 import useShape from "./useShape";
 import useTick from "./useTick";
-import { useSwipeable } from "react-swipeable";
 
 export type StateRef = MutableRefObject<{
   position: Coordinate;
@@ -66,7 +66,7 @@ const useTetris = ({ player }: Input) => {
 
   /* Call this when we're ready to persist blocks. */
   const persistBlock = useCallback(
-    (blocksToPersist: Coordinates) => {
+    (blocksToPersist: Block[]) => {
       addBlocks(blocksToPersist);
       const rowsCleared = clearFilledRows();
       if (rowsCleared > 0) {

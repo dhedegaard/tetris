@@ -47,8 +47,8 @@ const Game: FC<Props> = ({ player }) => {
               y={position.y}
             />
           )}
-          {blocks.map(({ x, y }) => (
-            <Block x={x} y={y} key={`block_${x}_${y}`} />
+          {blocks.map(({ x, y, color }) => (
+            <Block x={x} y={y} color={color} key={`block_${x}_${y}`} />
           ))}
           {gamestate === "gameover" && (
             <GameOver onClick={() => startNewGame()} />

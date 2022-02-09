@@ -2,7 +2,7 @@ import { FC } from "react";
 
 const HEIGHT = 20;
 const WIDTH = 10;
-const COLOR = "#efefef";
+const COLOR = "#444";
 
 const Grid: FC = (props) => {
   const lines = [];

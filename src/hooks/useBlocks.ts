@@ -1,8 +1,12 @@
 import { useCallback, useMemo, useState } from "react";
 import { Coordinate, Coordinates } from "../components/ShapeDrawer";
 
+export interface Block extends Coordinate {
+  color: string;
+}
+
 const useBlocks = (setGameover: () => void) => {
-  const [blocks, setBlocks] = useState<Coordinates>([]);
+  const [blocks, setBlocks] = useState<Block[]>([]);
 
   /** Checks to see if the given coordinate is free of blocks, and inside the grid. */
   const isBlockFree = useCallback(
@@ -55,7 +59,7 @@ const useBlocks = (setGameover: () => void) => {
   }, [isRowFilled]);
 
   const addBlocks = useCallback(
-    (newBlocks: Coordinates) => {
+    (newBlocks: Block[]) => {
       setBlocks((oldBlocks) => {
         const result = [...oldBlocks];
         for (const newBlock of newBlocks) {

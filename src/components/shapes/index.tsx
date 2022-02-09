@@ -69,6 +69,8 @@ export const calculateCoordinates = (
   }
 };
 
+export const colorFromShape = (shape: Shapes): string => colorMap[shape];
+
 const colorMap: { [key in Shapes]: string } = {
   I: COLOR_I,
   J: COLOR_J,
