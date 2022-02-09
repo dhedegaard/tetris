@@ -2,7 +2,7 @@ import { FC } from "react";
 
 const HEIGHT = 20;
 const WIDTH = 10;
-const COLOR = "#444";
+const COLOR = "#000";
 
 const Grid: FC = (props) => {
   const lines = [];
@@ -35,7 +35,7 @@ const Grid: FC = (props) => {
       width={WIDTH * 20}
       height={HEIGHT * 20}
       style={{
-        backgroundColor: "#222",
+        backgroundColor: "#000",
         display: "block",
       }}
     >

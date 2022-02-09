@@ -1,7 +1,7 @@
 import { Direction, ShapeProps } from ".";
 import { Coordinates } from "../ShapeDrawer";
 
-export const COLOR_J = "blue";
+export const COLOR_J = "lightblue";
 
 const J = ({ direction, x, y }: ShapeProps): Coordinates => {
   switch (direction) {
