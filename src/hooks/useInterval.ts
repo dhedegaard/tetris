@@ -11,12 +11,12 @@ const useInterval = (callback: () => void, delay: number) => {
 
   useEffect(() => {
     const callback = () => {
-      const now = Date.now();
-      const delta = now - lastTickRef.current;
-      if (delta >= delayRef.current) {
-        console.log({ delta });
+      const { current: currentLastTick } = lastTickRef;
+      const { current: currentDelay } = delayRef;
+      const delta = Date.now() - currentLastTick;
+      if (delta >= currentDelay) {
         callbackRef.current();
-        lastTickRef.current = now;
+        lastTickRef.current += currentDelay;
       }
       window.requestAnimationFrame(callback);
     };
