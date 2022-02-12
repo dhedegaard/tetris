@@ -11,13 +11,16 @@ interface Props {
 
 const Block: FC<Props> = (props) => (
   <rect
-    width={20}
-    height={20}
+    width={19.5}
+    height={19.5}
     x={props.x * 20}
     y={props.y * 20}
     color={props.color || DEFAULT_COLOR}
     fill={props.color || DEFAULT_COLOR}
     stroke={darken(0.1, props.color || DEFAULT_COLOR)}
+    strokeWidth={0.5}
+    strokeLinecap="round"
+    strokeLinejoin="round"
   />
 );
 

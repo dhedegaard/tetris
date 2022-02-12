@@ -7,7 +7,6 @@ const Container = styled.div`
   border-top-left-radius: 2px;
   border-bottom-right-radius: 2px;
   padding: 8px;
-  margin-bottom: 8px;
 `;
 
 const Title = styled.div`
