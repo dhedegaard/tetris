@@ -6,7 +6,6 @@ const Grid = styled((props: SVGProps<SVGSVGElement>) => (
 ))`
   background-color: #000;
   display: block;
-  aspect-ratio: 1 / 2;
   box-sizing: border-box;
 `;
 
