@@ -11,13 +11,6 @@ const useInterval = (callback: () => void, delay: number) => {
   const lastTickRef = useRef(0);
   useIsomorphicLayoutEffect(() => {
     const callback: FrameRequestCallback = (time) => {
-      // Pause the ticks while we're hidden.
-      if (document.hidden) {
-        lastTickRef.current = time;
-        window.requestAnimationFrame(callback);
-        return;
-      }
-
       // Determine how much time has passed since the last tick.
       const { current: currentLastTick } = lastTickRef;
       const { current: currentDelay } = delayRef;
