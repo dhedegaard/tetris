@@ -22,6 +22,7 @@ const Panel = styled.div<{ noBorderLeft: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  overflow-y: auto;
 `;
 
 const Container = styled.div`
