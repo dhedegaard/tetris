@@ -11,6 +11,8 @@ import { Player } from "./hooks/useKeyboard";
 const Container = styled.div`
   position: relative;
   display: flex;
+  aspect-ratio: 1 / 2;
+  height: 100%;
 `;
 
 const GridContainer = styled.div`

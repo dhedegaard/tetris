@@ -5,8 +5,11 @@ import { GameMode } from "./App";
 
 const Panel = styled.div<{ noBorderLeft: boolean }>`
   background: #000;
-  height: ${400 - 8 * 2}px;
+  height: 100%;
+  min-width: 195px;
+  aspect-ratio: 120 / 400;
   border: 4px solid purple;
+  box-sizing: border-box;
   border-right-width: 0;
   ${(p) =>
     p.noBorderLeft &&
@@ -14,7 +17,6 @@ const Panel = styled.div<{ noBorderLeft: boolean }>`
       border-left-width: 0;
     `}
   padding: 8px;
-  min-width: 150px;
   font-size: 12px;
 `;
 
