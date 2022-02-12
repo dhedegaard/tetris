@@ -18,6 +18,10 @@ const Panel = styled.div<{ noBorderLeft: boolean }>`
     `}
   padding: 8px;
   font-size: 12px;
+  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 `;
 
 const Container = styled.div`
@@ -26,7 +30,6 @@ const Container = styled.div`
   border-top-left-radius: 2px;
   border-bottom-right-radius: 2px;
   padding: 8px;
-  margin-bottom: 8px;
 `;
 
 const Title = styled.div`
