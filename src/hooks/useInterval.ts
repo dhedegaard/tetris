@@ -23,9 +23,12 @@ const useInterval = (callback: () => void, delay: number) => {
       const { current: currentDelay } = delayRef;
       const delta = time - currentLastTick;
       if (delta >= currentDelay) {
+        // We're supposed to tick, go to the nearest tick delay and call the callback.
+        lastTickRef.current += Math.floor(delta / currentDelay) * currentDelay;
         callbackRef.current();
-        lastTickRef.current += currentDelay;
       }
+
+      // Repeat.
       window.requestAnimationFrame(callback);
     };
     window.requestAnimationFrame(callback);
