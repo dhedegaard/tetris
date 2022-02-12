@@ -1,26 +1,27 @@
 import { useEffect, useRef } from "react";
 
 const useInterval = (callback: () => void, delay: number) => {
+  const delayRef = useRef(delay);
+  delayRef.current = delay;
+
+  const lastTickRef = useRef(Date.now());
+
   const callbackRef = useRef(callback);
   callbackRef.current = callback;
 
-  const timerRef = useRef<ReturnType<typeof setInterval> | undefined>(
-    undefined
-  );
-
   useEffect(() => {
-    if (timerRef.current != null) {
-      clearInterval(timerRef.current);
-      timerRef.current = undefined;
-    }
-    timerRef.current = setInterval(() => callbackRef.current(), delay);
-    return () => {
-      if (timerRef.current != null) {
-        clearInterval(timerRef.current);
-        timerRef.current = undefined;
+    const callback = () => {
+      const now = Date.now();
+      const delta = now - lastTickRef.current;
+      if (delta >= delayRef.current) {
+        console.log({ delta });
+        callbackRef.current();
+        lastTickRef.current = now;
       }
+      window.requestAnimationFrame(callback);
     };
-  }, [delay]);
+    window.requestAnimationFrame(callback);
+  }, []);
 };
 
 export default useInterval;

@@ -51,6 +51,7 @@ const useTick = (
         color: blockColor,
       }))
     );
+    setTemporaryTick(undefined);
   }, [moveDown, persistBlock, stateRef]);
 
   const delay = useMemo(
