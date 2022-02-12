@@ -5,16 +5,15 @@ const useInterval = (callback: () => void, delay: number) => {
   const delayRef = useRef(delay);
   delayRef.current = delay;
 
-  const lastTickRef = useRef(Date.now());
-
   const callbackRef = useRef(callback);
   callbackRef.current = callback;
 
+  const lastTickRef = useRef(0);
   useIsomorphicLayoutEffect(() => {
-    const callback = () => {
+    const callback: FrameRequestCallback = (time) => {
       const { current: currentLastTick } = lastTickRef;
       const { current: currentDelay } = delayRef;
-      const delta = Date.now() - currentLastTick;
+      const delta = time - currentLastTick;
       if (delta >= currentDelay) {
         callbackRef.current();
         lastTickRef.current += currentDelay;
