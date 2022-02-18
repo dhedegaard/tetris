@@ -124,7 +124,7 @@ const useTetris = ({ player }: Input) => {
   /* While the next position is free, move down fast. */
   const setMoveToBottom = useCallback(
     (moveToBottom: boolean) => {
-      setTemporaryTick(moveToBottom ? 20 : undefined);
+      setTemporaryTick(moveToBottom ? 40 : undefined);
     },
     [setTemporaryTick]
   );
