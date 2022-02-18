@@ -6,7 +6,6 @@ import { GameMode } from "./App";
 const Panel = styled.div<{ noBorderLeft: boolean }>`
   background: #000;
   height: 100%;
-  min-width: 195px;
   aspect-ratio: 120 / 400;
   border: 4px solid purple;
   box-sizing: border-box;
@@ -17,7 +16,7 @@ const Panel = styled.div<{ noBorderLeft: boolean }>`
       border-left-width: 0;
     `}
   padding: 8px;
-  font-size: 12px;
+  font-size: 2vh;
   gap: 8px;
   display: flex;
   flex-direction: column;

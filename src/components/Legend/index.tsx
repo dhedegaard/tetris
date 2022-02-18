@@ -10,7 +10,8 @@ const LegendContainer = styled.div`
   background-color: #000;
   border: 3px solid purple;
   border-left: none;
-  font-size: 12px;
+  font-size: 2vh;
+  aspect-ratio: 120 / 400;
   display: flex;
   flex-direction: column;
   padding: 8px;
@@ -18,7 +19,6 @@ const LegendContainer = styled.div`
   align-self: normal;
   justify-content: space-between;
   width: 100%;
-  min-width: 130px;
   overflow-y: auto;
 `;
 
