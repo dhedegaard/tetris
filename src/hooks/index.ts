@@ -73,9 +73,9 @@ const useTetris = ({ player }: Input) => {
         increaseScore(calculateScore(level, rowsCleared));
         incrementRowsCleared(rowsCleared);
       }
-      nextShape();
       resetPosition();
       resetDirection();
+      nextShape();
       setTemporaryTick(undefined); // Disable any fast temp ticks.
       setTick(calculateTickRate(level) * 1000);
     },
