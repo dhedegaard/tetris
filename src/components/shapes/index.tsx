@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import ShapeDrawer, { Coordinates } from "../ShapeDrawer";
 import I, { COLOR_I } from "./I";
 import J, { COLOR_J } from "./J";
@@ -84,13 +84,29 @@ const colorMap: { [key in Shapes]: string } = {
 /** Renders a given shape. */
 export const Shape: FC<ShapeProps & { shape: Shapes }> = ({
   shape,
-  ...props
-}) => (
-  <ShapeDrawer
-    coordinates={calculateCoordinates(shape, props)}
-    color={colorMap[shape]}
-  />
-);
+  x,
+  y,
+  direction,
+}) => {
+  const coordinates = useMemo(
+    () =>
+      calculateCoordinates(shape, {
+        direction,
+        x: 0,
+        y: 0,
+      }),
+    [direction, shape]
+  );
+
+  return (
+    <ShapeDrawer
+      x={x}
+      y={y}
+      coordinates={coordinates}
+      color={colorMap[shape]}
+    />
+  );
+};
 
 export const getRandomShape = (): Shapes =>
   SHAPES[Math.floor(Math.random() * (SHAPES.length - 1))]!;

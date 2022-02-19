@@ -38,12 +38,7 @@ const NextShape: FC<Props> = ({ nextShapes }) => (
       .slice()
       .reverse()
       .map((shape, idx) => (
-        <ShapeContainer
-          viewBox="0 0 90 70"
-          width="100%"
-          height="18vh"
-          key={shape + idx}
-        >
+        <ShapeContainer viewBox="0 0 5 3" width="100%" key={shape + idx}>
           <Shape direction={Direction.RIGHT} shape={shape} x={1} y={1} />
         </ShapeContainer>
       ))}

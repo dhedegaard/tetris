@@ -9,16 +9,15 @@ interface Props {
   color?: string;
 }
 
-const Block: FC<Props> = (props) => (
+const Block: FC<Props> = ({ x, y, color }) => (
   <rect
-    width={19.5}
-    height={19.5}
-    x={props.x * 20}
-    y={props.y * 20}
-    color={props.color || DEFAULT_COLOR}
-    fill={props.color || DEFAULT_COLOR}
-    stroke={darken(0.1, props.color || DEFAULT_COLOR)}
-    strokeWidth={0.5}
+    width={1}
+    height={1}
+    x={x}
+    y={y}
+    fill={color || DEFAULT_COLOR}
+    stroke="#000"
+    strokeWidth={0.02}
     strokeLinecap="round"
     strokeLinejoin="round"
   />
