@@ -3,12 +3,7 @@ import { useSwipeable } from "react-swipeable";
 import { Coordinates } from "../components/ShapeDrawer";
 import { Direction, Shapes } from "../components/shapes";
 import { startNewGame } from "../store/actions/game";
-import {
-  attemptPersistBlocks,
-  Block,
-  clearFilledRows,
-  Coordinate,
-} from "../store/slices/blocks";
+import { Coordinate } from "../store/slices/blocks";
 import { tickActions } from "../store/slices/tick";
 import { useTetrisDispatch } from "../store/tetris";
 import useBlocks from "./useBlocks";
@@ -76,13 +71,12 @@ const useTetris = ({ player }: Input) => {
 
   /* While the next position is free, move down fast. */
   const setMoveToBottom = useCallback(
-    (moveToBottom: boolean) => {
+    (moveToBottom: boolean) =>
       dispatch(
         moveToBottom
           ? tickActions.setTemporaryTick(40)
           : tickActions.clearTemporaryTick()
-      );
-    },
+      ),
     [dispatch]
   );
 

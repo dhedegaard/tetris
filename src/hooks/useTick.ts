@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo } from "react";
+import { createSelector } from "reselect";
 import { StateRef } from ".";
 import { calculateCoordinates, colorFromShape } from "../components/shapes";
 import { attemptPersistBlocks, clearFilledRows } from "../store/slices/blocks";
@@ -11,21 +12,17 @@ import {
 } from "../store/tetris";
 import useInterval from "./useInterval";
 
-const tickSelector = (state: TetrisStoreState) => state.tick.tick;
 const temporaryTickSelector = (state: TetrisStoreState) =>
   state.tick.temporateTick;
+const currentTickSelector = createSelector(
+  selectTickrate,
+  temporaryTickSelector,
+  (tick, temporaryTick) => temporaryTick ?? tick * 1000
+);
 
 const useTick = (stateRef: StateRef, moveDown: () => void) => {
   const dispatch = useTetrisDispatch();
-
-  const tick = useTetrisSelector(tickSelector);
-  const temporaryTick = useTetrisSelector(tickSelector);
-
-  // When the tickRate in the store changes, update it.
-  const tickRate = useTetrisSelector(selectTickrate);
-  useEffect(() => {
-    dispatch(tickActions.setTickRate(tickRate * 1000));
-  }, [dispatch, tickRate]);
+  const tick = useTetrisSelector(currentTickSelector);
 
   const intervalCallback = useCallback(() => {
     const {
@@ -79,13 +76,8 @@ const useTick = (stateRef: StateRef, moveDown: () => void) => {
   }, [dispatch, moveDown, stateRef]);
 
   const delay = useMemo(
-    () =>
-      stateRef.current.gamestate === "gameover"
-        ? 1000
-        : temporaryTick != null
-        ? temporaryTick
-        : tick,
-    [stateRef, temporaryTick, tick]
+    () => (stateRef.current.gamestate === "gameover" ? 1000 : tick),
+    [stateRef, tick]
   );
 
   useInterval(intervalCallback, delay);
