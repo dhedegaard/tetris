@@ -1,4 +1,5 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
+import { TetrisDispatch, TetrisState } from "./reducer";
 
 /** Calculate the amount of score points earned, based on the number of lines cleared and the level. */
 export const calculateScore = (level: number, linesCleared: number): number => {
@@ -18,23 +19,28 @@ export const calculateScore = (level: number, linesCleared: number): number => {
 };
 
 /** Handles keeping track of the current score in the game. */
-const useScore = () => {
-  const [score, setScore] = useState(0);
-
+const useScore = (state: TetrisState, dispatch: TetrisDispatch) => {
   const increaseScore = useCallback(
-    (amount: number) => setScore((oldScore) => oldScore + amount),
-    []
+    (amount: number) =>
+      dispatch({
+        type: "INCREASE_SCORE",
+        amount,
+      }),
+    [dispatch]
   );
 
-  const resetScore = useCallback(() => setScore(0), []);
+  const resetScore = useCallback(
+    () => dispatch({ type: "RESET_SCORE" }),
+    [dispatch]
+  );
 
   return useMemo(
     () => ({
-      score,
+      score: state.score,
       increaseScore,
       resetScore,
     }),
-    [increaseScore, resetScore, score]
+    [increaseScore, resetScore, state.score]
   );
 };
 

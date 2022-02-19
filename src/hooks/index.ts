@@ -38,7 +38,7 @@ const useTetris = ({ player }: Input) => {
     state,
     dispatch
   );
-  const { score, increaseScore, resetScore } = useScore();
+  const { score, increaseScore, resetScore } = useScore(state, dispatch);
   const {
     blocks,
     addBlocks,
