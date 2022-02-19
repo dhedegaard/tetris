@@ -49,7 +49,7 @@ const Game: FC<Props> = ({ player }) => {
             />
           )}
           {blocks.map(({ x, y, color }) => (
-            <Block x={x} y={y} color={color} key={`block_${x}_${y}`} />
+            <Block x={x} y={y} fill={color} key={`block_${x}_${y}`} />
           ))}
           {gamestate === "gameover" && <GameOver onClick={startNewGame} />}
         </Grid>
