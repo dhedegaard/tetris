@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { StateRef } from ".";
 import { calculateCoordinates, colorFromShape } from "../components/shapes";
-import { Block } from "./useBlocks";
+import { Block } from "../store/slices/blocks";
 import useInterval from "./useInterval";
 
 const INITIAL_TICKS = 800;

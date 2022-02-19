@@ -15,7 +15,6 @@ const shapeSlice = createSlice({
         state.shapeQueue.push(...getRandomShapes());
       }
       state.shapeQueue.shift();
-      return state;
     },
   },
 });

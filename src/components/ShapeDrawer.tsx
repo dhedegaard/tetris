@@ -1,12 +1,8 @@
 import styled from "@emotion/styled";
 import { FC, useLayoutEffect, useRef, useState } from "react";
+import { Coordinate } from "../store/slices/blocks";
 import Block from "./Block";
 import { ShapeElement } from "./shapes";
-
-export interface Coordinate {
-  x: number;
-  y: number;
-}
 
 export type Coordinates = Coordinate[];
 

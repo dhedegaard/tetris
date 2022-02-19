@@ -1,12 +1,22 @@
-import { useCallback, useMemo, useState } from "react";
-import { Coordinate, Coordinates } from "../components/ShapeDrawer";
+import { useCallback, useMemo } from "react";
+import { Coordinates } from "../components/ShapeDrawer";
+import {
+  attemptPersistBlocks,
+  Block,
+  blocksActions,
+  Coordinate,
+} from "../store/slices/blocks";
+import {
+  TetrisStoreState,
+  useTetrisDispatch,
+  useTetrisSelector,
+} from "../store/tetris";
 
-export interface Block extends Coordinate {
-  color: string;
-}
+const blocksSelect = (state: TetrisStoreState) => state.blocks.blocks;
 
-const useBlocks = (setGameover: () => void) => {
-  const [blocks, setBlocks] = useState<Block[]>([]);
+const useBlocks = () => {
+  const blocks = useTetrisSelector(blocksSelect);
+  const dispatch = useTetrisDispatch();
 
   /** Checks to see if the given coordinate is free of blocks, and inside the grid. */
   const isBlockFree = useCallback(
@@ -18,62 +28,11 @@ const useBlocks = (setGameover: () => void) => {
     [blocks]
   );
 
-  const isRowFilled = useCallback(
-    (y: number, blockState: Coordinates): boolean =>
-      blockState.filter((b) => b.y === y).length === 10,
-    []
-  );
-
-  /**
-   * Clears filled rows from the blocks, moving all the blocks above down as well.
-   * @returns The number of rows cleared.
-   */
-  const clearFilledRows = useCallback((): number => {
-    let numberOfRowsCleared = 0;
-    // The number of rows to move the blocks down by.
-    setBlocks((oldBlocks) => {
-      let result: typeof oldBlocks = [];
-      let dy = 0;
-      let rowsCleared = 0;
-      for (let y = 19; y >= 0; y--) {
-        if (isRowFilled(y, oldBlocks)) {
-          rowsCleared++;
-          dy++;
-        } else {
-          result = [
-            ...result,
-            ...oldBlocks
-              .filter((b) => b.y === y)
-              // eslint-disable-next-line no-loop-func
-              .map((b) => ({
-                ...b,
-                y: y + dy,
-              })),
-          ];
-        }
-      }
-      numberOfRowsCleared = rowsCleared;
-      return result;
-    });
-    return numberOfRowsCleared;
-  }, [isRowFilled]);
-
   const addBlocks = useCallback(
     (newBlocks: Block[]) => {
-      setBlocks((oldBlocks) => {
-        const result = [...oldBlocks];
-        for (const newBlock of newBlocks) {
-          if (isBlockFree(newBlock)) {
-            result.push(newBlock);
-          } else {
-            // If we're trying to persist a block, that's not free, the game is over.
-            setGameover();
-          }
-        }
-        return result;
-      });
+      dispatch(attemptPersistBlocks(newBlocks));
     },
-    [isBlockFree, setGameover]
+    [dispatch]
   );
 
   /** Check that all the given positions are free in the grid. */
@@ -83,25 +42,20 @@ const useBlocks = (setGameover: () => void) => {
     [isBlockFree]
   );
 
-  const clearAllBlocks = useCallback(() => setBlocks([]), []);
+  const clearAllBlocks = useCallback(
+    () => dispatch(blocksActions.clearAllBlocks()),
+    [dispatch]
+  );
 
   return useMemo(
     () => ({
       blocks,
       isBlockFree,
       addBlocks,
-      clearFilledRows,
       isFreePositions,
       clearAllBlocks,
     }),
-    [
-      addBlocks,
-      blocks,
-      clearAllBlocks,
-      clearFilledRows,
-      isBlockFree,
-      isFreePositions,
-    ]
+    [addBlocks, blocks, clearAllBlocks, isBlockFree, isFreePositions]
   );
 };
 

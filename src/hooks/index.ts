@@ -8,10 +8,17 @@ import {
 } from "react";
 import { useSelector } from "react-redux";
 import { useSwipeable } from "react-swipeable";
-import { Coordinate, Coordinates } from "../components/ShapeDrawer";
+import { Coordinates } from "../components/ShapeDrawer";
 import { Direction, Shapes } from "../components/shapes";
+import {
+  attemptPersistBlocks,
+  Block,
+  clearFilledRows,
+  Coordinate,
+} from "../store/slices/blocks";
 import { selectTickrate } from "../store/slices/level";
-import useBlocks, { Block } from "./useBlocks";
+import { useTetrisDispatch } from "../store/tetris";
+import useBlocks from "./useBlocks";
 import useDirection from "./useDirection";
 import useGamestate, { Gamestate } from "./useGamestate";
 import useKeyboard, { Player } from "./useKeyboard";
@@ -36,19 +43,15 @@ interface Input {
 }
 /** A hook that contains all the logic regarding tetris. */
 const useTetris = ({ player }: Input) => {
-  const { gamestate, setGameover, setAlive } = useGamestate();
+  const dispatch = useTetrisDispatch();
+
+  const { gamestate, setAlive } = useGamestate();
   const { position, moveLeft, moveRight, moveDown, resetPosition } =
     usePosition();
   const { shape, nextShape, peekShapes } = useShape();
   const { direction, resetDirection, setNextDirection } = useDirection();
   const { score, increaseScore, resetScore } = useScore();
-  const {
-    blocks,
-    addBlocks,
-    clearFilledRows,
-    isFreePositions,
-    clearAllBlocks,
-  } = useBlocks(setGameover);
+  const { blocks, addBlocks, isFreePositions, clearAllBlocks } = useBlocks();
   const { level, incrementRowsCleared, resetLevel } = useLevel();
 
   // Build a ref os state, for various cases.
@@ -76,22 +79,17 @@ const useTetris = ({ player }: Input) => {
   /* Call this when we're ready to persist blocks. */
   const persistBlock = useCallback(
     (blocksToPersist: Block[]) => {
-      addBlocks(blocksToPersist);
-      const rowsCleared = clearFilledRows();
-      if (rowsCleared > 0) {
-        increaseScore(calculateScore(level, rowsCleared));
-        incrementRowsCleared(rowsCleared);
-      }
-      resetPosition();
-      resetDirection();
-      nextShape();
-      setTemporaryTick(undefined); // Disable any fast temp ticks.
+      dispatch(attemptPersistBlocks(blocksToPersist)).then((success) => {
+        // TODO: Handle in the thunked action instead.
+        if (success) {
+          setTemporaryTick(undefined);
+          return dispatch(clearFilledRows());
+        }
+      });
     },
-    // TODO: Fix circular dependency later :)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
+      dispatch,
       addBlocks,
-      clearFilledRows,
       increaseScore,
       incrementRowsCleared,
       level,
