@@ -29,18 +29,20 @@ const ShapeDrawer: FC<Props> = ({ x, y, shape, coordinates }) => {
   const [transform, set] = useState(coordToTranslateTransform(x, y));
 
   useLayoutEffect(() => {
+    // When we get a new shape, clear the refs and start over.
+    if (oldShapeKey.current !== shape.key) {
+      oldX.current = x;
+      oldY.current = y;
+      oldShapeKey.current = shape.key;
+      set(coordToTranslateTransform(x, y));
+      return;
+    }
+
     // Fetch the old coordinates and replace the refs.
     const x1 = oldX.current;
     const y1 = oldY.current;
     oldX.current = x;
     oldY.current = y;
-
-    // Avoid animating if there's no different in the old and the new
-    // coordinates or if the shape key changed.
-    if ((x === x1 && y === y1) || oldShapeKey.current !== shape.key) {
-      set(coordToTranslateTransform(x, y));
-      return;
-    }
 
     // Make sure we start at the old position.
     set(coordToTranslateTransform(x1, y1));
