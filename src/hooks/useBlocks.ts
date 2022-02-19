@@ -28,13 +28,6 @@ const useBlocks = () => {
     [blocks]
   );
 
-  const addBlocks = useCallback(
-    (newBlocks: Block[]) => {
-      dispatch(attemptPersistBlocks(newBlocks));
-    },
-    [dispatch]
-  );
-
   /** Check that all the given positions are free in the grid. */
   const isFreePositions = useCallback(
     (newPositions: Coordinates): boolean =>
@@ -51,11 +44,10 @@ const useBlocks = () => {
     () => ({
       blocks,
       isBlockFree,
-      addBlocks,
       isFreePositions,
       clearAllBlocks,
     }),
-    [addBlocks, blocks, clearAllBlocks, isBlockFree, isFreePositions]
+    [blocks, clearAllBlocks, isBlockFree, isFreePositions]
   );
 };
 

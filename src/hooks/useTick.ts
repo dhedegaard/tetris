@@ -1,18 +1,19 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { StateRef } from ".";
 import { calculateCoordinates, colorFromShape } from "../components/shapes";
-import { Block } from "../store/slices/blocks";
+import {
+  attemptPersistBlocks,
+  Block,
+  clearFilledRows,
+} from "../store/slices/blocks";
 import { selectTickrate } from "../store/slices/level";
-import { useTetrisSelector } from "../store/tetris";
+import { useTetrisDispatch, useTetrisSelector } from "../store/tetris";
 import useInterval from "./useInterval";
 
 const INITIAL_TICKS = 800;
 
-const useTick = (
-  stateRef: StateRef,
-  moveDown: () => void,
-  persistBlock: (position: Block[]) => void
-) => {
+const useTick = (stateRef: StateRef, moveDown: () => void) => {
+  const dispatch = useTetrisDispatch();
   const [temporaryTick, setTemporaryTick] = useState<number | undefined>(
     undefined
   );
@@ -59,14 +60,22 @@ const useTick = (
       y: position.y,
     });
     const blockColor = colorFromShape(shape);
-    persistBlock(
-      oldPositions.map((block) => ({
-        ...block,
-        color: blockColor,
-      }))
-    );
+    dispatch(
+      attemptPersistBlocks(
+        oldPositions.map((block) => ({
+          ...block,
+          color: blockColor,
+        }))
+      )
+    ).then((success) => {
+      if (success) {
+        setTemporaryTick(undefined);
+        return dispatch(clearFilledRows());
+      }
+    });
+
     setTemporaryTick(undefined);
-  }, [moveDown, persistBlock, stateRef]);
+  }, [dispatch, moveDown, stateRef]);
 
   const delay = useMemo(
     () =>
@@ -86,12 +95,7 @@ const useTick = (
   }, []);
 
   return useMemo(
-    () => ({
-      tick,
-      setTick,
-      setTemporaryTick,
-      resetTick,
-    }),
+    () => ({ tick, setTemporaryTick, resetTick }),
     [resetTick, tick]
   );
 };

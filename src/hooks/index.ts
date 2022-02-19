@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { MutableRefObject, useCallback, useMemo, useRef } from "react";
 import { useSwipeable } from "react-swipeable";
 import { Coordinates } from "../components/ShapeDrawer";
@@ -43,8 +42,8 @@ const useTetris = ({ player }: Input) => {
   const { shape, nextShape, peekShapes } = useShape();
   const { direction, resetDirection, setNextDirection } = useDirection();
   const { score, increaseScore, resetScore } = useScore();
-  const { blocks, addBlocks, isFreePositions, clearAllBlocks } = useBlocks();
-  const { level, incrementRowsCleared, resetLevel } = useLevel();
+  const { blocks, isFreePositions, clearAllBlocks } = useBlocks();
+  const { level, resetLevel } = useLevel();
 
   // Build a ref os state, for various cases.
   const stateRef: StateRef = useRef({
@@ -68,25 +67,8 @@ const useTetris = ({ player }: Input) => {
     increaseScore,
   };
 
-  /* Call this when we're ready to persist blocks. */
-  const persistBlock = useCallback(
-    (blocksToPersist: Block[]) => {
-      dispatch(attemptPersistBlocks(blocksToPersist)).then((success) => {
-        if (success) {
-          setTemporaryTick(undefined);
-          return dispatch(clearFilledRows());
-        }
-      });
-    },
-    [clearFilledRows]
-  );
-
   // Handle ticks
-  const { setTick, setTemporaryTick, resetTick } = useTick(
-    stateRef,
-    moveDown,
-    persistBlock
-  );
+  const { setTemporaryTick, resetTick } = useTick(stateRef, moveDown);
 
   /* Start a new game, setup the board again. */
   const newGame = useCallback(() => {
