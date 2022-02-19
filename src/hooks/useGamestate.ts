@@ -1,20 +1,25 @@
 import { useCallback, useMemo, useState } from "react";
+import { TetrisDispatch, TetrisState } from "./reducer";
 
 export type Gamestate = "alive" | "gameover";
 
-const useGamestate = () => {
-  const [gamestate, setGamestate] = useState<Gamestate>("alive");
-
-  const setAlive = useCallback(() => setGamestate("alive"), []);
-  const setGameover = useCallback(() => setGamestate("gameover"), []);
+const useGamestate = (state: TetrisState, dispatch: TetrisDispatch) => {
+  const setAlive = useCallback(
+    () => dispatch({ type: "SET_ALIVE" }),
+    [dispatch]
+  );
+  const setGameover = useCallback(
+    () => dispatch({ type: "SET_GAMEOVER" }),
+    [dispatch]
+  );
 
   return useMemo(
     () => ({
-      gamestate,
+      gamestate: state.gamestate,
       setAlive,
       setGameover,
     }),
-    [gamestate, setAlive, setGameover]
+    [setAlive, setGameover, state.gamestate]
   );
 };
 

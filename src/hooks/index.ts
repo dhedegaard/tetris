@@ -1,7 +1,14 @@
-import { MutableRefObject, useCallback, useMemo, useRef } from "react";
+import {
+  MutableRefObject,
+  useCallback,
+  useMemo,
+  useReducer,
+  useRef,
+} from "react";
 import { useSwipeable } from "react-swipeable";
 import { Coordinate, Coordinates } from "../components/ShapeDrawer";
 import { Direction, Shapes } from "../components/shapes";
+import { initialState, tetrisReducer } from "./reducer";
 import useBlocks, { Block } from "./useBlocks";
 import useDirection from "./useDirection";
 import useGamestate, { Gamestate } from "./useGamestate";
@@ -27,7 +34,9 @@ interface Input {
 }
 /** A hook that contains all the logic regarding tetris. */
 const useTetris = ({ player }: Input) => {
-  const { gamestate, setGameover, setAlive } = useGamestate();
+  const [state, dispatch] = useReducer(tetrisReducer, initialState);
+
+  const { gamestate, setGameover, setAlive } = useGamestate(state, dispatch);
   const { position, moveLeft, moveRight, moveDown, resetPosition } =
     usePosition();
   const { shape, nextShape, peekShapes } = useShape();
