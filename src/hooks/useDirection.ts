@@ -1,5 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
-import { Direction, nextDirection } from "../components/shapes";
+import { useCallback, useMemo } from "react";
 import { TetrisDispatch, TetrisState } from "./reducer";
 
 const useDirections = (state: TetrisState, dispatch: TetrisDispatch) => {
