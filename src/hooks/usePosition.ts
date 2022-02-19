@@ -1,25 +1,24 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { Direction } from "../components/shapes";
+import { TetrisDispatch, TetrisState } from "./reducer";
 
-const DEFAULT_POSITION = Object.freeze({ x: 4, y: 1 });
-
-const usePosition = () => {
-  const [position, setPosition] =
-    useState<{ x: number; y: number }>(DEFAULT_POSITION);
-
+const usePosition = (state: TetrisState, dispatch: TetrisDispatch) => {
   const movePosition = useCallback(
     (direction: Direction) =>
-      setPosition((oldPosition) => {
-        switch (direction) {
-          case Direction.UP:
-            return { ...oldPosition, y: oldPosition.y - 1 };
-          case Direction.DOWN:
-            return { ...oldPosition, y: oldPosition.y + 1 };
-          case Direction.LEFT:
-            return { ...oldPosition, x: oldPosition.x - 1 };
-          case Direction.RIGHT:
-            return { ...oldPosition, x: oldPosition.x + 1 };
-        }
+      dispatch({
+        type: "MOVE_POSITION",
+        dx:
+          direction === Direction.LEFT
+            ? -1
+            : direction === Direction.RIGHT
+            ? 1
+            : 0,
+        dy:
+          direction === Direction.DOWN
+            ? 1
+            : direction === Direction.UP
+            ? -1
+            : 0,
       }),
     []
   );
@@ -36,17 +35,20 @@ const usePosition = () => {
     () => movePosition(Direction.DOWN),
     [movePosition]
   );
-  const resetPosition = useCallback(() => setPosition(DEFAULT_POSITION), []);
+  const resetPosition = useCallback(
+    () => dispatch({ type: "RESET_POSITION" }),
+    [dispatch]
+  );
 
   return useMemo(
     () => ({
-      position,
+      position: state.position,
       moveLeft,
       moveRight,
       moveDown,
       resetPosition,
     }),
-    [moveDown, moveLeft, moveRight, position, resetPosition]
+    [moveDown, moveLeft, moveRight, resetPosition, state.position]
   );
 };
 
