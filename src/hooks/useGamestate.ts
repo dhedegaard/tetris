@@ -1,15 +1,18 @@
 import { useCallback, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { gamestateActions } from "../store/slices/gamestate";
-import { TetrisStoreState } from "../store/tetris";
+import {
+  TetrisStoreState,
+  useTetrisDispatch,
+  useTetrisSelector,
+} from "../store/tetris";
 
 const selectGamestate = (state: TetrisStoreState) => state.gamestate.gamestate;
 
 export type Gamestate = "alive" | "gameover";
 
 const useGamestate = () => {
-  const gamestate = useSelector(selectGamestate);
-  const dispatch = useDispatch();
+  const gamestate = useTetrisSelector(selectGamestate);
+  const dispatch = useTetrisDispatch();
 
   const setAlive = useCallback(
     () => dispatch(gamestateActions.setAlive()),

@@ -1,14 +1,17 @@
 import { useCallback, useMemo } from "react";
 import { Direction } from "../components/shapes";
-import { useDispatch, useSelector } from "react-redux";
-import { TetrisStoreState } from "../store/tetris";
 import { positionActions } from "../store/slices/position";
+import {
+  TetrisStoreState,
+  useTetrisDispatch,
+  useTetrisSelector,
+} from "../store/tetris";
 
 const selectDirection = (state: TetrisStoreState) => state.position.position;
 
 const usePosition = () => {
-  const dispatch = useDispatch();
-  const position = useSelector(selectDirection);
+  const dispatch = useTetrisDispatch();
+  const position = useTetrisSelector(selectDirection);
 
   const movePosition = useCallback(
     (direction: Direction) =>

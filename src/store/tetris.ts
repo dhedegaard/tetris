@@ -1,4 +1,5 @@
-import { configureStore, EnhancedStore } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import gamestate from "./slices/gamestate";
 import position from "./slices/position";
 
@@ -11,6 +12,10 @@ const tetrisStore = configureStore({
 
 export default tetrisStore;
 
-export type TetrisStoreState = typeof tetrisStore extends EnhancedStore<infer S>
-  ? S
-  : never;
+export type TetrisStoreState = ReturnType<typeof tetrisStore["getState"]>;
+
+export type TetrisStoreDispatch = typeof tetrisStore.dispatch;
+
+export const useTetrisDispatch = () => useDispatch<TetrisStoreDispatch>();
+export const useTetrisSelector: TypedUseSelectorHook<TetrisStoreState> =
+  useSelector;
