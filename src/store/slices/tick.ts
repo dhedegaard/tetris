@@ -6,9 +6,6 @@ const tickSlice = createSlice({
     temporateTick: undefined as undefined | number,
   },
   reducers: {
-    resetTickRate: (state) => {
-      state.temporateTick = undefined;
-    },
     clearTemporaryTick: (state) => {
       state.temporateTick = undefined;
     },
