@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { FC, useLayoutEffect, useRef, useState } from "react";
+import { ShapeElement } from "../hooks/useShape";
 import Block from "./Block";
 
 export interface Coordinate {
@@ -10,8 +11,8 @@ export interface Coordinate {
 export type Coordinates = Coordinate[];
 
 interface Props {
-  color: string;
   coordinates: Coordinates;
+  shape: ShapeElement;
   x: number;
   y: number;
 }
@@ -20,9 +21,10 @@ const coordToTranslateTransform = (x: number, y: number) =>
   `translate(${x}, ${y})`;
 const ANIMATION_DURATION = 40;
 
-const ShapeDrawer: FC<Props> = ({ x, y, color, coordinates }) => {
+const ShapeDrawer: FC<Props> = ({ x, y, shape, coordinates }) => {
   const oldX = useRef(x);
   const oldY = useRef(y);
+  const oldShapeKey = useRef(shape.key);
 
   const [transform, set] = useState(coordToTranslateTransform(x, y));
 
@@ -32,8 +34,16 @@ const ShapeDrawer: FC<Props> = ({ x, y, color, coordinates }) => {
     const y1 = oldY.current;
     oldX.current = x;
     oldY.current = y;
-    set(coordToTranslateTransform(x1, y1));
 
+    // Avoid animating if there's no different in the old and the new
+    // coordinates or if the shape key changed.
+    if ((x === x1 && y === y1) || oldShapeKey.current !== shape.key) {
+      set(coordToTranslateTransform(x, y));
+      return;
+    }
+
+    // Make sure we start at the old position.
+    set(coordToTranslateTransform(x1, y1));
     let start: number | undefined;
     const callback: FrameRequestCallback = (time) => {
       if (start == null) {
@@ -56,8 +66,9 @@ const ShapeDrawer: FC<Props> = ({ x, y, color, coordinates }) => {
     // Start a RAF and cleanup when props change.
     let handle = requestAnimationFrame(callback);
     return () => cancelAnimationFrame(handle);
-  }, [x, y]);
+  }, [shape.key, x, y]);
 
+  const { color } = shape;
   return (
     <G transform={transform} color={color} fill={color}>
       {coordinates.map((coord, index) => (
