@@ -1,3 +1,4 @@
+import { shuffle, uniqueId } from "lodash";
 import { FC, useMemo } from "react";
 import { ShapeElement } from "../../hooks/useShape";
 import ShapeDrawer, { Coordinates } from "../ShapeDrawer";
@@ -118,3 +119,15 @@ export const Shape: FC<Props> = ({ shape, x, y, direction }) => {
 
 export const getRandomShape = (): Shapes =>
   SHAPES[Math.floor(Math.random() * (SHAPES.length - 1))]!;
+
+export const getRandomShapes = () =>
+  shuffle(SHAPES).map((shape) => ({
+    shape,
+    key: uniqueId("shape-"),
+    color: colorFromShape(shape),
+    coordinates: calculateCoordinates(shape, {
+      direction: Direction.RIGHT,
+      x: 0,
+      y: 0,
+    }),
+  }));

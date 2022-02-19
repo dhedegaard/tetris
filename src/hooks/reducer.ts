@@ -1,15 +1,22 @@
 import { Dispatch, Reducer, useReducer } from "react";
+import { getRandomShapes, SHAPES } from "../components/shapes";
+import { ShapeElement } from "./useShape";
 
 const DEFAULT_POSITION = Object.freeze({ x: 4, y: 1 });
 
 export interface TetrisState {
   gamestate: "alive" | "gameover";
   position: { x: number; y: number };
+  shapeQueue: readonly ShapeElement[];
+  currentShape: ShapeElement;
 }
 
+const initialShapes = getRandomShapes();
 export const initialState: TetrisState = {
   gamestate: "alive",
   position: DEFAULT_POSITION,
+  shapeQueue: initialShapes,
+  currentShape: initialShapes[0]!,
 };
 
 export type TetrisDispatch = Dispatch<Actions>;
@@ -18,7 +25,8 @@ type Actions =
   | { type: "SET_ALIVE" }
   | { type: "SET_GAMEOVER" }
   | { type: "MOVE_POSITION"; dx: number; dy: number }
-  | { type: "RESET_POSITION" };
+  | { type: "RESET_POSITION" }
+  | { type: "NEXT_SHAPE" };
 
 export const tetrisReducer: Reducer<TetrisState, Actions> = (state, action) => {
   switch (action.type) {
@@ -44,6 +52,16 @@ export const tetrisReducer: Reducer<TetrisState, Actions> = (state, action) => {
       return {
         ...state,
         position: initialState.position,
+      };
+    case "NEXT_SHAPE":
+      const shapeQueue = state.shapeQueue.slice(1);
+      return {
+        ...state,
+        shapeQueue:
+          shapeQueue.length < SHAPES.length
+            ? [...shapeQueue, ...getRandomShapes()]
+            : shapeQueue,
+        currentShape: shapeQueue[0]!,
       };
     default:
       // @ts-expect-error
