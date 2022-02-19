@@ -1,7 +1,9 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { StateRef } from ".";
 import { calculateCoordinates, colorFromShape } from "../components/shapes";
 import { Block } from "../store/slices/blocks";
+import { selectTickrate } from "../store/slices/level";
+import { useTetrisSelector } from "../store/tetris";
 import useInterval from "./useInterval";
 
 const INITIAL_TICKS = 800;
@@ -15,6 +17,13 @@ const useTick = (
     undefined
   );
   const [tick, setTick] = useState(INITIAL_TICKS);
+
+  // When the tickRate in the store changes, update the hook.
+  // NOTE: Refactor later.
+  const tickRate = useTetrisSelector(selectTickrate);
+  useEffect(() => {
+    setTick(tickRate * 1000);
+  }, [tickRate]);
 
   const intervalCallback = useCallback(() => {
     const {

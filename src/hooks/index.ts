@@ -1,12 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {
-  MutableRefObject,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-} from "react";
-import { useSelector } from "react-redux";
+import { MutableRefObject, useCallback, useMemo, useRef } from "react";
 import { useSwipeable } from "react-swipeable";
 import { Coordinates } from "../components/ShapeDrawer";
 import { Direction, Shapes } from "../components/shapes";
@@ -16,7 +9,6 @@ import {
   clearFilledRows,
   Coordinate,
 } from "../store/slices/blocks";
-import { selectTickrate } from "../store/slices/level";
 import { useTetrisDispatch } from "../store/tetris";
 import useBlocks from "./useBlocks";
 import useDirection from "./useDirection";
@@ -24,7 +16,7 @@ import useGamestate, { Gamestate } from "./useGamestate";
 import useKeyboard, { Player } from "./useKeyboard";
 import useLevel from "./useLevel";
 import usePosition from "./usePosition";
-import useScore, { calculateScore } from "./useScore";
+import useScore from "./useScore";
 import useShape from "./useShape";
 import useTick from "./useTick";
 
@@ -80,23 +72,13 @@ const useTetris = ({ player }: Input) => {
   const persistBlock = useCallback(
     (blocksToPersist: Block[]) => {
       dispatch(attemptPersistBlocks(blocksToPersist)).then((success) => {
-        // TODO: Handle in the thunked action instead.
         if (success) {
           setTemporaryTick(undefined);
           return dispatch(clearFilledRows());
         }
       });
     },
-    [
-      dispatch,
-      addBlocks,
-      increaseScore,
-      incrementRowsCleared,
-      level,
-      nextShape,
-      resetDirection,
-      resetPosition,
-    ]
+    [clearFilledRows]
   );
 
   // Handle ticks
@@ -105,13 +87,6 @@ const useTetris = ({ player }: Input) => {
     moveDown,
     persistBlock
   );
-
-  // When the tickRate in the store changes, update the hook.
-  // NOTE: Refactor later.
-  const tickRate = useSelector(selectTickrate);
-  useEffect(() => {
-    setTick(tickRate * 1000);
-  }, [tickRate]);
 
   /* Start a new game, setup the board again. */
   const newGame = useCallback(() => {
