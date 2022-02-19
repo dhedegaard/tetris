@@ -1,8 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getRandomShapes, SHAPES } from "../../components/shapes";
-import { ShapeElement } from "../../hooks/reducer";
-import { TetrisStoreState } from "../tetris";
 import { createSelector } from "reselect";
+import { getRandomShapes, ShapeElement, SHAPES } from "../../components/shapes";
+import { TetrisStoreState } from "../tetris";
 
 const shapeSlice = createSlice({
   name: "shape",

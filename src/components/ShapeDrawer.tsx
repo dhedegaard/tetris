@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { FC, useLayoutEffect, useRef, useState } from "react";
-import { ShapeElement } from "../hooks/reducer";
 import Block from "./Block";
+import { ShapeElement } from "./shapes";
 
 export interface Coordinate {
   x: number;

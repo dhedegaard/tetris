@@ -1,6 +1,5 @@
 import { shuffle, uniqueId } from "lodash";
 import { FC, useMemo } from "react";
-import { ShapeElement } from "../../hooks/reducer";
 import ShapeDrawer, { Coordinates } from "../ShapeDrawer";
 import I, { COLOR_I } from "./I";
 import J, { COLOR_J } from "./J";
@@ -131,3 +130,10 @@ export const getRandomShapes = () =>
       y: 0,
     }),
   }));
+
+export interface ShapeElement {
+  shape: Shapes;
+  key: string;
+  color: string;
+  coordinates: Coordinates;
+}
