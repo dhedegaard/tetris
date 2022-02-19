@@ -35,10 +35,6 @@ export const initialState: TetrisState = {
 export type TetrisDispatch = Dispatch<Actions>;
 
 type Actions =
-  | { type: "SET_ALIVE" }
-  | { type: "SET_GAMEOVER" }
-  | { type: "MOVE_POSITION"; dx: number; dy: number }
-  | { type: "RESET_POSITION" }
   | { type: "NEXT_SHAPE" }
   | { type: "RESET_DIRECTION" }
   | { type: "ROTATE_DIRECTION" }

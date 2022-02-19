@@ -1,23 +1,31 @@
 import { useCallback, useMemo } from "react";
+import {
+  selectCurrentShape,
+  selectPeekShapes,
+  shapeActions,
+} from "../store/slices/shape";
+import { useTetrisDispatch, useTetrisSelector } from "../store/tetris";
 import { TetrisDispatch, TetrisState } from "./reducer";
 
 /** Handles logic for determining the next shape to use. */
-const useShape = (state: TetrisState, dispatch: TetrisDispatch) => {
-  const shape = state.currentShape;
+const useShape = () => {
+  const peekShapes = useTetrisSelector(selectPeekShapes);
+  const currentShape = useTetrisSelector(selectCurrentShape);
+  const dispatch = useTetrisDispatch();
 
   /** Pops the next shape and sets it as the current shape state. */
   const nextShape = useCallback(
-    () => dispatch({ type: "NEXT_SHAPE" }),
+    () => dispatch(shapeActions.nextShape()),
     [dispatch]
   );
 
   return useMemo(
     () => ({
-      shape,
+      shape: currentShape,
       nextShape,
-      peekShapes: state.shapeQueue,
+      peekShapes,
     }),
-    [nextShape, shape, state.shapeQueue]
+    [currentShape, nextShape, peekShapes]
   );
 };
 

@@ -28,19 +28,15 @@ interface Props {
   peekShapes: readonly ShapeElement[];
 }
 
-const Legend: FC<Props> = ({ score, level, peekShapes }) => {
-  const nextShapes = useMemo(() => peekShapes.slice(1, 3), [peekShapes]);
-
-  return (
-    <LegendContainer>
-      <ScoreAndLevel>
-        <Score score={score} />
-        <Level level={level} />
-      </ScoreAndLevel>
-      <NextShape nextShapes={nextShapes} />
-    </LegendContainer>
-  );
-};
+const Legend: FC<Props> = ({ score, level, peekShapes }) => (
+  <LegendContainer>
+    <ScoreAndLevel>
+      <Score score={score} />
+      <Level level={level} />
+    </ScoreAndLevel>
+    <NextShape nextShapes={peekShapes} />
+  </LegendContainer>
+);
 
 export default memo(Legend, isEqual);
 

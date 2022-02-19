@@ -33,7 +33,7 @@ const useTetris = ({ player }: Input) => {
   const { gamestate, setGameover, setAlive } = useGamestate();
   const { position, moveLeft, moveRight, moveDown, resetPosition } =
     usePosition();
-  const { shape, nextShape, peekShapes } = useShape(state, dispatch);
+  const { shape, nextShape, peekShapes } = useShape();
   const { direction, resetDirection, setNextDirection } = useDirection(
     state,
     dispatch
