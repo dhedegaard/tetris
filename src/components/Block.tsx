@@ -1,7 +1,4 @@
-import { darken } from "polished";
 import { FC, memo, SVGProps } from "react";
-
-const DEFAULT_COLOR = "#ccc";
 
 interface Props {
   x: number;
