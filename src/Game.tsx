@@ -56,7 +56,7 @@ const Game: FC<Props> = ({ player }) => {
           )}
         </Grid>
       </GridContainer>
-      <Legend score={score} peekShapes={[...peekShapes]} level={level} />
+      <Legend score={score} peekShapes={peekShapes} level={level} />
     </Container>
   );
 };

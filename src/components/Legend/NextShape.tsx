@@ -34,14 +34,11 @@ interface Props {
 const NextShape: FC<Props> = ({ nextShapes }) => (
   <Container>
     <Title>Next:</Title>
-    {nextShapes
-      .slice()
-      .reverse()
-      .map((shape, idx) => (
-        <ShapeContainer viewBox="0 0 5 3" width="100%" key={shape + idx}>
-          <Shape direction={Direction.RIGHT} shape={shape} x={1} y={1} />
-        </ShapeContainer>
-      ))}
+    {nextShapes.map((shape, idx) => (
+      <ShapeContainer viewBox="0 0 5 3" width="100%" key={shape + idx}>
+        <Shape direction={Direction.RIGHT} shape={shape} x={1} y={1} />
+      </ShapeContainer>
+    ))}
   </Container>
 );
 

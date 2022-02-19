@@ -1,33 +1,32 @@
-import { useCallback, useMemo, useRef, useState } from "react";
-import { getRandomShape, Shapes, SHAPES } from "../components/shapes";
+import { shuffle } from "lodash";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Shapes, SHAPES } from "../components/shapes";
 
-const getRandomShapes = () => SHAPES.slice().sort(() => 0.5 - Math.random());
+const getRandomShapes = () => shuffle(SHAPES);
 
 /** Handles logic for determining the next shape to use. */
 const useShape = () => {
-  const [shape, setShape] = useState<Shapes>(getRandomShape());
   const [peekShapes, setPeekShapes] = useState<Shapes[]>([
     ...getRandomShapes(),
     ...getRandomShapes(),
   ]);
-
-  const stateRef = useRef({
-    peekShapes,
-    setPeekShapes,
-  });
-  stateRef.current = {
-    peekShapes,
-    setPeekShapes,
-  };
+  const shape = useMemo(() => peekShapes[0]!, [peekShapes]);
 
   /** Pops the next shape and sets it as the current shape state. */
   const nextShape = useCallback(() => {
-    // If we're running low on shapes, push more all the shapes in random order.
-    while (stateRef.current.peekShapes.length <= SHAPES.length) {
-      setPeekShapes([...getRandomShapes(), ...stateRef.current.peekShapes]);
-    }
-    setShape(stateRef.current.peekShapes.pop()!);
+    setPeekShapes((old) =>
+      old.length === 1 ? getRandomShapes() : old.slice(1)
+    );
   }, []);
+
+  // Make sure to add more shapes to the queue.
+  useEffect(
+    () =>
+      setPeekShapes((old) =>
+        old.length >= SHAPES.length ? old : [...old, ...getRandomShapes()]
+      ),
+    [peekShapes.length]
+  );
 
   return useMemo(
     () => ({

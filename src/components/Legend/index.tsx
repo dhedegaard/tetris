@@ -29,10 +29,7 @@ interface Props {
 }
 
 const Legend: FC<Props> = ({ score, level, peekShapes }) => {
-  const nextShapes = useMemo(
-    () => peekShapes.slice(peekShapes.length - 2),
-    [peekShapes]
-  );
+  const nextShapes = useMemo(() => peekShapes.slice(1, 3), [peekShapes]);
 
   return (
     <LegendContainer>
