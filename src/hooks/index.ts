@@ -33,13 +33,12 @@ interface Input {
 const useTetris = ({ player }: Input) => {
   const dispatch = useTetrisDispatch();
   const { gamestate } = useGamestate();
-  const { position, moveLeft, moveRight, moveDown, resetPosition } =
-    usePosition();
-  const { shape, nextShape, peekShapes } = useShape();
+  const { position, moveLeft, moveRight, moveDown } = usePosition();
+  const { shape, peekShapes } = useShape();
   const { direction, resetDirection, setNextDirection } = useDirection();
   const { score, increaseScore, resetScore } = useScore();
   const { blocks, isFreePositions, clearAllBlocks } = useBlocks();
-  const { level, resetLevel } = useLevel();
+  const { level } = useLevel();
 
   // Build a ref os state, for various cases.
   const stateRef: StateRef = useRef({

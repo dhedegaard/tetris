@@ -46,20 +46,10 @@ const usePosition = () => {
     () => movePosition(Direction.DOWN),
     [movePosition]
   );
-  const resetPosition = useCallback(
-    () => dispatch(positionActions.resetPosition()),
-    [dispatch]
-  );
 
   return useMemo(
-    () => ({
-      position,
-      moveLeft,
-      moveRight,
-      moveDown,
-      resetPosition,
-    }),
-    [moveDown, moveLeft, moveRight, position, resetPosition]
+    () => ({ position, moveLeft, moveRight, moveDown }),
+    [moveDown, moveLeft, moveRight, position]
   );
 };
 
