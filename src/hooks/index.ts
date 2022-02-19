@@ -112,7 +112,6 @@ const useTetris = ({ player }: Input) => {
   // NOTE: Refactor later.
   const tickRate = useSelector(selectTickrate);
   useEffect(() => {
-    console.log("SET TICKRATE:", tickRate);
     setTick(tickRate * 1000);
   }, [tickRate]);
 
