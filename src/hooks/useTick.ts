@@ -1,8 +1,9 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { useCallback, useMemo } from "react";
+import { batch } from "react-redux";
 import { StateRef } from ".";
 import { calculateCoordinates, colorFromShape } from "../components/shapes";
-import { attemptPersistBlocks, clearFilledRows } from "../store/slices/blocks";
+import { attemptPersistBlocks, clearFilledRows } from "../store/actions/game";
 import { selectTickrate } from "../store/slices/level";
 import { tickActions } from "../store/slices/tick";
 import {
@@ -58,21 +59,24 @@ const useTick = (stateRef: StateRef, moveDown: () => void) => {
       y: position.y,
     });
     const blockColor = colorFromShape(shape);
-    dispatch(
-      attemptPersistBlocks(
-        oldPositions.map((block) => ({
-          ...block,
-          color: blockColor,
-        }))
-      )
-    ).then((success) => {
-      if (success) {
-        dispatch(tickActions.clearTemporaryTick());
-        return dispatch(clearFilledRows());
-      }
+    batch(() => {
+      dispatch(tickActions.clearTemporaryTick());
+      dispatch(
+        attemptPersistBlocks(
+          oldPositions.map((block) => ({
+            ...block,
+            color: blockColor,
+          }))
+        )
+      ).then((success) => {
+        if (success) {
+          batch(() => {
+            dispatch(tickActions.clearTemporaryTick());
+            dispatch(clearFilledRows());
+          });
+        }
+      });
     });
-
-    dispatch(tickActions.clearTemporaryTick());
   }, [dispatch, moveDown, stateRef]);
 
   const delay = useMemo(
