@@ -1,12 +1,21 @@
-import { MutableRefObject, useCallback, useMemo, useRef } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import {
+  MutableRefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
+import { useSelector } from "react-redux";
 import { useSwipeable } from "react-swipeable";
 import { Coordinate, Coordinates } from "../components/ShapeDrawer";
 import { Direction, Shapes } from "../components/shapes";
+import { selectTickrate } from "../store/slices/level";
 import useBlocks, { Block } from "./useBlocks";
 import useDirection from "./useDirection";
 import useGamestate, { Gamestate } from "./useGamestate";
 import useKeyboard, { Player } from "./useKeyboard";
-import useLevel, { calculateTickRate } from "./useLevel";
+import useLevel from "./useLevel";
 import usePosition from "./usePosition";
 import useScore, { calculateScore } from "./useScore";
 import useShape from "./useShape";
@@ -77,7 +86,6 @@ const useTetris = ({ player }: Input) => {
       resetDirection();
       nextShape();
       setTemporaryTick(undefined); // Disable any fast temp ticks.
-      setTick(calculateTickRate(level) * 1000);
     },
     // TODO: Fix circular dependency later :)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -99,6 +107,14 @@ const useTetris = ({ player }: Input) => {
     moveDown,
     persistBlock
   );
+
+  // When the tickRate in the store changes, update the hook.
+  // NOTE: Refactor later.
+  const tickRate = useSelector(selectTickrate);
+  useEffect(() => {
+    console.log("SET TICKRATE:", tickRate);
+    setTick(tickRate * 1000);
+  }, [tickRate]);
 
   /* Start a new game, setup the board again. */
   const newGame = useCallback(() => {

@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import direction from "./slices/direction";
 import gamestate from "./slices/gamestate";
+import level from "./slices/level";
 import position from "./slices/position";
 import score from "./slices/score";
 import shape from "./slices/shape";
@@ -13,6 +14,7 @@ const tetrisStore = configureStore({
     shape,
     score,
     direction,
+    level,
   },
 });
 
