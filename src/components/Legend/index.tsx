@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import isEqual from "lodash/isEqual";
 import { FC, memo, useMemo } from "react";
-import { ShapeElement } from "../../hooks/useShape";
+import { ShapeElement } from "../../hooks/reducer";
 import Level from "./Level";
 import NextShape from "./NextShape";
 import Score from "./Score";

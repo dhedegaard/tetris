@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import isEqual from "lodash/isEqual";
 import { FC, memo } from "react";
-import { ShapeElement } from "../../hooks/useShape";
+import { ShapeElement } from "../../hooks/reducer";
 import { Direction, Shape } from "../shapes";
 
 const Container = styled.div`

@@ -1,6 +1,6 @@
 import { shuffle, uniqueId } from "lodash";
 import { FC, useMemo } from "react";
-import { ShapeElement } from "../../hooks/useShape";
+import { ShapeElement } from "../../hooks/reducer";
 import ShapeDrawer, { Coordinates } from "../ShapeDrawer";
 import I, { COLOR_I } from "./I";
 import J, { COLOR_J } from "./J";
