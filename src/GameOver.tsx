@@ -29,13 +29,32 @@ const GameOver: FC<Props> = (props) => (
       y={0}
       height={5}
     />
-    <Text x={0.75} y={1.5} fill="currentColor" width={20 - 0.75 * 2}>
+    <Text
+      x={0.75}
+      y={1.5}
+      height={2}
+      fill="currentColor"
+      lengthAdjust="spacingAndGlyphs"
+      textLength="65%"
+    >
       Game over
     </Text>
-    <RetryText x={1.25} y={3} fill="currentColor" width={20 - 0.75 * 2}>
+    <RetryText
+      x={0.5}
+      y={3}
+      fill="currentColor"
+      lengthAdjust="spacingAndGlyphs"
+      textLength="70%"
+    >
       Press &apos;r&apos; to
     </RetryText>
-    <RetryText x={2} y={4} fill="currentColor" width={20 - 0.75 * 2}>
+    <RetryText
+      x={1}
+      y={4}
+      fill="currentColor"
+      lengthAdjust="spacingAndGlyphs"
+      textLength="60%"
+    >
       try again
     </RetryText>
   </G>
