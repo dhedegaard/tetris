@@ -16,6 +16,21 @@ export enum Direction {
   RIGHT,
 }
 
+export const directionToRotation = (direction: Direction) => {
+  switch (direction) {
+    case Direction.UP:
+      return 270;
+    case Direction.LEFT:
+      return 180;
+    case Direction.DOWN:
+      return 90;
+    case Direction.RIGHT:
+      return 0;
+    default:
+      throw new TypeError(`Unknown direction: ${direction}`);
+  }
+};
+
 /** Returns the new direction based on a current direction. */
 export const nextDirection = (direction: Direction): Direction => {
   switch (direction) {

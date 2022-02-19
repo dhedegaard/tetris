@@ -1,18 +1,31 @@
 import { shuffle, uniqueId } from "lodash";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { colorFromShape, Shapes, SHAPES } from "../components/shapes";
+import { Coordinates } from "../components/ShapeDrawer";
+import {
+  calculateCoordinates,
+  colorFromShape,
+  Direction,
+  Shapes,
+  SHAPES,
+} from "../components/shapes";
 
 const getRandomShapes = () =>
   shuffle(SHAPES).map((shape) => ({
     shape,
     key: uniqueId("shape-"),
     color: colorFromShape(shape),
+    coordinates: calculateCoordinates(shape, {
+      direction: Direction.RIGHT,
+      x: 0,
+      y: 0,
+    }),
   }));
 
 export interface ShapeElement {
   shape: Shapes;
   key: string;
   color: string;
+  coordinates: Coordinates;
 }
 
 /** Handles logic for determining the next shape to use. */
