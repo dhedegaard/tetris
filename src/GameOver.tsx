@@ -3,38 +3,42 @@ import styled from "@emotion/styled";
 
 const Text = styled.text`
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 0.125vh;
   pointer-events: none;
+  user-select: none;
 `;
+
 const RetryText = styled.text`
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: 0.08vh;
   pointer-events: none;
+  user-select: none;
 `;
 
 type Props = SVGProps<SVGRectElement>;
 
 const GameOver: FC<Props> = (props) => (
-  <>
+  <g width={20} transform="translate(1, 7.5)" fill="#000" color="#fff">
     <rect
       {...props}
-      fill="#000"
-      stroke="#fff"
-      x={20 * 1 - 10}
-      width={20 * 8 + 20}
-      y={20 * 8 - 10}
-      height={20 * 5}
+      fill="currentFill"
+      stroke="currentColor"
+      strokeWidth={0.2}
+      x={0}
+      width={8}
+      y={0}
+      height={5}
     />
-    <Text x={20 * 2 - 10} y={20 * 9 + 5} fill="#fff">
+    <Text x={0.75} y={1.5} fill="currentColor" width={20 - 0.75 * 2}>
       Game over
     </Text>
-    <RetryText x={20 * 2 - 10} y={20 * 11 - 5} fill="#fff" width={20 * 7}>
-      Press 'r' to
+    <RetryText x={1.25} y={3} fill="currentColor" width={20 - 0.75 * 2}>
+      Press &apos;r&apos; to
     </RetryText>
-    <RetryText x={20 * 2 + 10} y={20 * 12 - 5} fill="#fff" width={20 * 7}>
+    <RetryText x={2} y={4} fill="currentColor" width={20 - 0.75 * 2}>
       try again
     </RetryText>
-  </>
+  </g>
 );
 
 export default GameOver;

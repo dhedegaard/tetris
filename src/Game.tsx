@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import Block from "./components/Block";
 import Grid from "./components/Grid";
 import Legend from "./components/Legend";
@@ -52,9 +52,7 @@ const Game: FC<Props> = ({ player }) => {
           {blocks.map(({ x, y, color }) => (
             <Block x={x} y={y} color={color} key={`block_${x}_${y}`} />
           ))}
-          {gamestate === "gameover" && (
-            <GameOver onClick={() => startNewGame()} />
-          )}
+          {gamestate === "gameover" && <GameOver onClick={startNewGame} />}
         </Grid>
       </GridContainer>
       <Legend score={score} peekShapes={peekShapes} level={level} />
