@@ -2,12 +2,14 @@ import { MutableRefObject, useCallback, useMemo, useRef } from "react";
 import { useSwipeable } from "react-swipeable";
 import { Coordinates } from "../components/ShapeDrawer";
 import { Direction, Shapes } from "../components/shapes";
+import { startNewGame } from "../store/actions/game";
 import {
   attemptPersistBlocks,
   Block,
   clearFilledRows,
   Coordinate,
 } from "../store/slices/blocks";
+import { tickActions } from "../store/slices/tick";
 import { useTetrisDispatch } from "../store/tetris";
 import useBlocks from "./useBlocks";
 import useDirection from "./useDirection";
@@ -35,8 +37,7 @@ interface Input {
 /** A hook that contains all the logic regarding tetris. */
 const useTetris = ({ player }: Input) => {
   const dispatch = useTetrisDispatch();
-
-  const { gamestate, setAlive } = useGamestate();
+  const { gamestate } = useGamestate();
   const { position, moveLeft, moveRight, moveDown, resetPosition } =
     usePosition();
   const { shape, nextShape, peekShapes } = useShape();
@@ -68,35 +69,21 @@ const useTetris = ({ player }: Input) => {
   };
 
   // Handle ticks
-  const { setTemporaryTick, resetTick } = useTick(stateRef, moveDown);
+  useTick(stateRef, moveDown);
 
   /* Start a new game, setup the board again. */
-  const newGame = useCallback(() => {
-    clearAllBlocks();
-    nextShape();
-    resetPosition();
-    resetDirection();
-    setAlive();
-    resetLevel();
-    resetScore();
-    resetTick();
-  }, [
-    clearAllBlocks,
-    nextShape,
-    resetDirection,
-    resetLevel,
-    resetPosition,
-    resetScore,
-    resetTick,
-    setAlive,
-  ]);
+  const newGame = useCallback(() => dispatch(startNewGame()), [dispatch]);
 
   /* While the next position is free, move down fast. */
   const setMoveToBottom = useCallback(
     (moveToBottom: boolean) => {
-      setTemporaryTick(moveToBottom ? 40 : undefined);
+      dispatch(
+        moveToBottom
+          ? tickActions.setTemporaryTick(40)
+          : tickActions.clearTemporaryTick()
+      );
     },
-    [setTemporaryTick]
+    [dispatch]
   );
 
   // Handle keyboard events.

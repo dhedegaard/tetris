@@ -1,30 +1,31 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { StateRef } from ".";
 import { calculateCoordinates, colorFromShape } from "../components/shapes";
-import {
-  attemptPersistBlocks,
-  Block,
-  clearFilledRows,
-} from "../store/slices/blocks";
+import { attemptPersistBlocks, clearFilledRows } from "../store/slices/blocks";
 import { selectTickrate } from "../store/slices/level";
-import { useTetrisDispatch, useTetrisSelector } from "../store/tetris";
+import { tickActions } from "../store/slices/tick";
+import {
+  TetrisStoreState,
+  useTetrisDispatch,
+  useTetrisSelector,
+} from "../store/tetris";
 import useInterval from "./useInterval";
 
-const INITIAL_TICKS = 800;
+const tickSelector = (state: TetrisStoreState) => state.tick.tick;
+const temporaryTickSelector = (state: TetrisStoreState) =>
+  state.tick.temporateTick;
 
 const useTick = (stateRef: StateRef, moveDown: () => void) => {
   const dispatch = useTetrisDispatch();
-  const [temporaryTick, setTemporaryTick] = useState<number | undefined>(
-    undefined
-  );
-  const [tick, setTick] = useState(INITIAL_TICKS);
 
-  // When the tickRate in the store changes, update the hook.
-  // NOTE: Refactor later.
+  const tick = useTetrisSelector(tickSelector);
+  const temporaryTick = useTetrisSelector(tickSelector);
+
+  // When the tickRate in the store changes, update it.
   const tickRate = useTetrisSelector(selectTickrate);
   useEffect(() => {
-    setTick(tickRate * 1000);
-  }, [tickRate]);
+    dispatch(tickActions.setTickRate(tickRate * 1000));
+  }, [dispatch, tickRate]);
 
   const intervalCallback = useCallback(() => {
     const {
@@ -69,12 +70,12 @@ const useTick = (stateRef: StateRef, moveDown: () => void) => {
       )
     ).then((success) => {
       if (success) {
-        setTemporaryTick(undefined);
+        dispatch(tickActions.clearTemporaryTick());
         return dispatch(clearFilledRows());
       }
     });
 
-    setTemporaryTick(undefined);
+    dispatch(tickActions.clearTemporaryTick());
   }, [dispatch, moveDown, stateRef]);
 
   const delay = useMemo(
@@ -89,15 +90,7 @@ const useTick = (stateRef: StateRef, moveDown: () => void) => {
 
   useInterval(intervalCallback, delay);
 
-  const resetTick = useCallback(() => {
-    setTick(INITIAL_TICKS);
-    setTemporaryTick(undefined);
-  }, []);
-
-  return useMemo(
-    () => ({ tick, setTemporaryTick, resetTick }),
-    [resetTick, tick]
-  );
+  return useMemo(() => ({ tick }), [, tick]);
 };
 
 export default useTick;

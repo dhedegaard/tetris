@@ -13,7 +13,6 @@ export interface Coordinate {
   y: number;
 }
 
-/** TODO: Determine what to do with this. */
 export interface Block extends Coordinate {
   color: string;
 }
@@ -141,7 +140,7 @@ const selectFilledRows = createSelector(selectBlocks, (blocks) => {
   return result;
 });
 
-export const calculateScore = (level: number, linesCleared: number): number => {
+const calculateScore = (level: number, linesCleared: number): number => {
   switch (linesCleared) {
     case 1:
       return 40 * (level + 1);
