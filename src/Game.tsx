@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import Block from "./components/Block";
 import Grid from "./components/Grid";
 import Legend from "./components/Legend";
