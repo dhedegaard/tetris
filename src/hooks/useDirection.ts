@@ -1,23 +1,32 @@
 import { useCallback, useMemo } from "react";
-import { TetrisDispatch, TetrisState } from "./reducer";
+import { directionActions } from "../store/slices/direction";
+import {
+  TetrisStoreState,
+  useTetrisDispatch,
+  useTetrisSelector,
+} from "../store/tetris";
 
-const useDirections = (state: TetrisState, dispatch: TetrisDispatch) => {
+const selectDirection = (state: TetrisStoreState) => state.direction.direction;
+
+const useDirections = () => {
+  const direction = useTetrisSelector(selectDirection);
+  const dispatch = useTetrisDispatch();
   const resetDirection = useCallback(
-    () => dispatch({ type: "RESET_DIRECTION" }),
+    () => dispatch(directionActions.resetDirection()),
     [dispatch]
   );
   const setNextDirection = useCallback(
-    () => dispatch({ type: "ROTATE_DIRECTION" }),
+    () => dispatch(directionActions.rotateDirection()),
     [dispatch]
   );
 
   return useMemo(
     () => ({
-      direction: state.direction,
+      direction,
       resetDirection,
       setNextDirection,
     }),
-    [resetDirection, setNextDirection, state.direction]
+    [direction, resetDirection, setNextDirection]
   );
 };
 
