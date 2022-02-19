@@ -30,9 +30,9 @@ interface Input {
 const useTetris = ({ player }: Input) => {
   const [state, dispatch] = useTetrisReducer();
 
-  const { gamestate, setGameover, setAlive } = useGamestate(state, dispatch);
+  const { gamestate, setGameover, setAlive } = useGamestate();
   const { position, moveLeft, moveRight, moveDown, resetPosition } =
-    usePosition(state, dispatch);
+    usePosition();
   const { shape, nextShape, peekShapes } = useShape(state, dispatch);
   const { direction, resetDirection, setNextDirection } = useDirection(
     state,

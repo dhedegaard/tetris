@@ -1,26 +1,34 @@
 import { useCallback, useMemo } from "react";
 import { Direction } from "../components/shapes";
-import { TetrisDispatch, TetrisState } from "./reducer";
+import { useDispatch, useSelector } from "react-redux";
+import { TetrisStoreState } from "../store/tetris";
+import { positionActions } from "../store/slices/position";
 
-const usePosition = (state: TetrisState, dispatch: TetrisDispatch) => {
+const selectDirection = (state: TetrisStoreState) => state.position.position;
+
+const usePosition = () => {
+  const dispatch = useDispatch();
+  const position = useSelector(selectDirection);
+
   const movePosition = useCallback(
     (direction: Direction) =>
-      dispatch({
-        type: "MOVE_POSITION",
-        dx:
-          direction === Direction.LEFT
-            ? -1
-            : direction === Direction.RIGHT
-            ? 1
-            : 0,
-        dy:
-          direction === Direction.DOWN
-            ? 1
-            : direction === Direction.UP
-            ? -1
-            : 0,
-      }),
-    []
+      dispatch(
+        positionActions.movePosition({
+          dx:
+            direction === Direction.LEFT
+              ? -1
+              : direction === Direction.RIGHT
+              ? 1
+              : 0,
+          dy:
+            direction === Direction.DOWN
+              ? 1
+              : direction === Direction.UP
+              ? -1
+              : 0,
+        })
+      ),
+    [dispatch]
   );
 
   const moveLeft = useCallback(
@@ -36,19 +44,19 @@ const usePosition = (state: TetrisState, dispatch: TetrisDispatch) => {
     [movePosition]
   );
   const resetPosition = useCallback(
-    () => dispatch({ type: "RESET_POSITION" }),
+    () => dispatch(positionActions.resetPosition()),
     [dispatch]
   );
 
   return useMemo(
     () => ({
-      position: state.position,
+      position,
       moveLeft,
       moveRight,
       moveDown,
       resetPosition,
     }),
-    [moveDown, moveLeft, moveRight, resetPosition, state.position]
+    [moveDown, moveLeft, moveRight, position, resetPosition]
   );
 };
 

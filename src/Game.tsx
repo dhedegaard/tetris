@@ -7,6 +7,8 @@ import { Shape } from "./components/shapes";
 import GameOver from "./GameOver";
 import useTetris from "./hooks";
 import { Player } from "./hooks/useKeyboard";
+import { Provider } from "react-redux";
+import tetrisStore from "./store/tetris";
 
 const Container = styled.div`
   position: relative;
@@ -59,4 +61,10 @@ const Game: FC<Props> = ({ player }) => {
   );
 };
 
-export default Game;
+const GameWithStore: FC<Props> = (props) => (
+  <Provider store={tetrisStore}>
+    <Game {...props} />
+  </Provider>
+);
+
+export default GameWithStore;
