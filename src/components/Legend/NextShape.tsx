@@ -35,7 +35,7 @@ interface Props {
 const NextShape: FC<Props> = ({ nextShapes }) => (
   <Container>
     <Title>Next:</Title>
-    {nextShapes.map((shape, idx) => (
+    {nextShapes.map((shape) => (
       <ShapeContainer viewBox="0 0 5 3" width="100%" key={shape.key}>
         <Shape direction={Direction.RIGHT} shape={shape} x={1} y={1} />
       </ShapeContainer>
