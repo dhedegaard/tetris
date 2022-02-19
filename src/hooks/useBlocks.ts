@@ -1,22 +1,12 @@
 import { useCallback, useMemo } from "react";
 import { Coordinates } from "../components/ShapeDrawer";
-import {
-  attemptPersistBlocks,
-  Block,
-  blocksActions,
-  Coordinate,
-} from "../store/slices/blocks";
-import {
-  TetrisStoreState,
-  useTetrisDispatch,
-  useTetrisSelector,
-} from "../store/tetris";
+import { Coordinate } from "../store/slices/blocks";
+import { TetrisStoreState, useTetrisSelector } from "../store/tetris";
 
 const blocksSelect = (state: TetrisStoreState) => state.blocks.blocks;
 
 const useBlocks = () => {
   const blocks = useTetrisSelector(blocksSelect);
-  const dispatch = useTetrisDispatch();
 
   /** Checks to see if the given coordinate is free of blocks, and inside the grid. */
   const isBlockFree = useCallback(
@@ -35,19 +25,13 @@ const useBlocks = () => {
     [isBlockFree]
   );
 
-  const clearAllBlocks = useCallback(
-    () => dispatch(blocksActions.clearAllBlocks()),
-    [dispatch]
-  );
-
   return useMemo(
     () => ({
       blocks,
       isBlockFree,
       isFreePositions,
-      clearAllBlocks,
     }),
-    [blocks, clearAllBlocks, isBlockFree, isFreePositions]
+    [blocks, isBlockFree, isFreePositions]
   );
 };
 

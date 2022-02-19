@@ -35,9 +35,9 @@ const useTetris = ({ player }: Input) => {
   const { gamestate } = useGamestate();
   const { position, moveLeft, moveRight, moveDown } = usePosition();
   const { shape, peekShapes } = useShape();
-  const { direction, resetDirection, setNextDirection } = useDirection();
-  const { score, increaseScore, resetScore } = useScore();
-  const { blocks, isFreePositions, clearAllBlocks } = useBlocks();
+  const { direction, setNextDirection } = useDirection();
+  const { score, increaseScore } = useScore();
+  const { blocks, isFreePositions } = useBlocks();
   const { level } = useLevel();
 
   // Build a ref os state, for various cases.

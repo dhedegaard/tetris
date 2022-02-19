@@ -11,10 +11,6 @@ const selectDirection = (state: TetrisStoreState) => state.direction.direction;
 const useDirections = () => {
   const direction = useTetrisSelector(selectDirection);
   const dispatch = useTetrisDispatch();
-  const resetDirection = useCallback(
-    () => dispatch(directionActions.resetDirection()),
-    [dispatch]
-  );
   const setNextDirection = useCallback(
     () => dispatch(directionActions.rotateDirection()),
     [dispatch]
@@ -23,10 +19,9 @@ const useDirections = () => {
   return useMemo(
     () => ({
       direction,
-      resetDirection,
       setNextDirection,
     }),
-    [direction, resetDirection, setNextDirection]
+    [direction, setNextDirection]
   );
 };
 
