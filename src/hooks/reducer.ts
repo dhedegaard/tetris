@@ -1,6 +1,13 @@
 import { Dispatch, Reducer, useReducer } from "react";
-import { getRandomShapes, SHAPES } from "../components/shapes";
-import { ShapeElement } from "./useShape";
+import { Coordinates } from "../components/ShapeDrawer";
+import { getRandomShapes, Shapes, SHAPES } from "../components/shapes";
+
+export interface ShapeElement {
+  shape: Shapes;
+  key: string;
+  color: string;
+  coordinates: Coordinates;
+}
 
 const DEFAULT_POSITION = Object.freeze({ x: 4, y: 1 });
 
