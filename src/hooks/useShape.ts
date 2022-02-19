@@ -5,7 +5,6 @@ import {
   shapeActions,
 } from "../store/slices/shape";
 import { useTetrisDispatch, useTetrisSelector } from "../store/tetris";
-import { TetrisDispatch, TetrisState } from "./reducer";
 
 /** Handles logic for determining the next shape to use. */
 const useShape = () => {
