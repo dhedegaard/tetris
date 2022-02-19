@@ -18,7 +18,7 @@ const RetryText = styled.text`
 type Props = SVGProps<SVGRectElement>;
 
 const GameOver: FC<Props> = (props) => (
-  <g width={20} transform="translate(1, 7.5)" fill="#000" color="#fff">
+  <G width={20} transform="translate(1, 7.5)" fill="#000" color="#fff">
     <rect
       {...props}
       fill="currentFill"
@@ -38,7 +38,11 @@ const GameOver: FC<Props> = (props) => (
     <RetryText x={2} y={4} fill="currentColor" width={20 - 0.75 * 2}>
       try again
     </RetryText>
-  </g>
+  </G>
 );
+
+const G = styled.g`
+  cursor: pointer;
+`;
 
 export default GameOver;
