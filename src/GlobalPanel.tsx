@@ -1,20 +1,14 @@
 import { FC } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { GameMode } from "./App";
 
-const Panel = styled.div<{ noBorderLeft: boolean }>`
+const Panel = styled.div`
   background: #000;
   height: 100%;
   aspect-ratio: 120 / 400;
   border: 4px solid purple;
   box-sizing: border-box;
   border-right-width: 0;
-  ${(p) =>
-    p.noBorderLeft &&
-    css`
-      border-left-width: 0;
-    `}
   padding: 8px;
   font-size: 2vh;
   gap: 8px;
@@ -57,12 +51,10 @@ const Toggle = styled.div`
 interface Props {
   musicEnabled: boolean;
   toggleMusic: (enabled: boolean) => void;
-  gameMode: GameMode;
-  setGameMode: (gameMode: GameMode) => void;
 }
 
 const GlobalPanel: FC<Props> = (props) => (
-  <Panel noBorderLeft={props.gameMode === "local-coop"}>
+  <Panel>
     <Container>
       <Title>Music:</Title>
       <Toggle>
@@ -75,17 +67,6 @@ const GlobalPanel: FC<Props> = (props) => (
           Off
         </Text>
       </Toggle>
-    </Container>
-    <Container>
-      <Title>Player mode:</Title>
-      <Text onClick={() => props.setGameMode("single")}>
-        {props.gameMode === "single" ? <>&gt; </> : null}
-        Single
-      </Text>
-      <Text onClick={() => props.setGameMode("local-coop")}>
-        {props.gameMode === "local-coop" ? <>&gt; </> : null}
-        Local coop
-      </Text>
     </Container>
   </Panel>
 );

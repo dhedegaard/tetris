@@ -33,7 +33,6 @@ const Container = styled.div`
 export type GameMode = "single" | "local-coop";
 
 const App: FC = () => {
-  const [gameMode, setGameMode] = useState<GameMode>("single");
   const [musicEnabled, setMusicEnabled] = useState(false);
 
   const [isBrowser, setIsBrowser] = useState(false);
@@ -43,13 +42,10 @@ const App: FC = () => {
     <>
       <GlobalStyle />
       {musicEnabled && <Music />}
-      <Container key={gameMode}>
-        {gameMode === "local-coop" && <Game player="keyboard2" />}
+      <Container>
         <GlobalPanel
           musicEnabled={musicEnabled}
           toggleMusic={(enabled) => setMusicEnabled(enabled)}
-          gameMode={gameMode}
-          setGameMode={(gameMode) => setGameMode(gameMode)}
         />
         {isBrowser && <Game player="keyboard1" />}
       </Container>
