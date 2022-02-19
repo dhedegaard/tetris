@@ -15,7 +15,7 @@ import useTick from "./useTick";
 export type StateRef = MutableRefObject<{
   position: Coordinate;
   direction: Direction;
-  shape: Shapes;
+  shape: { shape: Shapes; key: string };
   gamestate: Gamestate;
   score: number;
   increaseScore: (amount: number) => void;

@@ -25,7 +25,7 @@ interface Props {
 const Game: FC<Props> = ({ player }) => {
   const {
     direction,
-    shape,
+    shape: { shape, key },
     position,
     blocks,
     gamestate,
@@ -42,6 +42,7 @@ const Game: FC<Props> = ({ player }) => {
         <Grid>
           {gamestate !== "gameover" && (
             <Shape
+              key={key}
               direction={direction}
               shape={shape}
               x={position.x}

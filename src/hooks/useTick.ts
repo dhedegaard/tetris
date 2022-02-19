@@ -17,8 +17,13 @@ const useTick = (
   const [tick, setTick] = useState(INITIAL_TICKS);
 
   const intervalCallback = useCallback(() => {
-    const { shape, direction, position, isFreePositions, gamestate } =
-      stateRef.current;
+    const {
+      shape: { shape },
+      direction,
+      position,
+      isFreePositions,
+      gamestate,
+    } = stateRef.current;
 
     // If the game is over, don't do anything.
     if (gamestate === "gameover") {

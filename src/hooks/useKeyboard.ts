@@ -50,8 +50,13 @@ const useKeyboard = (
         return;
       }
 
-      const { position, direction, shape, isFreePositions, gamestate } =
-        stateRef.current;
+      const {
+        position,
+        direction,
+        shape: { shape },
+        isFreePositions,
+        gamestate,
+      } = stateRef.current;
       // If the game is over, allow a different set of keybinds.
       if (gamestate === "gameover") {
         switch (evt.key) {

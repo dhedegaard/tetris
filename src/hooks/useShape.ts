@@ -1,4 +1,4 @@
-import { shuffle } from "lodash";
+import { shuffle, uniqueId } from "lodash";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Shapes, SHAPES } from "../components/shapes";
 
@@ -10,7 +10,13 @@ const useShape = () => {
     ...getRandomShapes(),
     ...getRandomShapes(),
   ]);
-  const shape = useMemo(() => peekShapes[0]!, [peekShapes]);
+  const shape = useMemo(
+    () => ({
+      shape: peekShapes[0]!,
+      key: uniqueId("shape-"),
+    }),
+    [peekShapes]
+  );
 
   /** Pops the next shape and sets it as the current shape state. */
   const nextShape = useCallback(() => {
