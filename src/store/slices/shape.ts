@@ -1,5 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { createSelector } from "reselect";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { getRandomShapes, ShapeElement, SHAPES } from "../../components/shapes";
 import { TetrisStoreState } from "../tetris";
 

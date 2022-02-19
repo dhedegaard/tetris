@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo } from "react";
-import { createSelector } from "reselect";
+import { createSelector } from "@reduxjs/toolkit";
+import { useCallback, useMemo } from "react";
 import { StateRef } from ".";
 import { calculateCoordinates, colorFromShape } from "../components/shapes";
 import { attemptPersistBlocks, clearFilledRows } from "../store/slices/blocks";
