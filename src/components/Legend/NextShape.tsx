@@ -1,7 +1,8 @@
-import { FC, memo } from "react";
 import styled from "@emotion/styled";
-import { Direction, Shape, Shapes } from "../shapes";
 import isEqual from "lodash/isEqual";
+import { FC, memo } from "react";
+import { ShapeElement } from "../../hooks/useShape";
+import { Direction, Shape } from "../shapes";
 
 const Container = styled.div`
   border: 1px double #fff;
@@ -28,14 +29,14 @@ const ShapeContainer = styled.svg`
 `;
 
 interface Props {
-  nextShapes: Shapes[];
+  nextShapes: readonly ShapeElement[];
 }
 
 const NextShape: FC<Props> = ({ nextShapes }) => (
   <Container>
     <Title>Next:</Title>
     {nextShapes.map((shape, idx) => (
-      <ShapeContainer viewBox="0 0 5 3" width="100%" key={shape + idx}>
+      <ShapeContainer viewBox="0 0 5 3" width="100%" key={shape.key}>
         <Shape direction={Direction.RIGHT} shape={shape} x={1} y={1} />
       </ShapeContainer>
     ))}

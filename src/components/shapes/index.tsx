@@ -82,12 +82,9 @@ const colorMap: { [key in Shapes]: string } = {
 };
 
 /** Renders a given shape. */
-export const Shape: FC<ShapeProps & { shape: Shapes }> = ({
-  shape,
-  x,
-  y,
-  direction,
-}) => {
+export const Shape: FC<
+  ShapeProps & { shape: { shape: Shapes; key: string } }
+> = ({ shape: { shape, key }, x, y, direction }) => {
   const coordinates = useMemo(
     () =>
       calculateCoordinates(shape, {
@@ -100,6 +97,7 @@ export const Shape: FC<ShapeProps & { shape: Shapes }> = ({
 
   return (
     <ShapeDrawer
+      key={key}
       x={x}
       y={y}
       coordinates={coordinates}

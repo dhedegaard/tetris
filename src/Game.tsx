@@ -25,7 +25,7 @@ interface Props {
 const Game: FC<Props> = ({ player }) => {
   const {
     direction,
-    shape: { shape, key },
+    shape,
     position,
     blocks,
     gamestate,
@@ -40,9 +40,8 @@ const Game: FC<Props> = ({ player }) => {
     <Container {...swipeableHandler}>
       <GridContainer>
         <Grid>
-          {gamestate !== "gameover" && (
+          {gamestate === "alive" && (
             <Shape
-              key={key}
               direction={direction}
               shape={shape}
               x={position.x}

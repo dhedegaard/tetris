@@ -1,10 +1,10 @@
-import { FC, memo, useMemo } from "react";
 import styled from "@emotion/styled";
-import { Shapes } from "../shapes";
+import isEqual from "lodash/isEqual";
+import { FC, memo, useMemo } from "react";
+import { ShapeElement } from "../../hooks/useShape";
 import Level from "./Level";
 import NextShape from "./NextShape";
 import Score from "./Score";
-import isEqual from "lodash/isEqual";
 
 const LegendContainer = styled.div`
   background-color: #000;
@@ -25,7 +25,7 @@ const LegendContainer = styled.div`
 interface Props {
   score: number;
   level: number;
-  peekShapes: Shapes[];
+  peekShapes: readonly ShapeElement[];
 }
 
 const Legend: FC<Props> = ({ score, level, peekShapes }) => {

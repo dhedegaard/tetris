@@ -2,21 +2,21 @@ import { shuffle, uniqueId } from "lodash";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Shapes, SHAPES } from "../components/shapes";
 
-const getRandomShapes = () => shuffle(SHAPES);
+const getRandomShapes = () =>
+  shuffle(SHAPES).map((shape) => ({ shape, key: uniqueId("shape-") }));
+
+export interface ShapeElement {
+  shape: Shapes;
+  key: string;
+}
 
 /** Handles logic for determining the next shape to use. */
 const useShape = () => {
-  const [peekShapes, setPeekShapes] = useState<Shapes[]>([
+  const [peekShapes, setPeekShapes] = useState<readonly ShapeElement[]>([
     ...getRandomShapes(),
     ...getRandomShapes(),
   ]);
-  const shape = useMemo(
-    () => ({
-      shape: peekShapes[0]!,
-      key: uniqueId("shape-"),
-    }),
-    [peekShapes]
-  );
+  const shape = useMemo(() => peekShapes[0]!, [peekShapes]);
 
   /** Pops the next shape and sets it as the current shape state. */
   const nextShape = useCallback(() => {
