@@ -20,6 +20,7 @@ const LegendContainer = styled.div`
   justify-content: space-between;
   width: 100%;
   overflow-y: auto;
+  overflow: hidden;
 `;
 
 interface Props {

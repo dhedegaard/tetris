@@ -1,6 +1,6 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { css, Global } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Global, css } from "@emotion/react";
+import { FC, useEffect, useState } from "react";
 import Music from "./components/Music";
 import Game from "./Game";
 import GlobalPanel from "./GlobalPanel";
@@ -12,6 +12,8 @@ const GlobalStyle: FC = () => (
         margin: 0;
         user-select: none;
         background-color: rgb(34, 34, 34);
+        height: 100vh;
+        max-height: 100vh;
       }
       html * {
         font-family: "Press Start 2P", cursive !important;
@@ -20,17 +22,17 @@ const GlobalStyle: FC = () => (
   />
 );
 
-const Container = styled.div`
+const Container = styled.main`
   box-sizing: border-box;
   display: flex;
-  height: 100vh;
+  height: auto;
+  max-height: 100vh;
   max-width: 100vw;
   margin: 0 auto;
   justify-content: center;
   align-items: stretch;
+  aspect-ratio: 1.13;
 `;
-
-export type GameMode = "single" | "local-coop";
 
 const App: FC = () => {
   const [musicEnabled, setMusicEnabled] = useState(false);
