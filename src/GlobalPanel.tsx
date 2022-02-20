@@ -47,6 +47,7 @@ const Toggle = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   margin: 0 8px;
+  gap: 8px;
 `;
 
 interface Props {
