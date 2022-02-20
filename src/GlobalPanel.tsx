@@ -5,6 +5,7 @@ const Panel = styled.div`
   background: #000;
   height: 100%;
   aspect-ratio: 120 / 400;
+  min-width: 130px;
   border: 4px solid purple;
   box-sizing: border-box;
   border-right-width: 0;
@@ -43,6 +44,7 @@ const Text = styled.div`
 
 const Toggle = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   margin: 0 8px;
 `;
