@@ -5,7 +5,7 @@ const Panel = styled.div`
   background: #000;
   height: 100%;
   aspect-ratio: 120 / 400;
-  min-width: 130px;
+  min-width: 150px;
   border: 4px solid purple;
   box-sizing: border-box;
   border-right-width: 0;
@@ -16,6 +16,7 @@ const Panel = styled.div`
   flex-direction: column;
   align-items: stretch;
   overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 const Container = styled.div`
@@ -50,6 +51,18 @@ const Toggle = styled.div`
   gap: 8px;
 `;
 
+const H1 = styled.h1`
+  color: #fff;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-decoration: underline;
+  font-size: 3vh;
+  margin: 12px 0;
+  max-width: 100%;
+  width: 100%;
+  text-align: center;
+`;
+
 interface Props {
   musicEnabled: boolean;
   toggleMusic: (enabled: boolean) => void;
@@ -57,6 +70,7 @@ interface Props {
 
 const GlobalPanel: FC<Props> = (props) => (
   <Panel>
+    <H1>Tetris</H1>
     <Container>
       <Title>Music:</Title>
       <Toggle>
