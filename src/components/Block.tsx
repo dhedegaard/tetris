@@ -14,7 +14,6 @@ export default memo(Block);
 
 const Rect = styled.rect`
   color: inherit;
-  fill: currentFill;
   stroke: #000;
   stroke-width: 0.02;
   stroke-linecap: round;
