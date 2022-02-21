@@ -70,7 +70,7 @@ const ShapeDrawer: FC<Props> = ({ x, y, shape, coordinates }) => {
   return (
     <G transform={transform} color={color} fill={color}>
       {coordinates.map((coord, index) => (
-        <Block key={`elem_${color}_${index}`} {...coord} color="inherit" />
+        <Block key={`elem_${color}_${index}`} {...coord} />
       ))}
     </G>
   );
