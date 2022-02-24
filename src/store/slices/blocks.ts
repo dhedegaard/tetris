@@ -1,10 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { batch } from "react-redux";
-import { TetrisStoreDispatch, TetrisStoreState } from "../tetris";
-import { directionActions } from "./direction";
-import { gamestateActions } from "./gamestate";
-import { positionActions } from "./position";
-import { shapeActions } from "./shape";
 
 export interface Coordinate {
   x: number;
