@@ -25,7 +25,11 @@ const useInterval = (callback: () => void, delay: number) => {
       handle = window.requestAnimationFrame(callback);
     };
     handle = window.requestAnimationFrame(callback);
-    return () => handle != null && cancelAnimationFrame(handle);
+    return () => {
+      if (handle != null) {
+        cancelAnimationFrame(handle);
+      }
+    };
   }, []);
 };
 
