@@ -24,28 +24,17 @@ const ShapeDrawer: FC<Props> = ({ x, y, shape, coordinates }) => {
 
   const animateTransformRef = useRef<SVGAnimateTransformElement>(null);
   useEffect(() => {
-    let dispatched = false;
-    const setNewCoordinates = () => {
-      if (dispatched) {
-        return;
-      }
-      dispatched = true;
-      dispatch({ x, y, shape });
-    };
+    dispatch({ x, y, shape });
+  }, [x, y, shape]);
 
-    // Whenever the shape changes, do not animate the position change.
-    if (shape !== oldShape) {
-      return setNewCoordinates();
+  useEffect(() => {
+    const cur = animateTransformRef.current;
+    if (shape !== oldShape || cur == null) {
+      return;
     }
-
-    const elem = animateTransformRef.current;
-    // Animate the element and update the state when the animation has started.
-    elem?.beginElement();
-    setNewCoordinates();
-    return () => {
-      elem?.endElement();
-    };
-  }, [x, y, shape, oldShape]);
+    cur.beginElement();
+    return () => cur.endElement();
+  }, [x, y, oldX, oldY, shape, oldShape]);
 
   const blocks = useMemo(
     () =>
