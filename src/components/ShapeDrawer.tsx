@@ -38,16 +38,12 @@ const ShapeDrawer: FC<Props> = ({ x, y, shape, coordinates }) => {
       return setNewCoordinates();
     }
 
-    // Animate and update the position of the element after the animation has
-    // started.
     const elem = animateTransformRef.current;
-    elem?.addEventListener("beginEvent", setNewCoordinates);
+    // Animate the element and update the state when the animation has started.
     elem?.beginElement();
+    setNewCoordinates();
     return () => {
-      // Clear any animations in progress and make sure the state is consistent.
-      elem?.removeEventListener("beginEvent", setNewCoordinates);
       elem?.endElement();
-      setNewCoordinates();
     };
   }, [x, y, shape, oldShape]);
 
@@ -73,8 +69,7 @@ const ShapeDrawer: FC<Props> = ({ x, y, shape, coordinates }) => {
         from={`${oldX}, ${oldY}`}
         to={`${x}, ${y}`}
         dur="25ms"
-        repeatCount="1"
-        restart="whenNotActive"
+        repeatCount="0"
       />
       {blocks}
     </G>
