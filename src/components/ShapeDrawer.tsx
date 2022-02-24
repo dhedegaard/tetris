@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
-import { FC, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { unstable_batchedUpdates } from "react-dom";
+import { FC, Reducer, useEffect, useMemo, useReducer, useRef } from "react";
 import { Coordinate } from "../store/slices/blocks";
 import Block from "./Block";
 import { ShapeElement } from "./shapes";
@@ -14,51 +13,66 @@ interface Props {
   y: number;
 }
 
-const coordToTranslateTransform = (x: number, y: number) =>
-  `translate(${x}, ${y})`;
-
 const ShapeDrawer: FC<Props> = ({ x, y, shape, coordinates }) => {
-  const [transform, set] = useState(coordToTranslateTransform(x, y));
+  const [{ curX, curY, oldX, oldY, oldShape }, dispatch] = useReducer(reducer, {
+    curX: x,
+    curY: y,
+    oldX: x,
+    oldY: y,
+    oldShape: shape,
+  });
 
   const animateTransformRef = useRef<SVGAnimateTransformElement>(null);
-
-  const [oldXY, setOldXY] = useState({ x, y });
-  useLayoutEffect(() => {
-    const callback = () => {
-      set(coordToTranslateTransform(x, y));
+  useEffect(() => {
+    let dispatched = false;
+    const setNewCoordinates = () => {
+      if (dispatched) {
+        return;
+      }
+      dispatched = true;
+      dispatch({ x, y, shape });
     };
+
+    // Whenever the shape changes, do not animate the position change.
+    if (shape !== oldShape) {
+      return setNewCoordinates();
+    }
+
+    // Animate and update the position of the element after the animation has
+    // started.
     const elem = animateTransformRef.current;
-    elem?.addEventListener("beginEvent", callback);
+    elem?.addEventListener("beginEvent", setNewCoordinates);
     elem?.beginElement();
     return () => {
+      // Clear any animations in progress and make sure the state is consistent.
+      elem?.removeEventListener("beginEvent", setNewCoordinates);
       elem?.endElement();
-      elem?.removeEventListener("beginEvent", callback);
-      unstable_batchedUpdates(() => {
-        callback();
-        setOldXY({ x, y });
-      });
+      setNewCoordinates();
     };
-  }, [x, y]);
+  }, [x, y, shape, oldShape]);
 
-  const { color } = shape;
   const blocks = useMemo(
     () =>
       coordinates.map((coord, index) => (
-        <Block key={`elem_${color}_${index}`} {...coord} />
+        <Block key={`elem_${shape.color}_${index}`} {...coord} />
       )),
-    [color, coordinates]
+    [coordinates, shape.color]
   );
 
   return (
-    <G transform={transform} color={color} fill={color}>
+    <G
+      transform={`translate(${curX}, ${curY})`}
+      color={shape.color}
+      fill={shape.color}
+    >
       <animateTransform
         ref={animateTransformRef}
         attributeName="transform"
         attributeType="XML"
         type="translate"
-        from={`${oldXY.x}, ${oldXY.y}`}
+        from={`${oldX}, ${oldY}`}
         to={`${x}, ${y}`}
-        dur="30ms"
+        dur="25ms"
         repeatCount="1"
         restart="whenNotActive"
       />
@@ -71,3 +85,21 @@ const G = styled.g`
 `;
 
 export default ShapeDrawer;
+
+const reducer: Reducer<
+  {
+    curX: number;
+    curY: number;
+    oldX: number;
+    oldY: number;
+    oldShape: ShapeElement;
+  },
+  { x: number; y: number; shape: ShapeElement }
+> = (state, action) => ({
+  ...state,
+  curX: action.x,
+  curY: action.y,
+  oldX: action.shape === state.oldShape ? state.curX : action.x,
+  oldY: action.shape === state.oldShape ? state.curY : action.y,
+  oldShape: action.shape,
+});
