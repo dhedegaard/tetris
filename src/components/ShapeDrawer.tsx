@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { FC, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { unstable_batchedUpdates } from "react-dom";
 import { Coordinate } from "../store/slices/blocks";
 import Block from "./Block";
 import { ShapeElement } from "./shapes";
@@ -32,8 +33,10 @@ const ShapeDrawer: FC<Props> = ({ x, y, shape, coordinates }) => {
     return () => {
       elem?.endElement();
       elem?.removeEventListener("beginEvent", callback);
-      callback();
-      setOldXY({ x, y });
+      unstable_batchedUpdates(() => {
+        callback();
+        setOldXY({ x, y });
+      });
     };
   }, [x, y]);
 
