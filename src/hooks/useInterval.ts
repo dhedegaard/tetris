@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { useIsomorphicLayoutEffect } from "react-use";
+import { useEffect, useRef } from "react";
 
 const useInterval = (callback: () => void, delay: number) => {
   const delayRef = useRef(delay);
@@ -9,7 +8,7 @@ const useInterval = (callback: () => void, delay: number) => {
   callbackRef.current = callback;
 
   const lastTickRef = useRef(0);
-  useIsomorphicLayoutEffect(() => {
+  useEffect(() => {
     const callback: FrameRequestCallback = (time) => {
       // Determine how much time has passed since the last tick.
       const { current: currentLastTick } = lastTickRef;
