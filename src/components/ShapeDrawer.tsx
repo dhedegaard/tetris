@@ -1,5 +1,13 @@
 import styled from "@emotion/styled";
-import { FC, Reducer, useEffect, useMemo, useReducer, useRef } from "react";
+import {
+  FC,
+  memo,
+  Reducer,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+} from "react";
 import { Coordinate } from "../store/slices/blocks";
 import Block from "./Block";
 import { ShapeElement } from "./shapes";
@@ -13,7 +21,7 @@ interface Props {
   y: number;
 }
 
-const ShapeDrawer: FC<Props> = ({ x, y, shape, coordinates }) => {
+const ShapeDrawer: FC<Props> = memo(({ x, y, shape, coordinates }) => {
   const [{ curX, curY, oldX, oldY, oldShape }, dispatch] = useReducer(reducer, {
     curX: x,
     curY: y,
@@ -67,7 +75,9 @@ const ShapeDrawer: FC<Props> = ({ x, y, shape, coordinates }) => {
       {blocks}
     </G>
   );
-};
+});
+ShapeDrawer.displayName = "ShapeDrawer";
+
 const G = styled.g`
   transform-origin: 50% 50%;
   will-change: transform;
