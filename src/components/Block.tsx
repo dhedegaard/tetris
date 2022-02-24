@@ -18,4 +18,5 @@ const Rect = styled.rect`
   stroke-width: 0.02;
   stroke-linecap: round;
   stroke-linejoin: round;
+  will-change: x, y;
 `;
