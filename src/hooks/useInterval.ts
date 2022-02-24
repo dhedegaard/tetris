@@ -9,6 +9,7 @@ const useInterval = (callback: () => void, delay: number) => {
 
   const lastTickRef = useRef(0);
   useEffect(() => {
+    let handle: number | undefined;
     const callback: FrameRequestCallback = (time) => {
       // Determine how much time has passed since the last tick.
       const { current: currentLastTick } = lastTickRef;
@@ -21,9 +22,10 @@ const useInterval = (callback: () => void, delay: number) => {
       }
 
       // Repeat.
-      window.requestAnimationFrame(callback);
+      handle = window.requestAnimationFrame(callback);
     };
-    window.requestAnimationFrame(callback);
+    handle = window.requestAnimationFrame(callback);
+    return () => handle != null && cancelAnimationFrame(handle);
   }, []);
 };
 
