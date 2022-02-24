@@ -70,6 +70,7 @@ const ShapeDrawer: FC<Props> = ({ x, y, shape, coordinates }) => {
 };
 const G = styled.g`
   transform-origin: 50% 50%;
+  will-change: transform;
 `;
 
 export default ShapeDrawer;
