@@ -44,12 +44,16 @@ const ShapeDrawer: FC<Props> = ({ x, y, shape, coordinates }) => {
     [coordinates, shape.color]
   );
 
+  const transform = useMemo(
+    () =>
+      `translate(${oldShape === shape ? curX : x}, ${
+        oldShape === shape ? curY : y
+      })`,
+    [curX, curY, oldShape, shape, x, y]
+  );
+
   return (
-    <G
-      transform={`translate(${curX}, ${curY})`}
-      color={shape.color}
-      fill={shape.color}
-    >
+    <G transform={transform} color={shape.color} fill={shape.color}>
       <animateTransform
         ref={animateTransformRef}
         attributeName="transform"
