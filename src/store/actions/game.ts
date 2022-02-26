@@ -13,6 +13,10 @@ import { TetrisStoreDispatch, TetrisStoreState } from "../tetris";
 export const startNewGame =
   () =>
   async (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
+    if (getState().gamestate.gamestate !== "gameover") {
+      return;
+    }
+
     batch(() => {
       dispatch(blocksActions.clearAllBlocks());
       dispatch(shapeActions.nextShape());

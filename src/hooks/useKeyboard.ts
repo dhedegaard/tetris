@@ -6,6 +6,7 @@ import {
   moveCurrentShapeLeft,
   moveCurrentShapeRight,
   rotateCurrentShape,
+  startNewGame,
 } from "../store/actions/game";
 
 export interface Keybinds {
@@ -57,23 +58,11 @@ const useKeyboard = (
         return;
       }
 
-      const {
-        position,
-        direction,
-        shape: { shape },
-        isFreePositions,
-        gamestate,
-      } = stateRef.current;
-      // If the game is over, allow a different set of keybinds.
-      if (gamestate === "gameover") {
-        switch (evt.key) {
-          case "r":
-            newGame();
-        }
-        return;
-      }
-
       switch (evt.key) {
+        case "r":
+          dispatch(startNewGame());
+          break;
+
         // left
         case keybinds.moveLeft:
           dispatch(moveCurrentShapeLeft());
