@@ -116,9 +116,6 @@ export const Shape: FC<Props> = ({ shape, x, y, direction }) => {
   return <ShapeDrawer shape={shape} x={x} y={y} coordinates={coordinates} />;
 };
 
-export const getRandomShape = (): Shapes =>
-  SHAPES[Math.floor(Math.random() * (SHAPES.length - 1))]!;
-
 export const getRandomShapes = () =>
   shuffle(SHAPES).map((shape) => ({
     shape,
