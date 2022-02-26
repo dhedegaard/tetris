@@ -34,23 +34,12 @@ const usePosition = () => {
     [dispatch]
   );
 
-  const moveLeft = useCallback(
-    () => movePosition(Direction.LEFT),
-    [movePosition]
-  );
-  const moveRight = useCallback(
-    () => movePosition(Direction.RIGHT),
-    [movePosition]
-  );
   const moveDown = useCallback(
     () => movePosition(Direction.DOWN),
     [movePosition]
   );
 
-  return useMemo(
-    () => ({ position, moveLeft, moveRight, moveDown }),
-    [moveDown, moveLeft, moveRight, position]
-  );
+  return useMemo(() => ({ position, moveDown }), [moveDown, position]);
 };
 
 export default usePosition;

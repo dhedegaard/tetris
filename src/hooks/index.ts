@@ -2,7 +2,12 @@ import { MutableRefObject, useCallback, useMemo, useRef } from "react";
 import { useSwipeable } from "react-swipeable";
 import { Coordinates } from "../components/ShapeDrawer";
 import { Direction, Shapes } from "../components/shapes";
-import { startNewGame } from "../store/actions/game";
+import {
+  moveCurrentShapeLeft,
+  moveCurrentShapeRight,
+  rotateCurrentShape,
+  startNewGame,
+} from "../store/actions/game";
 import { Coordinate } from "../store/slices/blocks";
 import { tickActions } from "../store/slices/tick";
 import { useTetrisDispatch } from "../store/tetris";
@@ -33,9 +38,9 @@ interface Input {
 const useTetris = ({ player }: Input) => {
   const dispatch = useTetrisDispatch();
   const { gamestate } = useGamestate();
-  const { position, moveLeft, moveRight, moveDown } = usePosition();
+  const { position, moveDown } = usePosition();
   const { shape, peekShapes } = useShape();
-  const { direction, setNextDirection } = useDirection();
+  const { direction } = useDirection();
   const { score, increaseScore } = useScore();
   const { blocks, isFreePositions } = useBlocks();
   const { level } = useLevel();
@@ -84,9 +89,9 @@ const useTetris = ({ player }: Input) => {
 
   const swipeableHandler = useSwipeable({
     onSwipedDown: () => setMoveToBottom(true),
-    onSwipedLeft: () => moveLeft(),
-    onSwipedRight: () => moveRight(),
-    onSwipedUp: () => setNextDirection(),
+    onSwipedLeft: () => dispatch(moveCurrentShapeLeft()),
+    onSwipedRight: () => dispatch(moveCurrentShapeRight()),
+    onSwipedUp: () => dispatch(rotateCurrentShape()),
   });
 
   return useMemo(
