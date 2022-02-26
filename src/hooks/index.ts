@@ -3,6 +3,7 @@ import { startNewGame } from "../store/actions/game";
 import { useTetrisDispatch } from "../store/tetris";
 import useBlocks from "./useBlocks";
 import useDirection from "./useDirection";
+import useGamepad from "./useGamepad";
 import useGamestate from "./useGamestate";
 import useKeyboard from "./useKeyboard";
 import useLevel from "./useLevel";
@@ -29,6 +30,7 @@ const useTetris = () => {
   // Handle inputs.
   useKeyboard();
   const swipeableHandler = useSwipe();
+  useGamepad();
 
   return useMemo(
     () => ({
