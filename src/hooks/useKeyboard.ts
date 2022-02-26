@@ -67,12 +67,7 @@ const useKeyboard = () => {
   );
 
   useEffect(() => {
-    const keydownHandler = (evt: KeyboardEvent) => {
-      evt.preventDefault();
-      evt.stopPropagation();
-      handleKey(evt.key);
-    };
-
+    const keydownHandler = (evt: KeyboardEvent) => handleKey(evt.key);
     document.addEventListener("keydown", keydownHandler, { passive: true });
     return () => document.removeEventListener("keydown", keydownHandler);
   }, [dispatch, handleKey]);
