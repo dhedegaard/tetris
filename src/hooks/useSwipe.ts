@@ -19,7 +19,7 @@ export const useSwipe = () => {
   const dispatch = useTetrisDispatch();
   const gamestate = useTetrisSelector(gamestateSelector);
 
-  useSwipeable(
+  return useSwipeable(
     useMemo(
       () => ({
         onSwipedDown: () => dispatch(moveCurrentShapeToBottom()),

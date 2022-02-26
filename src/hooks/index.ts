@@ -1,7 +1,9 @@
 import { MutableRefObject, useMemo, useRef } from "react";
 import { Coordinates } from "../components/ShapeDrawer";
 import { Direction, Shapes } from "../components/shapes";
+import { startNewGame } from "../store/actions/game";
 import { Coordinate } from "../store/slices/blocks";
+import { useTetrisDispatch } from "../store/tetris";
 import useBlocks from "./useBlocks";
 import useDirection from "./useDirection";
 import useGamestate, { Gamestate } from "./useGamestate";
@@ -35,6 +37,7 @@ const useTetris = ({ player }: Input) => {
   const { score, increaseScore } = useScore();
   const { blocks, isFreePositions } = useBlocks();
   const { level } = useLevel();
+  const dispatch = useTetrisDispatch();
 
   // Build a ref os state, for various cases.
   /** @deprecated */
@@ -64,7 +67,7 @@ const useTetris = ({ player }: Input) => {
 
   // Handle inputs.
   useKeyboard(player);
-  useSwipe();
+  const swipeableHandler = useSwipe();
 
   return useMemo(
     () => ({
@@ -76,8 +79,21 @@ const useTetris = ({ player }: Input) => {
       score,
       peekShapes,
       level,
+      swipeableHandler,
+      startNewGame: () => dispatch(startNewGame()),
     }),
-    [blocks, direction, gamestate, level, peekShapes, position, score, shape]
+    [
+      blocks,
+      direction,
+      dispatch,
+      gamestate,
+      level,
+      peekShapes,
+      position,
+      score,
+      shape,
+      swipeableHandler,
+    ]
   );
 };
 
