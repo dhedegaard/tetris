@@ -235,10 +235,10 @@ export const doTick =
   async (
     dispatch: TetrisStoreDispatch,
     getState: () => TetrisStoreState
-  ): Promise<"moved-down" | "persisted-and-new-shape"> => {
+  ): Promise<"moved-down" | "persisted-and-new-shape" | "not-alive"> => {
     const state = getState();
     if (state.gamestate.gamestate !== "alive") {
-      return;
+      return "not-alive";
     }
 
     const {
