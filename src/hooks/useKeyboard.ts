@@ -4,7 +4,8 @@ import {
   moveGoToBottom,
   startNewGame,
 } from "../store/actions/game";
-import { useTetrisDispatch } from "../store/tetris";
+import { selectCurrentShape } from "../store/slices/shape";
+import { useTetrisDispatch, useTetrisSelector } from "../store/tetris";
 
 interface Keybinds {
   moveLeft: string;
@@ -90,6 +91,13 @@ const useKeyboard = () => {
     },
     [handleKey]
   );
+
+  // Whenever the current shape changes, reset all the pressed keys to stop
+  // moving the shape.
+  const shape = useTetrisSelector(selectCurrentShape);
+  useEffect(() => {
+    pressedKeys.current.clear();
+  }, [shape]);
 
   const pressKey = useCallback(
     (key: string) => {
