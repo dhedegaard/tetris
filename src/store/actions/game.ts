@@ -157,15 +157,7 @@ export const moveCurrentShapeLeft =
     });
 
     // Check if the spots are free in the new positions.
-    if (
-      newPositions.every(
-        (e) =>
-          e.x >= 0 &&
-          e.x < 10 &&
-          e.y < 20 &&
-          !blocks.some((f) => f.x === e.x && f.y === e.y)
-      )
-    ) {
+    if (arePositionsFree(newPositions, blocks)) {
       dispatch(positionActions.movePosition({ dx: -1, dy: 0 }));
     }
   };
