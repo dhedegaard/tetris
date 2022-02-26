@@ -5,7 +5,6 @@ const Panel = styled.div`
   background: #000;
   height: 100%;
   aspect-ratio: 120 / 400;
-  min-width: 150px;
   border: 4px solid purple;
   box-sizing: border-box;
   border-right-width: 0;
@@ -17,6 +16,10 @@ const Panel = styled.div`
   align-items: stretch;
   overflow-y: auto;
   overflow-x: hidden;
+
+  @media (max-width: 425px) {
+    display: none;
+  }
 `;
 
 const Container = styled.div`
