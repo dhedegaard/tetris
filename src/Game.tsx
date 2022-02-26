@@ -17,6 +17,8 @@ const Container = styled.div`
 
 const GridContainer = styled.div`
   border: 4px solid purple;
+  box-sizing: border-box;
+  width: 100%;
 `;
 
 const Game: FC = () => {
