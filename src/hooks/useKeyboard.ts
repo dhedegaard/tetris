@@ -123,7 +123,7 @@ const useKeyboard = () => {
       document.removeEventListener("keydown", keydownHandler);
       document.removeEventListener("keyup", keyupHandler);
     };
-  }, [dispatch, handleKey]);
+  }, [dispatch, handleKey, pressKey]);
 };
 
 export default useKeyboard;
