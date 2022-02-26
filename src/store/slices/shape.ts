@@ -26,7 +26,12 @@ const selectShapeQueue = (state: TetrisStoreState) => state.shape.shapeQueue;
 
 export const selectCurrentShape = createSelector(
   selectShapeQueue,
-  (shapeQueue) => shapeQueue[0]!
+  ([firstShape]) => {
+    if (firstShape == null) {
+      throw new Error("The shape queue is empty.");
+    }
+    return firstShape;
+  }
 );
 
 export const selectPeekShapes = createSelector(selectShapeQueue, (shapeQueue) =>
