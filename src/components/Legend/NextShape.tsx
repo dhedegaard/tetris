@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import isEqual from "lodash/isEqual";
 import { FC, memo } from "react";
+import { useIsBrowser } from "../../hooks/useIsBrowser";
 import { Direction, Shape, ShapeElement } from "../shapes";
 
 const Container = styled.div`
@@ -31,15 +32,22 @@ interface Props {
   nextShapes: readonly ShapeElement[];
 }
 
-const NextShape: FC<Props> = ({ nextShapes }) => (
-  <Container>
-    <Title>Next:</Title>
-    {nextShapes.map((shape) => (
-      <ShapeContainer viewBox="0 0 5 3" width="100%" key={shape.key}>
-        <Shape direction={Direction.RIGHT} shape={shape} x={1} y={1} />
-      </ShapeContainer>
-    ))}
-  </Container>
-);
+const NextShape: FC<Props> = ({ nextShapes }) => {
+  const isBrowser = useIsBrowser();
+  if (!isBrowser) {
+    return null;
+  }
+
+  return (
+    <Container>
+      <Title>Next:</Title>
+      {nextShapes.map((shape) => (
+        <ShapeContainer viewBox="0 0 5 3" width="100%" key={shape.key}>
+          <Shape direction={Direction.RIGHT} shape={shape} x={1} y={1} />
+        </ShapeContainer>
+      ))}
+    </Container>
+  );
+};
 
 export default memo(NextShape, isEqual);

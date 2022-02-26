@@ -37,9 +37,6 @@ const Container = styled.main`
 const App: FC = () => {
   const [musicEnabled, setMusicEnabled] = useState(false);
 
-  const [isBrowser, setIsBrowser] = useState(false);
-  useEffect(() => setIsBrowser(true), []);
-
   return (
     <>
       <GlobalStyle />
@@ -49,7 +46,7 @@ const App: FC = () => {
           musicEnabled={musicEnabled}
           toggleMusic={(enabled) => setMusicEnabled(enabled)}
         />
-        {isBrowser && <Game />}
+        <Game />
       </Container>
     </>
   );

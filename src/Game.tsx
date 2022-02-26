@@ -7,6 +7,7 @@ import Legend from "./components/Legend";
 import { Shape } from "./components/shapes";
 import GameOver from "./GameOver";
 import useTetris from "./hooks";
+import { useIsBrowser } from "./hooks/useIsBrowser";
 import tetrisStore from "./store/tetris";
 
 const Container = styled.div`
@@ -23,6 +24,8 @@ const GridContainer = styled.div`
 `;
 
 const Game: FC = () => {
+  const isBrowser = useIsBrowser();
+
   const {
     direction,
     shape,
@@ -40,7 +43,7 @@ const Game: FC = () => {
     <Container {...swipeableHandler}>
       <GridContainer>
         <Grid>
-          {gamestate === "alive" && (
+          {isBrowser && gamestate === "alive" && (
             <Shape
               direction={direction}
               shape={shape}
