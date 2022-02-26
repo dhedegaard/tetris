@@ -128,6 +128,8 @@ export const attemptPersistBlocks =
       dispatch(positionActions.resetPosition());
       dispatch(directionActions.resetDirection());
       dispatch(shapeActions.nextShape());
+      dispatch(tickActions.clearTemporaryTick());
+      dispatch(clearFilledRows());
     });
 
     return true;

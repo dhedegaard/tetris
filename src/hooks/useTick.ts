@@ -68,14 +68,7 @@ const useTick = (stateRef: StateRef, moveDown: () => void) => {
             color: blockColor,
           }))
         )
-      ).then((success) => {
-        if (success) {
-          batch(() => {
-            dispatch(tickActions.clearTemporaryTick());
-            dispatch(clearFilledRows());
-          });
-        }
-      });
+      );
     });
   }, [dispatch, moveDown, stateRef]);
 
