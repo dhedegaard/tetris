@@ -1,4 +1,5 @@
-import { shuffle, uniqueId } from "lodash";
+import uniqueId from "lodash/uniqueId";
+import shuffle from "lodash/shuffle";
 import { FC, useMemo } from "react";
 import ShapeDrawer, { Coordinates } from "../ShapeDrawer";
 import I, { COLOR_I } from "./I";
