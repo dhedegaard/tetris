@@ -7,7 +7,7 @@ interface Props {
 }
 
 const Block: FC<Props & SVGProps<SVGRectElement>> = (props) => (
-  <Rect width={1} height={1} {...props} />
+  <Rect {...props} />
 );
 
 export default memo(Block);
@@ -19,4 +19,6 @@ const Rect = styled.rect`
   stroke-linecap: round;
   stroke-linejoin: round;
   will-change: x, y;
+  width: 1px;
+  height: 1px;
 `;
