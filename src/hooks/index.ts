@@ -1,12 +1,9 @@
-import { MutableRefObject, useMemo } from "react";
-import { Coordinates } from "../components/ShapeDrawer";
-import { Direction, Shapes } from "../components/shapes";
+import { useMemo } from "react";
 import { startNewGame } from "../store/actions/game";
-import { Coordinate } from "../store/slices/blocks";
 import { useTetrisDispatch } from "../store/tetris";
 import useBlocks from "./useBlocks";
 import useDirection from "./useDirection";
-import useGamestate, { Gamestate } from "./useGamestate";
+import useGamestate from "./useGamestate";
 import useKeyboard, { Player } from "./useKeyboard";
 import useLevel from "./useLevel";
 import usePosition from "./usePosition";
@@ -14,16 +11,6 @@ import useScore from "./useScore";
 import useShape from "./useShape";
 import { useSwipe } from "./useSwipe";
 import useTick from "./useTick";
-
-export type StateRef = MutableRefObject<{
-  position: Coordinate;
-  direction: Direction;
-  shape: { shape: Shapes; key: string };
-  gamestate: Gamestate;
-  score: number;
-  increaseScore: (amount: number) => void;
-  isFreePositions: (newPositions: Coordinates) => boolean;
-}>;
 
 interface Input {
   player: Player;
