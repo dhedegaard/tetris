@@ -178,7 +178,22 @@ export const attemptToDoMove =
 
     // Check if the spots are free in the new positions.
     if (arePositionsFree(newPositions, blocks)) {
-      dispatch(positionActions.movePosition({ dx: -1, dy: 0 }));
+      switch (operation) {
+        case "LEFT":
+        case "RIGHT":
+          dispatch(
+            positionActions.movePosition({
+              dx: operation === "LEFT" ? -1 : operation === "RIGHT" ? +1 : 0,
+              dy: 0,
+            })
+          );
+          break;
+        case "ROTATE":
+          dispatch(directionActions.rotateDirection());
+          break;
+        default:
+          throw new TypeError(`Unknown operation: ${operation}`);
+      }
     }
   };
 
