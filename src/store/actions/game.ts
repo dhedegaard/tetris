@@ -130,10 +130,10 @@ export const attemptPersistBlocks =
       blocks.forEach((block) => dispatch(blocksActions.persistBlock(block)));
 
       // Reset various things and go to the next shape.
+      dispatch(tickActions.clearTemporaryTick());
       dispatch(positionActions.resetPosition());
       dispatch(directionActions.resetDirection());
       dispatch(shapeActions.nextShape());
-      dispatch(tickActions.clearTemporaryTick());
       dispatch(clearFilledRows());
     });
 
@@ -250,27 +250,20 @@ export const doTick =
 
     // Move down if space is free.
     if (arePositionsFree(newPositions, blocks)) {
-      dispatch(positionActions.movePosition({ dx: 0, dy: +1 }));
-      return;
+      return dispatch(positionActions.movePosition({ dx: 0, dy: +1 }));
     }
 
     // Otherwise, persist and go to the next shape.
     const blockColor = colorFromShape(currentShape.shape);
-    batch(() => {
-      dispatch(tickActions.clearTemporaryTick());
-      dispatch(
-        attemptPersistBlocks(
-          calculateCoordinates(currentShape.shape, {
-            direction,
-            x: position.x,
-            y: position.y,
-          }).map((block) => ({
-            ...block,
-            color: blockColor,
-          }))
-        )
-      );
-    });
+    dispatch(
+      attemptPersistBlocks(
+        calculateCoordinates(currentShape.shape, {
+          direction,
+          x: position.x,
+          y: position.y,
+        }).map((block) => ({ ...block, color: blockColor }))
+      )
+    );
   };
 
 const arePositionsFree = (positions: Coordinates, blocks: Block[]): boolean =>
