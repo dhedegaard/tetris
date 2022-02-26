@@ -226,9 +226,16 @@ export const moveCurrentShapeToBottom =
   () => async (dispatch: TetrisStoreDispatch) =>
     dispatch(tickActions.setTemporaryTick(40));
 
+export const moveGoToBottom = () => async (dispatch: TetrisStoreDispatch) => {
+  while ((await dispatch(doTick())) === "moved-down") {}
+};
+
 export const doTick =
   () =>
-  async (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
+  async (
+    dispatch: TetrisStoreDispatch,
+    getState: () => TetrisStoreState
+  ): Promise<"moved-down" | "persisted-and-new-shape"> => {
     const state = getState();
     if (state.gamestate.gamestate !== "alive") {
       return;
@@ -250,7 +257,8 @@ export const doTick =
 
     // Move down if space is free.
     if (arePositionsFree(newPositions, blocks)) {
-      return dispatch(positionActions.movePosition({ dx: 0, dy: +1 }));
+      dispatch(positionActions.movePosition({ dx: 0, dy: +1 }));
+      return "moved-down";
     }
 
     // Otherwise, persist and go to the next shape.
@@ -264,6 +272,7 @@ export const doTick =
         }).map((block) => ({ ...block, color: blockColor }))
       )
     );
+    return "persisted-and-new-shape";
   };
 
 const arePositionsFree = (positions: Coordinates, blocks: Block[]): boolean =>

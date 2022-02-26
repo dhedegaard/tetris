@@ -1,8 +1,9 @@
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import {
   moveCurrentShapeLeft,
   moveCurrentShapeRight,
   moveCurrentShapeToBottom,
+  moveGoToBottom,
   rotateCurrentShape,
   startNewGame,
 } from "../store/actions/game";
@@ -14,6 +15,8 @@ export interface Keybinds {
   moveRight: string;
   rotate: string;
   moveDown: string;
+  goToBottom: string;
+  newGame: string;
 }
 
 export const keyboard1: Keybinds = {
@@ -21,27 +24,12 @@ export const keyboard1: Keybinds = {
   moveRight: "ArrowRight",
   rotate: "ArrowUp",
   moveDown: "ArrowDown",
+  goToBottom: " ",
+  newGame: "r",
 };
+const keybinds = keyboard1;
 
-export const keyboard2: Keybinds = {
-  moveLeft: "a",
-  moveRight: "d",
-  rotate: "w",
-  moveDown: "s",
-};
-
-const getKeybinds = (player: Player): Keybinds =>
-  ((
-    {
-      keyboard1,
-      keyboard2,
-    } as { [key in Player]: Keybinds }
-  )[player]);
-
-export type Player = "keyboard1" | "keyboard2";
-
-const useKeyboard = (player: Player = "keyboard1") => {
-  const keybinds = useMemo(() => getKeybinds(player), [player]);
+const useKeyboard = () => {
   const dispatch = useTetrisDispatch();
 
   useEffect(() => {
@@ -51,12 +39,12 @@ const useKeyboard = (player: Player = "keyboard1") => {
       }
 
       switch (evt.key) {
-        case "r":
+        case keybinds.newGame:
           dispatch(startNewGame());
           break;
 
-        // left
         case keybinds.moveLeft:
+          // left
           dispatch(moveCurrentShapeLeft());
           break;
 
@@ -70,11 +58,15 @@ const useKeyboard = (player: Player = "keyboard1") => {
           dispatch(rotateCurrentShape());
           break;
 
-        case keybinds.moveDown: {
+        case keybinds.moveDown:
           // down
           dispatch(moveCurrentShapeToBottom());
           break;
-        }
+
+        case keybinds.goToBottom:
+          // space
+          dispatch(moveGoToBottom());
+          break;
       }
     };
     const keyupHandler = (evt: KeyboardEvent) => {
@@ -93,13 +85,7 @@ const useKeyboard = (player: Player = "keyboard1") => {
       document.removeEventListener("keydown", keydownHandler);
       document.removeEventListener("keyup", keyupHandler);
     };
-  }, [
-    dispatch,
-    keybinds.moveDown,
-    keybinds.moveLeft,
-    keybinds.moveRight,
-    keybinds.rotate,
-  ]);
+  }, [dispatch]);
 };
 
 export default useKeyboard;
