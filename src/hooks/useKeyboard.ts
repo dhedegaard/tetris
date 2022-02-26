@@ -6,7 +6,7 @@ import {
 } from "../store/actions/game";
 import { useTetrisDispatch } from "../store/tetris";
 
-export interface Keybinds {
+interface Keybinds {
   moveLeft: string;
   moveRight: string;
   rotate: string;
