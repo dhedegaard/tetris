@@ -1,9 +1,7 @@
-import { MutableRefObject, useCallback, useMemo, useRef } from "react";
+import { MutableRefObject, useMemo, useRef } from "react";
 import { Coordinates } from "../components/ShapeDrawer";
 import { Direction, Shapes } from "../components/shapes";
 import { Coordinate } from "../store/slices/blocks";
-import { tickActions } from "../store/slices/tick";
-import { useTetrisDispatch } from "../store/tetris";
 import useBlocks from "./useBlocks";
 import useDirection from "./useDirection";
 import useGamestate, { Gamestate } from "./useGamestate";
@@ -30,7 +28,6 @@ interface Input {
 }
 /** A hook that contains all the logic regarding tetris. */
 const useTetris = ({ player }: Input) => {
-  const dispatch = useTetrisDispatch();
   const { gamestate } = useGamestate();
   const { position, moveDown } = usePosition();
   const { shape, peekShapes } = useShape();
@@ -40,6 +37,7 @@ const useTetris = ({ player }: Input) => {
   const { level } = useLevel();
 
   // Build a ref os state, for various cases.
+  /** @deprecated */
   const stateRef: StateRef = useRef({
     position,
     direction,
