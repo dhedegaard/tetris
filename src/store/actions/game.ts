@@ -17,8 +17,7 @@ import { tickActions } from "../slices/tick";
 import { TetrisStoreDispatch, TetrisStoreState } from "../tetris";
 
 export const startNewGame =
-  () =>
-  async (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
+  () => (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
     if (getState().gamestate.gamestate !== "gameover") {
       return;
     }
@@ -35,8 +34,7 @@ export const startNewGame =
   };
 
 export const clearFilledRows =
-  () =>
-  async (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
+  () => (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
     return batch(() => {
       let rowsCleared = 0;
 
@@ -106,10 +104,10 @@ const calculateScore = (level: number, linesCleared: number): number => {
 
 export const attemptPersistBlocks =
   (blocks: Block[]) =>
-  async (
+  (
     dispatch: TetrisStoreDispatch,
     getState: () => TetrisStoreState
-  ): Promise<boolean> => {
+  ): boolean => {
     const state = getState();
     if (state.gamestate.gamestate === "gameover") {
       return false;
@@ -142,8 +140,7 @@ export const attemptPersistBlocks =
 
 /** Attemps to move left, if there's space. */
 export const moveCurrentShapeLeft =
-  () =>
-  async (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
+  () => (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
     const state = getState();
     const currentShape = selectCurrentShape(state);
     const {
@@ -175,8 +172,7 @@ export const moveCurrentShapeLeft =
 
 /** Attemps to move left, if there's space. */
 export const moveCurrentShapeRight =
-  () =>
-  async (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
+  () => (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
     const state = getState();
     const currentShape = selectCurrentShape(state);
     const {
@@ -199,8 +195,7 @@ export const moveCurrentShapeRight =
   };
 
 export const rotateCurrentShape =
-  () =>
-  async (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
+  () => (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
     const state = getState();
     const currentShape = selectCurrentShape(state);
     const {
@@ -222,11 +217,10 @@ export const rotateCurrentShape =
     }
   };
 
-export const moveCurrentShapeToBottom =
-  () => async (dispatch: TetrisStoreDispatch) =>
-    dispatch(tickActions.setTemporaryTick(40));
+export const moveCurrentShapeToBottom = () => (dispatch: TetrisStoreDispatch) =>
+  dispatch(tickActions.setTemporaryTick(40));
 
-export const moveGoToBottom = () => async (dispatch: TetrisStoreDispatch) => {
+export const moveGoToBottom = () => (dispatch: TetrisStoreDispatch) => {
   batch(() => {
     while (dispatch(doTick()) === "moved-down") {}
   });

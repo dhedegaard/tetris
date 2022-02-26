@@ -4,7 +4,7 @@ import { useTetrisDispatch } from "../store/tetris";
 import useBlocks from "./useBlocks";
 import useDirection from "./useDirection";
 import useGamestate from "./useGamestate";
-import useKeyboard, { Player } from "./useKeyboard";
+import useKeyboard from "./useKeyboard";
 import useLevel from "./useLevel";
 import usePosition from "./usePosition";
 import useScore from "./useScore";
@@ -12,9 +12,6 @@ import useShape from "./useShape";
 import { useSwipe } from "./useSwipe";
 import useTick from "./useTick";
 
-interface Input {
-  player: Player;
-}
 /** A hook that contains all the logic regarding tetris. */
 const useTetris = ({ player }: Input) => {
   const { gamestate } = useGamestate();
@@ -30,7 +27,7 @@ const useTetris = ({ player }: Input) => {
   useTick();
 
   // Handle inputs.
-  useKeyboard(player);
+  useKeyboard();
   const swipeableHandler = useSwipe();
 
   return useMemo(
