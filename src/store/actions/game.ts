@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { batch } from "react-redux";
-import { calculateCoordinates } from "../../components/shapes";
+import { calculateCoordinates, nextDirection } from "../../components/shapes";
 import { Block, blocksActions } from "../slices/blocks";
 import { directionActions } from "../slices/direction";
 import { gamestateActions } from "../slices/gamestate";
@@ -189,5 +189,36 @@ export const moveCurrentShapeRight =
       )
     ) {
       dispatch(positionActions.movePosition({ dx: +1, dy: 0 }));
+    }
+  };
+
+export const rotateCurrentShape =
+  () =>
+  async (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
+    const state = getState();
+    const currentShape = selectCurrentShape(state);
+    const {
+      blocks: { blocks },
+      position: { position },
+      direction: { direction },
+    } = state;
+
+    // Determine the position after the change.
+    const newPositions = calculateCoordinates(currentShape.shape, {
+      direction: nextDirection(direction),
+      x: position.x,
+      y: position.y,
+    });
+
+    // Check if the spots are free in the new positions.
+    if (
+      newPositions.every(
+        (e) =>
+          e.x >= 0 &&
+          e.x < 10 &&
+          !blocks.some((f) => f.x === e.x && f.y === e.y)
+      )
+    ) {
+      dispatch(directionActions.rotateDirection());
     }
   };

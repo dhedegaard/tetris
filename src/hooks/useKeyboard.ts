@@ -5,6 +5,7 @@ import { useTetrisDispatch } from "../store/tetris";
 import {
   moveCurrentShapeLeft,
   moveCurrentShapeRight,
+  rotateCurrentShape,
 } from "../store/actions/game";
 
 export interface Keybinds {
@@ -73,26 +74,21 @@ const useKeyboard = (
       }
 
       switch (evt.key) {
+        // left
         case keybinds.moveLeft:
           dispatch(moveCurrentShapeLeft());
           break;
 
         case keybinds.moveRight:
+          // right
           dispatch(moveCurrentShapeRight());
           break;
 
-        case keybinds.rotate: {
+        case keybinds.rotate:
           // up
-          const newPositions = calculateCoordinates(shape, {
-            direction: nextDirection(direction),
-            x: position.x,
-            y: position.y,
-          });
-          if (isFreePositions(newPositions)) {
-            setNextDirection();
-          }
+          dispatch(rotateCurrentShape());
           break;
-        }
+
         case keybinds.moveDown: {
           // down
           setMoveToBottom(true);
