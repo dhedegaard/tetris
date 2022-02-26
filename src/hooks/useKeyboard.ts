@@ -1,13 +1,11 @@
 import { useEffect, useMemo } from "react";
-import { StateRef } from ".";
-import { calculateCoordinates, nextDirection } from "../components/shapes";
-import { useTetrisDispatch } from "../store/tetris";
 import {
   moveCurrentShapeLeft,
   moveCurrentShapeRight,
   rotateCurrentShape,
   startNewGame,
 } from "../store/actions/game";
+import { useTetrisDispatch } from "../store/tetris";
 
 export interface Keybinds {
   moveLeft: string;
@@ -41,12 +39,7 @@ const getKeybinds = (player: Player): Keybinds =>
 export type Player = "keyboard1" | "keyboard2";
 
 const useKeyboard = (
-  stateRef: StateRef,
-  moveLeft: () => void,
-  moveRight: () => void,
-  setNextDirection: () => void,
   setMoveToBottom: (moveToBottom: boolean) => void,
-  newGame: () => void,
   player: Player = "keyboard1"
 ) => {
   const keybinds = useMemo(() => getKeybinds(player), [player]);
@@ -102,13 +95,12 @@ const useKeyboard = (
       document.removeEventListener("keyup", keyupHandler);
     };
   }, [
-    keybinds,
-    moveLeft,
-    moveRight,
-    newGame,
+    dispatch,
+    keybinds.moveDown,
+    keybinds.moveLeft,
+    keybinds.moveRight,
+    keybinds.rotate,
     setMoveToBottom,
-    setNextDirection,
-    stateRef,
   ]);
 };
 

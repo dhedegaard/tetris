@@ -80,15 +80,7 @@ const useTetris = ({ player }: Input) => {
   );
 
   // Handle keyboard events.
-  useKeyboard(
-    stateRef,
-    moveLeft,
-    moveRight,
-    setNextDirection,
-    setMoveToBottom,
-    newGame,
-    player
-  );
+  useKeyboard(setMoveToBottom, player);
 
   const swipeableHandler = useSwipeable({
     onSwipedDown: () => setMoveToBottom(true),
