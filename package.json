@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.7.1",
-    "@emotion/styled": "^11.6.0",
+    "@emotion/react": "^11.8.1",
+    "@emotion/styled": "^11.8.1",
     "@reduxjs/toolkit": "^1.7.2",
     "@types/node": "17.0.15",
     "@types/react": "^17.0.39",
@@ -35,8 +35,8 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@types/jest": "^27.4.0",
-    "@types/lodash": "^4.14.178",
+    "@types/jest": "^27.4.1",
+    "@types/lodash": "^4.14.179",
     "eslint": "^8.9.0",
     "eslint-config-next": "^12.1.0",
     "jest": "^27.5.1",
