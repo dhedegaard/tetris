@@ -1,4 +1,4 @@
-import { MutableRefObject, useMemo, useRef } from "react";
+import { MutableRefObject, useMemo } from "react";
 import { Coordinates } from "../components/ShapeDrawer";
 import { Direction, Shapes } from "../components/shapes";
 import { startNewGame } from "../store/actions/game";
@@ -31,39 +31,16 @@ interface Input {
 /** A hook that contains all the logic regarding tetris. */
 const useTetris = ({ player }: Input) => {
   const { gamestate } = useGamestate();
-  const { position, moveDown } = usePosition();
+  const { position } = usePosition();
   const { shape, peekShapes } = useShape();
   const { direction } = useDirection();
-  const { score, increaseScore } = useScore();
-  const { blocks, isFreePositions } = useBlocks();
+  const { score } = useScore();
+  const { blocks } = useBlocks();
   const { level } = useLevel();
   const dispatch = useTetrisDispatch();
 
-  // Build a ref os state, for various cases.
-  /** @deprecated */
-  const stateRef: StateRef = useRef({
-    position,
-    direction,
-    shape,
-    gamestate,
-    score,
-    isFreePositions: () => {
-      throw new Error("initial state ref");
-    },
-    increaseScore,
-  });
-  stateRef.current = {
-    position,
-    direction,
-    shape,
-    isFreePositions,
-    gamestate,
-    score,
-    increaseScore,
-  };
-
   // Handle ticks
-  useTick(stateRef, moveDown);
+  useTick();
 
   // Handle inputs.
   useKeyboard(player);

@@ -1,6 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { batch } from "react-redux";
-import { calculateCoordinates, nextDirection } from "../../components/shapes";
+import {
+  calculateCoordinates,
+  colorFromShape,
+  nextDirection,
+} from "../../components/shapes";
 import { Block, blocksActions } from "../slices/blocks";
 import { directionActions } from "../slices/direction";
 import { gamestateActions } from "../slices/gamestate";
@@ -160,6 +164,7 @@ export const moveCurrentShapeLeft =
         (e) =>
           e.x >= 0 &&
           e.x < 10 &&
+          e.y < 20 &&
           !blocks.some((f) => f.x === e.x && f.y === e.y)
       )
     ) {
@@ -192,6 +197,7 @@ export const moveCurrentShapeRight =
         (e) =>
           e.x >= 0 &&
           e.x < 10 &&
+          e.y < 20 &&
           !blocks.some((f) => f.x === e.x && f.y === e.y)
       )
     ) {
@@ -223,6 +229,7 @@ export const rotateCurrentShape =
         (e) =>
           e.x >= 0 &&
           e.x < 10 &&
+          e.y < 20 &&
           !blocks.some((f) => f.x === e.x && f.y === e.y)
       )
     ) {
@@ -233,3 +240,58 @@ export const rotateCurrentShape =
 export const moveCurrentShapeToBottom =
   () => async (dispatch: TetrisStoreDispatch) =>
     dispatch(tickActions.setTemporaryTick(40));
+
+export const doTick =
+  () =>
+  async (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
+    const state = getState();
+    if (state.gamestate.gamestate !== "alive") {
+      return;
+    }
+
+    const {
+      direction: { direction },
+      position: { position },
+      blocks: { blocks },
+    } = state;
+    const currentShape = selectCurrentShape(state);
+
+    // Calculate the new position of the currently active shape.
+    const newPositions = calculateCoordinates(currentShape.shape, {
+      direction,
+      x: position.x,
+      y: position.y + 1,
+    });
+
+    // Move down if space is free.
+    if (
+      newPositions.every(
+        (e) =>
+          e.x >= 0 &&
+          e.x < 10 &&
+          e.y < 20 &&
+          !blocks.some((f) => f.x === e.x && f.y === e.y)
+      )
+    ) {
+      dispatch(positionActions.movePosition({ dx: 0, dy: +1 }));
+      return;
+    }
+
+    // Otherwise, persist and go to the next shape.
+    const blockColor = colorFromShape(currentShape.shape);
+    batch(() => {
+      dispatch(tickActions.clearTemporaryTick());
+      dispatch(
+        attemptPersistBlocks(
+          calculateCoordinates(currentShape.shape, {
+            direction,
+            x: position.x,
+            y: position.y,
+          }).map((block) => ({
+            ...block,
+            color: blockColor,
+          }))
+        )
+      );
+    });
+  };
