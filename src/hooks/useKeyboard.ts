@@ -2,7 +2,10 @@ import { useEffect, useMemo } from "react";
 import { StateRef } from ".";
 import { calculateCoordinates, nextDirection } from "../components/shapes";
 import { useTetrisDispatch } from "../store/tetris";
-import { moveCurrentShapeLeft } from "../store/actions/game";
+import {
+  moveCurrentShapeLeft,
+  moveCurrentShapeRight,
+} from "../store/actions/game";
 
 export interface Keybinds {
   moveLeft: string;
@@ -70,23 +73,14 @@ const useKeyboard = (
       }
 
       switch (evt.key) {
-        case keybinds.moveLeft: {
-          // left
+        case keybinds.moveLeft:
           dispatch(moveCurrentShapeLeft());
           break;
-        }
-        case keybinds.moveRight: {
-          // right
-          const newPositions = calculateCoordinates(shape, {
-            direction,
-            x: position.x + 1,
-            y: position.y,
-          });
-          if (isFreePositions(newPositions)) {
-            moveRight();
-          }
+
+        case keybinds.moveRight:
+          dispatch(moveCurrentShapeRight());
           break;
-        }
+
         case keybinds.rotate: {
           // up
           const newPositions = calculateCoordinates(shape, {

@@ -159,3 +159,35 @@ export const moveCurrentShapeLeft =
       dispatch(positionActions.movePosition({ dx: -1, dy: 0 }));
     }
   };
+
+/** Attemps to move left, if there's space. */
+export const moveCurrentShapeRight =
+  () =>
+  async (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
+    const state = getState();
+    const currentShape = selectCurrentShape(state);
+    const {
+      blocks: { blocks },
+      position: { position },
+      direction: { direction },
+    } = state;
+
+    // Determine the position after the move (calculateCoordinates).
+    const newPositions = calculateCoordinates(currentShape.shape, {
+      direction,
+      x: position.x + 1,
+      y: position.y,
+    });
+
+    // Check if the spots are free in the new positions.
+    if (
+      newPositions.every(
+        (e) =>
+          e.x >= 0 &&
+          e.x < 10 &&
+          !blocks.some((f) => f.x === e.x && f.y === e.y)
+      )
+    ) {
+      dispatch(positionActions.movePosition({ dx: +1, dy: 0 }));
+    }
+  };
