@@ -1,13 +1,6 @@
 import { MutableRefObject, useCallback, useMemo, useRef } from "react";
-import { useSwipeable } from "react-swipeable";
 import { Coordinates } from "../components/ShapeDrawer";
 import { Direction, Shapes } from "../components/shapes";
-import {
-  moveCurrentShapeLeft,
-  moveCurrentShapeRight,
-  rotateCurrentShape,
-  startNewGame,
-} from "../store/actions/game";
 import { Coordinate } from "../store/slices/blocks";
 import { tickActions } from "../store/slices/tick";
 import { useTetrisDispatch } from "../store/tetris";
@@ -19,6 +12,7 @@ import useLevel from "./useLevel";
 import usePosition from "./usePosition";
 import useScore from "./useScore";
 import useShape from "./useShape";
+import { useSwipe } from "./useSwipe";
 import useTick from "./useTick";
 
 export type StateRef = MutableRefObject<{
@@ -70,29 +64,9 @@ const useTetris = ({ player }: Input) => {
   // Handle ticks
   useTick(stateRef, moveDown);
 
-  /* Start a new game, setup the board again. */
-  const newGame = useCallback(() => dispatch(startNewGame()), [dispatch]);
-
-  /* While the next position is free, move down fast. */
-  const setMoveToBottom = useCallback(
-    (moveToBottom: boolean) =>
-      dispatch(
-        moveToBottom
-          ? tickActions.setTemporaryTick(40)
-          : tickActions.clearTemporaryTick()
-      ),
-    [dispatch]
-  );
-
-  // Handle keyboard events.
-  useKeyboard(setMoveToBottom, player);
-
-  const swipeableHandler = useSwipeable({
-    onSwipedDown: () => setMoveToBottom(true),
-    onSwipedLeft: () => dispatch(moveCurrentShapeLeft()),
-    onSwipedRight: () => dispatch(moveCurrentShapeRight()),
-    onSwipedUp: () => dispatch(rotateCurrentShape()),
-  });
+  // Handle inputs.
+  useKeyboard(player);
+  useSwipe();
 
   return useMemo(
     () => ({
@@ -104,21 +78,8 @@ const useTetris = ({ player }: Input) => {
       score,
       peekShapes,
       level,
-      swipeableHandler,
-      startNewGame: newGame,
     }),
-    [
-      blocks,
-      direction,
-      gamestate,
-      level,
-      newGame,
-      peekShapes,
-      position,
-      score,
-      shape,
-      swipeableHandler,
-    ]
+    [blocks, direction, gamestate, level, peekShapes, position, score, shape]
   );
 };
 

@@ -8,6 +8,7 @@ import { levelActions, selectLevel } from "../slices/level";
 import { positionActions } from "../slices/position";
 import { scoreActions } from "../slices/score";
 import { selectCurrentShape, shapeActions } from "../slices/shape";
+import { tickActions } from "../slices/tick";
 import { TetrisStoreDispatch, TetrisStoreState } from "../tetris";
 
 export const startNewGame =
@@ -226,3 +227,7 @@ export const rotateCurrentShape =
       dispatch(directionActions.rotateDirection());
     }
   };
+
+export const moveCurrentShapeToBottom =
+  () => async (dispatch: TetrisStoreDispatch) =>
+    dispatch(tickActions.setTemporaryTick(40));

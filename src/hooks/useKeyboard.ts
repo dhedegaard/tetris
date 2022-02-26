@@ -2,9 +2,11 @@ import { useEffect, useMemo } from "react";
 import {
   moveCurrentShapeLeft,
   moveCurrentShapeRight,
+  moveCurrentShapeToBottom,
   rotateCurrentShape,
   startNewGame,
 } from "../store/actions/game";
+import { tickActions } from "../store/slices/tick";
 import { useTetrisDispatch } from "../store/tetris";
 
 export interface Keybinds {
@@ -38,10 +40,7 @@ const getKeybinds = (player: Player): Keybinds =>
 
 export type Player = "keyboard1" | "keyboard2";
 
-const useKeyboard = (
-  setMoveToBottom: (moveToBottom: boolean) => void,
-  player: Player = "keyboard1"
-) => {
+const useKeyboard = (player: Player = "keyboard1") => {
   const keybinds = useMemo(() => getKeybinds(player), [player]);
   const dispatch = useTetrisDispatch();
 
@@ -73,7 +72,7 @@ const useKeyboard = (
 
         case keybinds.moveDown: {
           // down
-          setMoveToBottom(true);
+          dispatch(moveCurrentShapeToBottom());
           break;
         }
       }
@@ -82,7 +81,7 @@ const useKeyboard = (
       switch (evt.key) {
         case keybinds.moveDown: {
           // down
-          setMoveToBottom(false);
+          dispatch(tickActions.clearTemporaryTick());
           break;
         }
       }
@@ -100,7 +99,6 @@ const useKeyboard = (
     keybinds.moveLeft,
     keybinds.moveRight,
     keybinds.rotate,
-    setMoveToBottom,
   ]);
 };
 
