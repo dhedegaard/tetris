@@ -1,10 +1,8 @@
 import { useEffect } from "react";
 import {
-  moveCurrentShapeLeft,
-  moveCurrentShapeRight,
+  attemptToDoMove,
   moveCurrentShapeToBottom,
   moveGoToBottom,
-  rotateCurrentShape,
   startNewGame,
 } from "../store/actions/game";
 import { tickActions } from "../store/slices/tick";
@@ -46,17 +44,17 @@ const useKeyboard = () => {
 
         case keybinds.moveLeft:
           // left
-          dispatch(moveCurrentShapeLeft());
+          dispatch(attemptToDoMove("LEFT"));
           break;
 
         case keybinds.moveRight:
           // right
-          dispatch(moveCurrentShapeRight());
+          dispatch(attemptToDoMove("RIGHT"));
           break;
 
         case keybinds.rotate:
           // up
-          dispatch(rotateCurrentShape());
+          dispatch(attemptToDoMove("ROTATE"));
           break;
 
         case keybinds.moveDown:

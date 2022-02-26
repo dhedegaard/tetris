@@ -1,10 +1,8 @@
 import { useMemo } from "react";
 import { useSwipeable } from "react-swipeable";
 import {
-  moveCurrentShapeLeft,
-  moveCurrentShapeRight,
+  attemptToDoMove,
   moveCurrentShapeToBottom,
-  rotateCurrentShape,
 } from "../store/actions/game";
 import {
   TetrisStoreState,
@@ -23,9 +21,9 @@ export const useSwipe = () => {
     useMemo(
       () => ({
         onSwipedDown: () => dispatch(moveCurrentShapeToBottom()),
-        onSwipedLeft: () => dispatch(moveCurrentShapeLeft()),
-        onSwipedRight: () => dispatch(moveCurrentShapeRight()),
-        onSwipedUp: () => dispatch(rotateCurrentShape()),
+        onSwipedLeft: () => dispatch(attemptToDoMove("LEFT")),
+        onSwipedRight: () => dispatch(attemptToDoMove("RIGHT")),
+        onSwipedUp: () => dispatch(attemptToDoMove("ROTATE")),
         preventDefaultTouchmoveEvent: gamestate === "alive",
       }),
       [dispatch, gamestate]

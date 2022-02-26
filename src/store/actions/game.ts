@@ -139,8 +139,9 @@ export const attemptPersistBlocks =
   };
 
 /** Attemps to move left, if there's space. */
-export const moveCurrentShapeLeft =
-  () => (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
+export const attemptToDoMove =
+  (operation: "LEFT" | "RIGHT" | "ROTATE") =>
+  (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
     const state = getState();
     const currentShape = selectCurrentShape(state);
     const {
@@ -150,62 +151,34 @@ export const moveCurrentShapeLeft =
     } = state;
 
     // Determine the position after the move (calculateCoordinates).
-    const newPositions = calculateCoordinates(currentShape.shape, {
-      direction,
-      x: position.x - 1,
-      y: position.y,
-    });
+    const newPositions = (() => {
+      switch (operation) {
+        case "LEFT":
+          return calculateCoordinates(currentShape.shape, {
+            direction,
+            x: position.x - 1,
+            y: position.y,
+          });
+        case "RIGHT":
+          return calculateCoordinates(currentShape.shape, {
+            direction,
+            x: position.x + 1,
+            y: position.y,
+          });
+        case "ROTATE":
+          return calculateCoordinates(currentShape.shape, {
+            direction: nextDirection(direction),
+            x: position.x,
+            y: position.y,
+          });
+        default:
+          throw new TypeError(`Unknown operation: ${operation}`);
+      }
+    })();
 
     // Check if the spots are free in the new positions.
     if (arePositionsFree(newPositions, blocks)) {
       dispatch(positionActions.movePosition({ dx: -1, dy: 0 }));
-    }
-  };
-
-/** Attemps to move left, if there's space. */
-export const moveCurrentShapeRight =
-  () => (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
-    const state = getState();
-    const currentShape = selectCurrentShape(state);
-    const {
-      blocks: { blocks },
-      position: { position },
-      direction: { direction },
-    } = state;
-
-    // Determine the position after the move (calculateCoordinates).
-    const newPositions = calculateCoordinates(currentShape.shape, {
-      direction,
-      x: position.x + 1,
-      y: position.y,
-    });
-
-    // Check if the spots are free in the new positions.
-    if (arePositionsFree(newPositions, blocks)) {
-      dispatch(positionActions.movePosition({ dx: +1, dy: 0 }));
-    }
-  };
-
-export const rotateCurrentShape =
-  () => (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
-    const state = getState();
-    const currentShape = selectCurrentShape(state);
-    const {
-      blocks: { blocks },
-      position: { position },
-      direction: { direction },
-    } = state;
-
-    // Determine the position after the change.
-    const newPositions = calculateCoordinates(currentShape.shape, {
-      direction: nextDirection(direction),
-      x: position.x,
-      y: position.y,
-    });
-
-    // Check if the spots are free in the new positions.
-    if (arePositionsFree(newPositions, blocks)) {
-      dispatch(directionActions.rotateDirection());
     }
   };
 
