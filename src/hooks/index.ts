@@ -13,7 +13,7 @@ import { useSwipe } from "./useSwipe";
 import useTick from "./useTick";
 
 /** A hook that contains all the logic regarding tetris. */
-const useTetris = ({ player }: Input) => {
+const useTetris = () => {
   const { gamestate } = useGamestate();
   const { position } = usePosition();
   const { shape, peekShapes } = useShape();

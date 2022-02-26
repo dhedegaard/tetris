@@ -1,13 +1,12 @@
 import styled from "@emotion/styled";
 import { FC } from "react";
+import { Provider } from "react-redux";
 import Block from "./components/Block";
 import Grid from "./components/Grid";
 import Legend from "./components/Legend";
 import { Shape } from "./components/shapes";
 import GameOver from "./GameOver";
 import useTetris from "./hooks";
-import { Player } from "./hooks/useKeyboard";
-import { Provider } from "react-redux";
 import tetrisStore from "./store/tetris";
 
 const Container = styled.div`
@@ -20,11 +19,7 @@ const GridContainer = styled.div`
   border: 4px solid purple;
 `;
 
-interface Props {
-  player: Player;
-}
-
-const Game: FC<Props> = ({ player }) => {
+const Game: FC = () => {
   const {
     direction,
     shape,
@@ -36,7 +31,7 @@ const Game: FC<Props> = ({ player }) => {
     level,
     swipeableHandler,
     startNewGame,
-  } = useTetris({ player });
+  } = useTetris();
 
   return (
     <Container {...swipeableHandler}>
@@ -61,9 +56,9 @@ const Game: FC<Props> = ({ player }) => {
   );
 };
 
-const GameWithStore: FC<Props> = (props) => (
+const GameWithStore: FC = () => (
   <Provider store={tetrisStore}>
-    <Game {...props} />
+    <Game />
   </Provider>
 );
 

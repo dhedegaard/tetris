@@ -49,7 +49,7 @@ const App: FC = () => {
           musicEnabled={musicEnabled}
           toggleMusic={(enabled) => setMusicEnabled(enabled)}
         />
-        {isBrowser && <Game player="keyboard1" />}
+        {isBrowser && <Game />}
       </Container>
     </>
   );
