@@ -1,6 +1,6 @@
 import { css, Global } from "@emotion/react";
 import styled from "@emotion/styled";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import Music from "./components/Music";
 import Game from "./Game";
 import GlobalPanel from "./GlobalPanel";
