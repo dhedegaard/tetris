@@ -13,7 +13,6 @@ import { levelActions, selectLevel } from "../slices/level";
 import { positionActions } from "../slices/position";
 import { scoreActions } from "../slices/score";
 import { selectCurrentShape, shapeActions } from "../slices/shape";
-import { tickActions } from "../slices/tick";
 import { TetrisStoreDispatch, TetrisStoreState } from "../tetris";
 
 export const startNewGame =
@@ -128,7 +127,6 @@ export const attemptPersistBlocks =
       blocks.forEach((block) => dispatch(blocksActions.persistBlock(block)));
 
       // Reset various things and go to the next shape.
-      dispatch(tickActions.clearTemporaryTick());
       dispatch(positionActions.resetPosition());
       dispatch(directionActions.resetDirection());
       dispatch(shapeActions.nextShape());
@@ -211,9 +209,6 @@ export const attemptToDoMove =
       }
     }
   };
-
-export const moveCurrentShapeToBottom = () => (dispatch: TetrisStoreDispatch) =>
-  dispatch(tickActions.setTemporaryTick(40));
 
 export const moveGoToBottom = () => (dispatch: TetrisStoreDispatch) => {
   batch(() => {

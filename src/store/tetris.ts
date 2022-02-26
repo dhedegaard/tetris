@@ -7,7 +7,6 @@ import level from "./slices/level";
 import position from "./slices/position";
 import score from "./slices/score";
 import shape from "./slices/shape";
-import tick from "./slices/tick";
 
 const tetrisStore = configureStore({
   reducer: {
@@ -18,7 +17,6 @@ const tetrisStore = configureStore({
     direction,
     level,
     blocks,
-    tick,
   },
 });
 
