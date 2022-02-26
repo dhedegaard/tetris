@@ -8,7 +8,7 @@ import Score from "./Score";
 
 const LegendContainer = styled.div`
   background-color: #000;
-  border: 3px solid purple;
+  border: 4px solid purple;
   border-left: none;
   font-size: 2vh;
   aspect-ratio: 120 / 400;
@@ -21,6 +21,8 @@ const LegendContainer = styled.div`
   width: 100%;
   overflow-y: auto;
   overflow: hidden;
+  box-sizing: border-box;
+  width: 100%;
 `;
 
 interface Props {

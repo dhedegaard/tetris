@@ -13,6 +13,7 @@ const Container = styled.div`
   position: relative;
   display: flex;
   height: 100%;
+  box-sizing: border-box;
 `;
 
 const GridContainer = styled.div`
