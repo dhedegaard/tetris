@@ -1,5 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { batch } from "react-redux";
+import { Coordinates } from "../../components/ShapeDrawer";
 import {
   calculateCoordinates,
   colorFromShape,
@@ -192,15 +193,7 @@ export const moveCurrentShapeRight =
     });
 
     // Check if the spots are free in the new positions.
-    if (
-      newPositions.every(
-        (e) =>
-          e.x >= 0 &&
-          e.x < 10 &&
-          e.y < 20 &&
-          !blocks.some((f) => f.x === e.x && f.y === e.y)
-      )
-    ) {
+    if (arePositionsFree(newPositions, blocks)) {
       dispatch(positionActions.movePosition({ dx: +1, dy: 0 }));
     }
   };
@@ -224,15 +217,7 @@ export const rotateCurrentShape =
     });
 
     // Check if the spots are free in the new positions.
-    if (
-      newPositions.every(
-        (e) =>
-          e.x >= 0 &&
-          e.x < 10 &&
-          e.y < 20 &&
-          !blocks.some((f) => f.x === e.x && f.y === e.y)
-      )
-    ) {
+    if (arePositionsFree(newPositions, blocks)) {
       dispatch(directionActions.rotateDirection());
     }
   };
@@ -264,15 +249,7 @@ export const doTick =
     });
 
     // Move down if space is free.
-    if (
-      newPositions.every(
-        (e) =>
-          e.x >= 0 &&
-          e.x < 10 &&
-          e.y < 20 &&
-          !blocks.some((f) => f.x === e.x && f.y === e.y)
-      )
-    ) {
+    if (arePositionsFree(newPositions, blocks)) {
       dispatch(positionActions.movePosition({ dx: 0, dy: +1 }));
       return;
     }
@@ -295,3 +272,12 @@ export const doTick =
       );
     });
   };
+
+const arePositionsFree = (positions: Coordinates, blocks: Block[]): boolean =>
+  positions.every(
+    (e) =>
+      e.x >= 0 &&
+      e.x < 10 &&
+      e.y < 20 &&
+      !blocks.some((f) => f.x === e.x && f.y === e.y)
+  );
