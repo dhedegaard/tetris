@@ -227,15 +227,17 @@ export const moveCurrentShapeToBottom =
     dispatch(tickActions.setTemporaryTick(40));
 
 export const moveGoToBottom = () => async (dispatch: TetrisStoreDispatch) => {
-  while ((await dispatch(doTick())) === "moved-down") {}
+  batch(() => {
+    while (dispatch(doTick()) === "moved-down") {}
+  });
 };
 
 export const doTick =
   () =>
-  async (
+  (
     dispatch: TetrisStoreDispatch,
     getState: () => TetrisStoreState
-  ): Promise<"moved-down" | "persisted-and-new-shape" | "not-alive"> => {
+  ): "moved-down" | "persisted-and-new-shape" | "not-alive" => {
     const state = getState();
     if (state.gamestate.gamestate !== "alive") {
       return "not-alive";
