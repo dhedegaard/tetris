@@ -40,6 +40,7 @@ const useKeyboard = () => {
 
       switch (evt.key) {
         case keybinds.newGame:
+          // r
           dispatch(startNewGame());
           break;
 
