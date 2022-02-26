@@ -140,7 +140,7 @@ export const attemptPersistBlocks =
 
 /** Attemps to move left, if there's space. */
 export const attemptToDoMove =
-  (operation: "LEFT" | "RIGHT" | "ROTATE") =>
+  (operation: "LEFT" | "RIGHT" | "DOWN" | "ROTATE") =>
   (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
     const state = getState();
     const currentShape = selectCurrentShape(state);
@@ -165,6 +165,12 @@ export const attemptToDoMove =
             x: position.x + 1,
             y: position.y,
           });
+        case "DOWN":
+          return calculateCoordinates(currentShape.shape, {
+            direction,
+            x: position.x,
+            y: position.y + 1,
+          });
         case "ROTATE":
           return calculateCoordinates(currentShape.shape, {
             direction: nextDirection(direction),
@@ -178,6 +184,7 @@ export const attemptToDoMove =
 
     // Check if the spots are free in the new positions.
     if (arePositionsFree(newPositions, blocks)) {
+      // Apply the operations.
       switch (operation) {
         case "LEFT":
         case "RIGHT":
@@ -185,6 +192,14 @@ export const attemptToDoMove =
             positionActions.movePosition({
               dx: operation === "LEFT" ? -1 : operation === "RIGHT" ? +1 : 0,
               dy: 0,
+            })
+          );
+          break;
+        case "DOWN":
+          dispatch(
+            positionActions.movePosition({
+              dx: 0,
+              dy: 1,
             })
           );
           break;

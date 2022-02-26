@@ -1,11 +1,9 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import {
   attemptToDoMove,
-  moveCurrentShapeToBottom,
   moveGoToBottom,
   startNewGame,
 } from "../store/actions/game";
-import { tickActions } from "../store/slices/tick";
 import { useTetrisDispatch } from "../store/tetris";
 
 export interface Keybinds {
@@ -30,13 +28,10 @@ const keybinds = keyboard1;
 const useKeyboard = () => {
   const dispatch = useTetrisDispatch();
 
-  useEffect(() => {
-    const keydownHandler = (evt: KeyboardEvent) => {
-      if (evt.repeat) {
-        return;
-      }
-
-      switch (evt.key) {
+  // Handle a key being pressed.
+  const handleKey = useCallback(
+    (key: string) => {
+      switch (key) {
         case keybinds.newGame:
           // r
           dispatch(startNewGame());
@@ -59,7 +54,7 @@ const useKeyboard = () => {
 
         case keybinds.moveDown:
           // down
-          dispatch(moveCurrentShapeToBottom());
+          dispatch(attemptToDoMove("DOWN"));
           break;
 
         case keybinds.goToBottom:
@@ -67,24 +62,20 @@ const useKeyboard = () => {
           dispatch(moveGoToBottom());
           break;
       }
-    };
-    const keyupHandler = (evt: KeyboardEvent) => {
-      switch (evt.key) {
-        case keybinds.moveDown: {
-          // down
-          dispatch(tickActions.clearTemporaryTick());
-          break;
-        }
-      }
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    const keydownHandler = (evt: KeyboardEvent) => {
+      evt.preventDefault();
+      evt.stopPropagation();
+      handleKey(evt.key);
     };
 
     document.addEventListener("keydown", keydownHandler, { passive: true });
-    document.addEventListener("keyup", keyupHandler, { passive: true });
-    return () => {
-      document.removeEventListener("keydown", keydownHandler);
-      document.removeEventListener("keyup", keyupHandler);
-    };
-  }, [dispatch]);
+    return () => document.removeEventListener("keydown", keydownHandler);
+  }, [dispatch, handleKey]);
 };
 
 export default useKeyboard;
