@@ -265,19 +265,21 @@ const arePositionsFree = (positions: Coordinates, blocks: Block[]): boolean =>
       !blocks.some((f) => f.x === e.x && f.y === e.y)
   );
 
-let rafHandle: number | undefined;
+let running = false;
 export const runTicks =
   () =>
   async (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
-    if (rafHandle != null) {
+    if (running) {
       // If there's already a RAF loop, stop here and let it do the work.
       // eslint-disable-next-line no-console
       console.warn("Trying to runTicks(), but there's already a RAF handle.");
       return;
     }
+    // TODO: Move this to the store.
+    running = true;
 
     let lastTick = Date.now();
-    while (true) {
+    while (await rafPromise()) {
       const now = Date.now();
       const state = getState();
       const tickrate = selectTickrate(state);
@@ -287,9 +289,10 @@ export const runTicks =
         lastTick += Math.floor(delta / tickrate) * tickrate;
         dispatch(doTick());
       }
-
-      await new Promise((resolve) => {
-        rafHandle = requestAnimationFrame(resolve);
-      });
     }
   };
+
+const rafPromise = () =>
+  new Promise<true>((resolve) => {
+    requestAnimationFrame(() => resolve(true));
+  });
