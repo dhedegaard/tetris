@@ -13,7 +13,6 @@ import { levelActions, selectLevel, selectTickrate } from "../slices/level";
 import { positionActions } from "../slices/position";
 import { scoreActions } from "../slices/score";
 import { selectCurrentShape, shapeActions } from "../slices/shape";
-import { ticksActions } from "../slices/ticks";
 import { TetrisStoreDispatch, TetrisStoreState } from "../tetris";
 
 export const startNewGame =

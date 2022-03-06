@@ -24,7 +24,9 @@ const useTetris = () => {
   const dispatch = useTetrisDispatch();
 
   // Handle ticks
-  useEffect(() => dispatch(runTicks()), [dispatch]);
+  useEffect(() => {
+    dispatch(runTicks());
+  }, [dispatch]);
 
   // Handle inputs.
   useKeyboard();
