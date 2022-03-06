@@ -297,7 +297,6 @@ export const runTicks =
       if (lastY !== state.position.position.y) {
         lastY = state.position.position.y;
         lastTick = Date.now();
-        console.log("Y changed!");
         continue;
       }
 
