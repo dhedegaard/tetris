@@ -5,6 +5,7 @@ import direction from "./slices/direction";
 import gamestate from "./slices/gamestate";
 import level from "./slices/level";
 import position from "./slices/position";
+import running from "./slices/running";
 import score from "./slices/score";
 import shape from "./slices/shape";
 
@@ -17,6 +18,7 @@ const tetrisStore = configureStore({
     direction,
     level,
     blocks,
+    running,
   },
 });
 

@@ -11,6 +11,7 @@ import { directionActions } from "../slices/direction";
 import { gamestateActions } from "../slices/gamestate";
 import { levelActions, selectLevel, selectTickrate } from "../slices/level";
 import { positionActions } from "../slices/position";
+import { runningActions } from "../slices/running";
 import { scoreActions } from "../slices/score";
 import { selectCurrentShape, shapeActions } from "../slices/shape";
 import { TetrisStoreDispatch, TetrisStoreState } from "../tetris";
@@ -265,31 +266,37 @@ const arePositionsFree = (positions: Coordinates, blocks: Block[]): boolean =>
       !blocks.some((f) => f.x === e.x && f.y === e.y)
   );
 
-let running = false;
 export const runTicks =
   () =>
   async (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
+    const {
+      running: { running },
+    } = getState();
     if (running) {
       // If there's already a RAF loop, stop here and let it do the work.
       // eslint-disable-next-line no-console
-      console.warn("Trying to runTicks(), but there's already a RAF handle.");
+      console.warn("Trying to runTicks(), but were already running.");
       return;
     }
-    // TODO: Move this to the store.
-    running = true;
+    dispatch(runningActions.setRunning());
 
     let lastTick = Date.now();
     while (await rafPromise()) {
       const now = Date.now();
       const state = getState();
-      const tickrate = selectTickrate(state);
 
+      if (!state.running.running) {
+        break;
+      }
+
+      const tickrate = selectTickrate(state);
       const delta = now - lastTick;
       if (delta >= tickrate) {
         lastTick += Math.floor(delta / tickrate) * tickrate;
         dispatch(doTick());
       }
     }
+    dispatch(runningActions.setStopped());
   };
 
 const rafPromise = () =>

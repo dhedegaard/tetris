@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { runTicks, startNewGame } from "../store/actions/game";
+import { runningActions } from "../store/slices/running";
 import { useTetrisDispatch } from "../store/tetris";
 import useBlocks from "./useBlocks";
 import useDirection from "./useDirection";
@@ -26,6 +27,9 @@ const useTetris = () => {
   // Handle ticks
   useEffect(() => {
     dispatch(runTicks());
+    return () => {
+      dispatch(runningActions.setStopped());
+    };
   }, [dispatch]);
 
   // Handle inputs.
