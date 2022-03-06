@@ -195,12 +195,7 @@ export const attemptToDoMove =
           );
           break;
         case "DOWN":
-          dispatch(
-            positionActions.movePosition({
-              dx: 0,
-              dy: 1,
-            })
-          );
+          dispatch(doTick());
           break;
         case "ROTATE":
           dispatch(directionActions.rotateDirection());
