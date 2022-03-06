@@ -270,6 +270,9 @@ export const runTicks =
   () =>
   async (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
     const {
+      position: {
+        position: { y: oldY },
+      },
       running: { running },
     } = getState();
     if (running) {
@@ -281,12 +284,21 @@ export const runTicks =
     dispatch(runningActions.setRunning());
 
     let lastTick = Date.now();
+    let lastY = oldY;
     while (await rafPromise()) {
       const now = Date.now();
       const state = getState();
 
       if (!state.running.running) {
         break;
+      }
+
+      // If we moved down, reset the last tick.
+      if (lastY !== state.position.position.y) {
+        lastY = state.position.position.y;
+        lastTick = Date.now();
+        console.log("Y changed!");
+        continue;
       }
 
       const tickrate = selectTickrate(state);
