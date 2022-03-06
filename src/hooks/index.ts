@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { startNewGame } from "../store/actions/game";
+import { useEffect, useMemo } from "react";
+import { runTicks, startNewGame } from "../store/actions/game";
 import { useTetrisDispatch } from "../store/tetris";
 import useBlocks from "./useBlocks";
 import useDirection from "./useDirection";
@@ -11,7 +11,6 @@ import usePosition from "./usePosition";
 import useScore from "./useScore";
 import useShape from "./useShape";
 import { useSwipe } from "./useSwipe";
-import useTick from "./useTick";
 
 /** A hook that contains all the logic regarding tetris. */
 const useTetris = () => {
@@ -25,7 +24,7 @@ const useTetris = () => {
   const dispatch = useTetrisDispatch();
 
   // Handle ticks
-  useTick();
+  useEffect(() => dispatch(runTicks()), [dispatch]);
 
   // Handle inputs.
   useKeyboard();

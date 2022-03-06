@@ -70,6 +70,7 @@ export const selectLevel = createSelector(selectRowsCleared, (rowsCleared) =>
   calculateLevel(rowsCleared)
 );
 
-export const selectTickrate = createSelector(selectLevel, (level) =>
-  calculateTickRate(level)
+export const selectTickrate = createSelector(
+  selectLevel,
+  (level) => calculateTickRate(level) * 1_000
 );
