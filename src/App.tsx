@@ -13,6 +13,7 @@ const GlobalStyle: FC = () => (
         user-select: none;
         background-color: rgb(34, 34, 34);
         height: 100%;
+        height: -webkit-fill-available;
         box-sizing: border-box;
       }
       html * {
