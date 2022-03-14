@@ -23,6 +23,7 @@ const GridContainer = styled.div`
   box-sizing: border-box;
   aspect-ratio: 1 / 2;
   flex: none;
+  height: 100%;
 `;
 
 const Game: FC = () => {
