@@ -15,12 +15,14 @@ const Container = styled.div`
   display: flex;
   height: 100%;
   box-sizing: border-box;
+  gap: 4px;
+  background-color: purple;
 `;
 
 const GridContainer = styled.div`
-  border: 4px solid purple;
   box-sizing: border-box;
-  width: 100%;
+  aspect-ratio: 1 / 2;
+  flex: none;
 `;
 
 const Game: FC = () => {

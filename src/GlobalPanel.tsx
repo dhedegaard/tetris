@@ -5,9 +5,7 @@ const Panel = styled.div`
   background: #000;
   height: 100%;
   aspect-ratio: 120 / 400;
-  border: 4px solid purple;
   box-sizing: border-box;
-  border-right-width: 0;
   padding: 8px;
   font-size: 2vh;
   gap: 8px;

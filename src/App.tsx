@@ -27,11 +27,14 @@ const Container = styled.main`
   display: flex;
   height: auto;
   max-height: 100vh;
-  max-width: 100vw;
+  /* max-width: 100vw; */
   margin: 0 auto;
   justify-content: center;
   align-items: stretch;
-  aspect-ratio: 1.13;
+  aspect-ratio: 1.11;
+  border: 4px solid purple;
+  background-color: purple;
+  gap: 4px;
 `;
 
 const App: FC = () => {
