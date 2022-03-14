@@ -10,6 +10,7 @@ const Document: FC = () => {
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="description" content="Tetris" />
+        <meta name="format-detection" content="telephone=no" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
