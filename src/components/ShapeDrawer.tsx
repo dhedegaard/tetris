@@ -8,7 +8,9 @@ import {
   useReducer,
   useRef,
 } from "react";
+import { useSelector } from "react-redux";
 import { Coordinate } from "../store/slices/blocks";
+import { selectTickrate } from "../store/slices/level";
 import Block from "./Block";
 import { ShapeElement } from "./shapes";
 
@@ -59,6 +61,7 @@ const ShapeDrawer: FC<Props> = memo(({ x, y, shape, coordinates }) => {
       })`,
     [curX, curY, oldShape, shape, x, y]
   );
+  const tickRate = useSelector(selectTickrate);
 
   return (
     <G transform={transform} color={shape.color} fill={shape.color}>
@@ -69,7 +72,7 @@ const ShapeDrawer: FC<Props> = memo(({ x, y, shape, coordinates }) => {
         type="translate"
         from={`${oldX}, ${oldY}`}
         to={`${x}, ${y}`}
-        dur="25ms"
+        dur={`${Math.min(40, tickRate)}ms`}
         repeatCount="0"
       />
       {blocks}
