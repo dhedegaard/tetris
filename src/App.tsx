@@ -12,8 +12,8 @@ const GlobalStyle: FC = () => (
         margin: 0;
         user-select: none;
         background-color: rgb(34, 34, 34);
-        height: 100vh;
-        max-height: 100vh;
+        height: 100%;
+        box-sizing: border-box;
       }
       html * {
         font-family: "Press Start 2P", cursive !important;
@@ -26,7 +26,7 @@ const Container = styled.main`
   box-sizing: border-box;
   display: flex;
   height: auto;
-  max-height: 100vh;
+  max-height: calc(100vh - 8px);
   margin: 0 auto;
   justify-content: center;
   align-items: stretch;
