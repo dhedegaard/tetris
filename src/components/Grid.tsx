@@ -3,7 +3,7 @@ import { SVGProps } from "react";
 
 const Grid = (props: SVGProps<SVGSVGElement>) => (
   <svg
-    preserveAspectRatio="xMinYMin none"
+    preserveAspectRatio="xMinYMin"
     viewBox="0 0 10 20"
     fill="#000"
     {...props}
