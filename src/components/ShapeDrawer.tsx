@@ -42,7 +42,7 @@ const ShapeDrawer: FC<Props> = memo(({ x, y, shape, coordinates }) => {
     if (shape !== oldShape || cur == null) {
       return;
     }
-    cur.beginElement();
+    cur.beginElement?.();
     return () => cur.endElement();
   }, [x, y, oldX, oldY, shape, oldShape]);
 
