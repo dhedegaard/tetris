@@ -2,10 +2,10 @@
  * @type {import('next').NextConfig}
  */
 module.exports = {
-  reactStrictMode: true,
-  experimental: {
+  compiler: {
     emotion: {
       autoLabel: "always",
     },
   },
+  reactStrictMode: true,
 };
