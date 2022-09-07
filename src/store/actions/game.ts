@@ -1,5 +1,4 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { batch } from "react-redux";
 import { Coordinates } from "../../components/ShapeDrawer";
 import {
   calculateCoordinates,
@@ -22,49 +21,43 @@ export const startNewGame =
       return;
     }
 
-    batch(() => {
-      dispatch(blocksActions.clearAllBlocks());
-      dispatch(shapeActions.nextShape());
-      dispatch(positionActions.resetPosition());
-      dispatch(directionActions.resetDirection());
-      dispatch(gamestateActions.setAlive());
-      dispatch(scoreActions.resetScore());
-      dispatch(levelActions.resetLevel());
-    });
+    dispatch(blocksActions.clearAllBlocks());
+    dispatch(shapeActions.nextShape());
+    dispatch(positionActions.resetPosition());
+    dispatch(directionActions.resetDirection());
+    dispatch(gamestateActions.setAlive());
+    dispatch(scoreActions.resetScore());
+    dispatch(levelActions.resetLevel());
   };
 
 export const clearFilledRows =
   () => (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
-    return batch(() => {
-      let rowsCleared = 0;
+    let rowsCleared = 0;
 
-      // The scoring later depends on the level before clearing rows, so we
-      // calculate the level beforehand.
-      const level = selectLevel(getState());
+    // The scoring later depends on the level before clearing rows, so we
+    // calculate the level beforehand.
+    const level = selectLevel(getState());
 
-      while (true) {
-        const state = getState();
-        const [filledRow] = selectFilledRows(state);
-        if (filledRow == null) {
-          break;
-        }
-
-        // Clear the filled rows and increment.
-        dispatch(blocksActions.clearRow(filledRow));
-        rowsCleared++;
+    while (true) {
+      const state = getState();
+      const [filledRow] = selectFilledRows(state);
+      if (filledRow == null) {
+        break;
       }
 
-      // Increase the score based on the nubmer of rows cleared and the current
-      // level.
-      if (rowsCleared > 0) {
-        dispatch(levelActions.incrementRowsCleared(rowsCleared));
-        dispatch(
-          scoreActions.increaseScore(calculateScore(level, rowsCleared))
-        );
-      }
+      // Clear the filled rows and increment.
+      dispatch(blocksActions.clearRow(filledRow));
+      rowsCleared++;
+    }
 
-      return rowsCleared;
-    });
+    // Increase the score based on the nubmer of rows cleared and the current
+    // level.
+    if (rowsCleared > 0) {
+      dispatch(levelActions.incrementRowsCleared(rowsCleared));
+      dispatch(scoreActions.increaseScore(calculateScore(level, rowsCleared)));
+    }
+
+    return rowsCleared;
   };
 
 const selectBlocks = (state: TetrisStoreState) => state.blocks.blocks;
@@ -123,16 +116,14 @@ export const attemptPersistBlocks =
       return false;
     }
 
-    batch(() => {
-      // Persist the blocks and return true.
-      blocks.forEach((block) => dispatch(blocksActions.persistBlock(block)));
+    // Persist the blocks and return true.
+    blocks.forEach((block) => dispatch(blocksActions.persistBlock(block)));
 
-      // Reset various things and go to the next shape.
-      dispatch(positionActions.resetPosition());
-      dispatch(directionActions.resetDirection());
-      dispatch(shapeActions.nextShape());
-      dispatch(clearFilledRows());
-    });
+    // Reset various things and go to the next shape.
+    dispatch(positionActions.resetPosition());
+    dispatch(directionActions.resetDirection());
+    dispatch(shapeActions.nextShape());
+    dispatch(clearFilledRows());
 
     return true;
   };
@@ -207,9 +198,7 @@ export const attemptToDoMove =
   };
 
 export const moveGoToBottom = () => (dispatch: TetrisStoreDispatch) => {
-  batch(() => {
-    while (dispatch(doTick()) === "moved-down") {}
-  });
+  while (dispatch(doTick()) === "moved-down") {}
 };
 
 export const doTick =
