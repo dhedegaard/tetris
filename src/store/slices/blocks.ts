@@ -19,6 +19,15 @@ const blocksSlice = createSlice({
       state.blocks = [];
     },
     persistBlock: (state, action: PayloadAction<Block>) => {
+      if (
+        state.blocks.some(
+          (e) => e.x === action.payload.x && e.y === action.payload.y
+        )
+      ) {
+        throw new Error(
+          `Block already exists: ${JSON.stringify(action.payload)}`
+        );
+      }
       state.blocks.push(action.payload);
     },
     clearBlock: (state, action: PayloadAction<Coordinate>) => {
