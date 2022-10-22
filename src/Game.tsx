@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { FC } from "react";
 import { Provider } from "react-redux";
 import Block from "./components/Block";
+import Bounds from "./components/Bounds";
 import Grid from "./components/Grid";
 import Legend from "./components/Legend";
 import { Shape } from "./components/shapes";
@@ -42,21 +43,16 @@ const Game: FC = () => {
     startNewGame,
     shapeBounds,
   } = useTetris();
-  console.log(shapeBounds.leftBottomElement);
 
   return (
     <Container {...swipeableHandler}>
       <GridContainer>
         <Grid>
           {shapeBounds.leftBottomElement != null && (
-            <line
-              x1={shapeBounds.leftBottomElement.x}
-              y1={shapeBounds.leftBottomElement.y + 1}
-              x2={shapeBounds.leftBottomElement.x}
-              y2={20}
-              // TODO:
-              stroke="red"
-              strokeWidth={0.1}
+            <Bounds
+              x={shapeBounds.leftBottomElement.x + 0.1}
+              y={shapeBounds.leftBottomElement.y + 1}
+              width={0.1}
             />
           )}
 

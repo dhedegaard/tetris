@@ -17,9 +17,9 @@ const useShape = () => {
       calculateCoordinates(currentShape.shape, {
         direction,
         x: position.x,
-        y: position.x,
+        y: position.y,
       }),
-    [currentShape, direction, position.x]
+    [currentShape, direction, position.x, position.y]
   );
 
   return useMemo(
