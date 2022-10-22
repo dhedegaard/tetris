@@ -48,34 +48,31 @@ const Game: FC = () => {
     <Container {...swipeableHandler}>
       <GridContainer>
         <Grid>
-          {isBrowser &&
-            gamestate !== "gameover" &&
-            shapeBounds.leftBottomElement != null && (
-              <Bounds
-                x={shapeBounds.leftBottomElement.x}
-                y={shapeBounds.leftBottomElement.y}
-                side="left"
-                width={0.05}
-              />
-            )}
-          {isBrowser &&
-            gamestate !== "gameover" &&
-            shapeBounds.rightBottomElement != null && (
-              <Bounds
-                x={shapeBounds.rightBottomElement.x}
-                y={shapeBounds.rightBottomElement.y}
-                side="right"
-                width={0.05}
-              />
-            )}
-
           {isBrowser && gamestate === "alive" && (
-            <Shape
-              direction={direction}
-              shape={shape}
-              x={position.x}
-              y={position.y}
-            />
+            <>
+              <Shape
+                direction={direction}
+                shape={shape}
+                x={position.x}
+                y={position.y}
+              />
+              {shapeBounds.leftBottomElement != null && (
+                <Bounds
+                  x={shapeBounds.leftBottomElement.x}
+                  y={shapeBounds.leftBottomElement.y}
+                  side="left"
+                  width={0.05}
+                />
+              )}
+              {shapeBounds.rightBottomElement != null && (
+                <Bounds
+                  x={shapeBounds.rightBottomElement.x}
+                  y={shapeBounds.rightBottomElement.y}
+                  side="right"
+                  width={0.05}
+                />
+              )}
+            </>
           )}
 
           {blocks.map(({ x, y, color }) => (
