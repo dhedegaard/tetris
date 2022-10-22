@@ -1,7 +1,7 @@
 import { Direction, ShapeProps } from ".";
 import { Coordinates } from "../ShapeDrawer";
 
-export const COLOR_T = "purple";
+export const COLOR_T = "#ec10ec";
 
 const T = ({ direction, x, y }: ShapeProps): Coordinates => {
   const result: Coordinates = [{ x, y }];
