@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { FC } from "react";
 import { Provider } from "react-redux";
 import Block from "./components/Block";
+import Bounds from "./components/Bounds";
 import Grid from "./components/Grid";
 import Legend from "./components/Legend";
 import { Shape } from "./components/shapes";
@@ -40,12 +41,34 @@ const Game: FC = () => {
     level,
     swipeableHandler,
     startNewGame,
+    shapeBounds,
   } = useTetris();
 
   return (
     <Container {...swipeableHandler}>
       <GridContainer>
         <Grid>
+          {isBrowser &&
+            gamestate !== "gameover" &&
+            shapeBounds.leftBottomElement != null && (
+              <Bounds
+                x={shapeBounds.leftBottomElement.x}
+                y={shapeBounds.leftBottomElement.y}
+                side="left"
+                width={0.05}
+              />
+            )}
+          {isBrowser &&
+            gamestate !== "gameover" &&
+            shapeBounds.rightBottomElement != null && (
+              <Bounds
+                x={shapeBounds.rightBottomElement.x}
+                y={shapeBounds.rightBottomElement.y}
+                side="right"
+                width={0.05}
+              />
+            )}
+
           {isBrowser && gamestate === "alive" && (
             <Shape
               direction={direction}
@@ -54,6 +77,7 @@ const Game: FC = () => {
               y={position.y}
             />
           )}
+
           {blocks.map(({ x, y, color }) => (
             <Block x={x} y={y} fill={color} key={`block_${x}_${y}`} />
           ))}
