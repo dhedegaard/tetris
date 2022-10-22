@@ -6,11 +6,12 @@ import useShape from "../hooks/useShape";
 interface Props {
   x: number;
   y: number;
-  width: number;
   side: "left" | "right";
 }
 
-const Bounds = ({ x, y, width, side, ...props }: Props) => {
+const WIDTH = 0.05;
+
+const Bounds = ({ x, y, side, ...props }: Props) => {
   const {
     shape: { color },
   } = useShape();
@@ -30,13 +31,13 @@ const Bounds = ({ x, y, width, side, ...props }: Props) => {
   const renderedX = useMemo(() => {
     switch (side) {
       case "left":
-        return x + width;
+        return x + WIDTH;
       case "right":
-        return x + 1 - width;
+        return x + 1 - WIDTH;
       default:
         throw new TypeError(`Invalid side: ${side}`);
     }
-  }, [side, width, x]);
+  }, [side, x]);
 
   return (
     <line
@@ -46,7 +47,7 @@ const Bounds = ({ x, y, width, side, ...props }: Props) => {
       x2={renderedX}
       y2={y2}
       stroke={color}
-      strokeWidth={width}
+      strokeWidth={WIDTH}
     />
   );
 };
