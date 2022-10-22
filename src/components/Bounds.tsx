@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { memo } from "react";
+import useShape from "../hooks/useShape";
 
 interface Props {
   x: number;
@@ -7,18 +8,22 @@ interface Props {
   width: number;
 }
 
-const Bounds = ({ x, y, width, ...props }: Props) => (
-  <line
-    {...props}
-    x1={x}
-    y1={y}
-    x2={x}
-    y2={20}
-    // TODO:
-    stroke="red"
-    strokeWidth={width}
-  />
-);
+const Bounds = ({ x, y, width, ...props }: Props) => {
+  const {
+    shape: { color },
+  } = useShape();
+  return (
+    <line
+      {...props}
+      x1={x}
+      y1={y}
+      x2={x}
+      y2={20}
+      stroke={color}
+      strokeWidth={width}
+    />
+  );
+};
 
 Bounds.displayName = "Bounds";
 
