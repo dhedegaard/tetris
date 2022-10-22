@@ -40,12 +40,26 @@ const Game: FC = () => {
     level,
     swipeableHandler,
     startNewGame,
+    shapeBounds,
   } = useTetris();
+  console.log(shapeBounds.leftBottomElement);
 
   return (
     <Container {...swipeableHandler}>
       <GridContainer>
         <Grid>
+          {shapeBounds.leftBottomElement != null && (
+            <line
+              x1={shapeBounds.leftBottomElement.x}
+              y1={shapeBounds.leftBottomElement.y + 1}
+              x2={shapeBounds.leftBottomElement.x}
+              y2={20}
+              // TODO:
+              stroke="red"
+              strokeWidth={0.1}
+            />
+          )}
+
           {isBrowser && gamestate === "alive" && (
             <Shape
               direction={direction}
@@ -54,6 +68,7 @@ const Game: FC = () => {
               y={position.y}
             />
           )}
+
           {blocks.map(({ x, y, color }) => (
             <Block x={x} y={y} fill={color} key={`block_${x}_${y}`} />
           ))}
