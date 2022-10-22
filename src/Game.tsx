@@ -48,13 +48,24 @@ const Game: FC = () => {
     <Container {...swipeableHandler}>
       <GridContainer>
         <Grid>
-          {shapeBounds.leftBottomElement != null && (
-            <Bounds
-              x={shapeBounds.leftBottomElement.x + 0.1}
-              y={shapeBounds.leftBottomElement.y + 1}
-              width={0.1}
-            />
-          )}
+          {isBrowser &&
+            gamestate !== "gameover" &&
+            shapeBounds.leftBottomElement != null && (
+              <Bounds
+                x={shapeBounds.leftBottomElement.x + 0.05}
+                y={shapeBounds.leftBottomElement.y + 1}
+                width={0.05}
+              />
+            )}
+          {isBrowser &&
+            gamestate !== "gameover" &&
+            shapeBounds.rightBottomElement != null && (
+              <Bounds
+                x={shapeBounds.rightBottomElement.x + 1 - 0.05}
+                y={shapeBounds.rightBottomElement.y + 1}
+                width={0.05}
+              />
+            )}
 
           {isBrowser && gamestate === "alive" && (
             <Shape

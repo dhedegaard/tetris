@@ -7,23 +7,23 @@ interface Props {
   width: number;
 }
 
-const Bounds = styled(
-  memo(({ x, y, width, ...props }: Props) => (
-    <line
-      {...props}
-      x1={x}
-      y1={y}
-      x2={x}
-      y2={20}
-      // TODO:
-      stroke="red"
-      strokeWidth={width}
-    />
-  ))
-)`
-  // TODO: This is sort of wrong, fix it later.
-  transition: all 40ms ease;
-`;
+const Bounds = ({ x, y, width, ...props }: Props) => (
+  <line
+    {...props}
+    x1={x}
+    y1={y}
+    x2={x}
+    y2={20}
+    // TODO:
+    stroke="red"
+    strokeWidth={width}
+  />
+);
+
 Bounds.displayName = "Bounds";
 
-export default Bounds;
+export default styled(memo(Bounds))`
+  // TODO: This is sort of wrong, fix it later.
+  transition: all 40ms ease;
+  opacity: 0.5;
+`;
