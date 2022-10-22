@@ -30,5 +30,5 @@ Bounds.displayName = "Bounds";
 export default styled(memo(Bounds))`
   // TODO: This is sort of wrong, fix it later.
   transition: all 40ms ease;
-  opacity: 0.5;
+  opacity: 0.3;
 `;
