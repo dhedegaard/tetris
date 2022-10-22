@@ -52,8 +52,9 @@ const Game: FC = () => {
             gamestate !== "gameover" &&
             shapeBounds.leftBottomElement != null && (
               <Bounds
-                x={shapeBounds.leftBottomElement.x + 0.05}
-                y={shapeBounds.leftBottomElement.y + 1}
+                x={shapeBounds.leftBottomElement.x}
+                y={shapeBounds.leftBottomElement.y}
+                side="left"
                 width={0.05}
               />
             )}
@@ -61,8 +62,9 @@ const Game: FC = () => {
             gamestate !== "gameover" &&
             shapeBounds.rightBottomElement != null && (
               <Bounds
-                x={shapeBounds.rightBottomElement.x + 1 - 0.05}
-                y={shapeBounds.rightBottomElement.y + 1}
+                x={shapeBounds.rightBottomElement.x}
+                y={shapeBounds.rightBottomElement.y}
+                side="right"
                 width={0.05}
               />
             )}
