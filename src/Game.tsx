@@ -61,7 +61,6 @@ const Game: FC = () => {
                   x={shapeBounds.leftBottomElement.x}
                   y={shapeBounds.leftBottomElement.y}
                   side="left"
-                  width={0.05}
                 />
               )}
               {shapeBounds.rightBottomElement != null && (
@@ -69,7 +68,6 @@ const Game: FC = () => {
                   x={shapeBounds.rightBottomElement.x}
                   y={shapeBounds.rightBottomElement.y}
                   side="right"
-                  width={0.05}
                 />
               )}
             </>
