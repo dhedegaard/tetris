@@ -1,16 +1,6 @@
 import styled from "@emotion/styled";
-import {
-  FC,
-  memo,
-  Reducer,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-} from "react";
-import { useSelector } from "react-redux";
+import { FC, memo, Reducer, useEffect, useMemo, useReducer } from "react";
 import { Coordinate } from "../store/slices/blocks";
-import { selectTickrate } from "../store/slices/level";
 import Block from "./Block";
 import { ShapeElement } from "./shapes";
 
@@ -24,7 +14,7 @@ interface Props {
 }
 
 const ShapeDrawer: FC<Props> = memo(({ x, y, shape, coordinates }) => {
-  const [{ curX, curY, oldX, oldY, oldShape }, dispatch] = useReducer(reducer, {
+  const [{ curX, curY, oldShape }, dispatch] = useReducer(reducer, {
     curX: x,
     curY: y,
     oldX: x,
@@ -32,19 +22,9 @@ const ShapeDrawer: FC<Props> = memo(({ x, y, shape, coordinates }) => {
     oldShape: shape,
   });
 
-  const animateTransformRef = useRef<SVGAnimateTransformElement>(null);
   useEffect(() => {
     dispatch({ x, y, shape });
   }, [x, y, shape]);
-
-  useEffect(() => {
-    const cur = animateTransformRef.current;
-    if (shape !== oldShape || cur == null) {
-      return;
-    }
-    cur.beginElement?.();
-    return () => cur.endElement();
-  }, [x, y, oldX, oldY, shape, oldShape]);
 
   const blocks = useMemo(
     () =>
@@ -61,20 +41,9 @@ const ShapeDrawer: FC<Props> = memo(({ x, y, shape, coordinates }) => {
       })`,
     [curX, curY, oldShape, shape, x, y]
   );
-  const tickRate = useSelector(selectTickrate);
 
   return (
     <G transform={transform} color={shape.color} fill={shape.color}>
-      <animateTransform
-        ref={animateTransformRef}
-        attributeName="transform"
-        attributeType="XML"
-        type="translate"
-        from={`${oldX}, ${oldY}`}
-        to={`${x}, ${y}`}
-        dur={`${Math.min(40, tickRate)}ms`}
-        repeatCount="0"
-      />
       {blocks}
     </G>
   );
