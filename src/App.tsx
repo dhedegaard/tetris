@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { parse } from "bowser";
 import { FC, useEffect, useState } from "react";
 import Music from "./components/Music";
+import { font } from "./font";
 import Game from "./Game";
 import GlobalPanel from "./GlobalPanel";
 
@@ -12,6 +13,13 @@ const GlobalStyle: FC = () => (
       html {
         height: -webkit-fill-available;
       }
+      html * {
+        font-family: ${font.style.fontFamily} !important;
+        ${font.style.fontStyle != null &&
+        `font-style: ${font.style.fontStyle};`}
+        ${font.style.fontWeight != null &&
+        `font-weight: ${font.style.fontWeight};`}
+      }
       body {
         margin: 0;
         user-select: none;
@@ -19,9 +27,6 @@ const GlobalStyle: FC = () => (
         height: 100vh;
         height: -webkit-fill-available;
         box-sizing: border-box;
-      }
-      html * {
-        font-family: "Press Start 2P", cursive !important;
       }
     `}
   />

@@ -1,6 +1,7 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { FC } from "react";
+import { font } from "../font";
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   return (
@@ -12,7 +13,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
           content="width=device-width, initial-scale=1, user-scalable=no"
         />
       </Head>
-      <Component {...pageProps} />
+      <Component {...pageProps} className={font.className} />
     </>
   );
 };
