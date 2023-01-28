@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styles from "./Block.module.css";
 import { FC, memo, SVGProps } from "react";
 
 interface Props {
@@ -7,18 +7,12 @@ interface Props {
 }
 
 const Block: FC<Props & SVGProps<SVGRectElement>> = (props) => (
-  <Rect {...props} />
+  <rect
+    {...props}
+    width={1}
+    height={1}
+    className={`stroke-black stroke-[0.02] ${styles.block}`}
+  />
 );
 
 export default memo(Block);
-
-const Rect = styled.rect`
-  color: inherit;
-  stroke: #000;
-  stroke-width: 0.02;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  will-change: x, y;
-  width: 1px;
-  height: 1px;
-`;
