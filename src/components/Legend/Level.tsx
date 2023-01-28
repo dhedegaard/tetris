@@ -1,5 +1,6 @@
-import { FC, memo } from "react";
+import { FC, memo, useMemo } from "react";
 import styled from "@emotion/styled";
+import styles from "./Level.module.css";
 
 const Container = styled.div`
   border: 1px double #fff;
@@ -28,10 +29,12 @@ interface Props {
   level: number;
 }
 const Level: FC<Props> = ({ level }) => (
-  <Container>
-    <Title>Level:</Title>
-    <Text>{Math.min(level, 99).toString().padStart(2, "0")}</Text>
-  </Container>
+  <div className={styles.container}>
+    <div className={styles.title}>Level:</div>
+    <div className={styles.text}>
+      {useMemo(() => Math.min(level, 99).toString().padStart(2, "0"), [level])}
+    </div>
+  </div>
 );
 
 export default memo(Level);
