@@ -1,5 +1,4 @@
 import { css, Global } from "@emotion/react";
-import styled from "@emotion/styled";
 import { FC, useState } from "react";
 import Music from "./components/Music";
 import { font } from "./font";
@@ -20,15 +19,6 @@ const GlobalStyle: FC = () => (
   />
 );
 
-const Container = styled.main<{ $isSafari: boolean }>`
-  /* Subtract a bit due to macos safari. */
-  max-height: calc(100vh - 8px);
-
-  @media (max-width: 425px) {
-    aspect-ratio: 0.82;
-  }
-`;
-
 const App: FC = () => {
   const [musicEnabled, setMusicEnabled] = useState(false);
 
@@ -36,13 +26,13 @@ const App: FC = () => {
     <>
       <GlobalStyle />
       {musicEnabled && <Music />}
-      <Container className="box-border flex h-auto justify-center items-stretch aspect-[1.11] mx-auto bg-[purple] border-[4px] border-solid border-[purple] gap-[4px]">
+      <main className="box-border flex h-auto justify-center items-stretch aspect-[1.11] mx-auto bg-[purple] border-[4px] border-solid border-[purple] gap-[4px] max-sm:aspect-[0.82] max-h-[calc(100vh-8px)]">
         <GlobalPanel
           musicEnabled={musicEnabled}
           toggleMusic={(enabled) => setMusicEnabled(enabled)}
         />
         <Game />
-      </Container>
+      </main>
     </>
   );
 };
