@@ -1,0 +1,22 @@
+.container {
+  border: 1px double #fff;
+  border-radius: 5px;
+  border-top-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  padding: 8px;
+}
+
+.title {
+  color: #fff;
+  border-bottom: 1px solid #fff;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  padding-bottom: 5px;
+}
+
+.text {
+  padding-top: 4px;
+  color: #fff;
+  text-transform: uppercase;
+  text-align: right;
+}
