@@ -1,32 +1,8 @@
-import styled from "@emotion/styled";
 import isEqual from "lodash/isEqual";
 import { FC, memo } from "react";
 import { useIsBrowser } from "../../hooks/useIsBrowser";
 import { Direction, Shape, ShapeElement } from "../shapes";
-
-const Container = styled.div`
-  border: 1px double #fff;
-  border-radius: 5px;
-  border-top-left-radius: 2px;
-  border-bottom-right-radius: 2px;
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Title = styled.div`
-  display: block;
-  color: #fff;
-  border-bottom: 1px solid #fff;
-  margin-bottom: 5px;
-  text-transform: uppercase;
-  padding-bottom: 5px;
-`;
-
-const ShapeContainer = styled.svg`
-  display: block;
-  margin: 10px;
-`;
+import styles from "./NextShape.module.css";
 
 interface Props {
   nextShapes: readonly ShapeElement[];
@@ -39,14 +15,19 @@ const NextShape: FC<Props> = ({ nextShapes }) => {
   }
 
   return (
-    <Container>
-      <Title>Next:</Title>
+    <div className={styles.container}>
+      <div className={styles.title}>Next:</div>
       {nextShapes.map((shape) => (
-        <ShapeContainer viewBox="0 0 5 3" width="100%" key={shape.key}>
+        <svg
+          viewBox="0 0 5 3"
+          width="100%"
+          key={shape.key}
+          className="block m-[10px]"
+        >
           <Shape direction={Direction.RIGHT} shape={shape} x={1} y={1} />
-        </ShapeContainer>
+        </svg>
       ))}
-    </Container>
+    </div>
   );
 };
 
