@@ -1,20 +1,13 @@
-import styled from "@emotion/styled";
-import { SVGProps } from "react";
+import { memo, SVGProps } from "react";
 
 const Grid = (props: SVGProps<SVGSVGElement>) => (
   <svg
     preserveAspectRatio="xMinYMin"
     viewBox="0 0 10 20"
     fill="#000"
+    className="bg-black block box-border w-full h-full aspect-[1 / 2]"
     {...props}
   />
 );
 
-export default styled(Grid)`
-  background-color: #000;
-  display: block;
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 1 / 2;
-`;
+export default memo(Grid);
