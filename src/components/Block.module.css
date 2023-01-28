@@ -1,0 +1,6 @@
+.block {
+  color: inherit;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  will-change: x, y;
+}

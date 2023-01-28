@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import { FC } from "react";
 import { Provider } from "react-redux";
 import Block from "./components/Block";
@@ -10,22 +9,6 @@ import GameOver from "./GameOver";
 import useTetris from "./hooks";
 import { useIsBrowser } from "./hooks/useIsBrowser";
 import tetrisStore from "./store/tetris";
-
-const Container = styled.div`
-  position: relative;
-  display: flex;
-  height: 100%;
-  box-sizing: border-box;
-  gap: 4px;
-  background-color: purple;
-`;
-
-const GridContainer = styled.div`
-  box-sizing: border-box;
-  aspect-ratio: 1 / 2;
-  flex: none;
-  height: 100%;
-`;
 
 const Game: FC = () => {
   const isBrowser = useIsBrowser();
@@ -45,8 +28,11 @@ const Game: FC = () => {
   } = useTetris();
 
   return (
-    <Container {...swipeableHandler}>
-      <GridContainer>
+    <div
+      className="relative flex h-full box-border gap-[4px] bg-[purple]"
+      {...swipeableHandler}
+    >
+      <div className="box-border aspect-[1/2] flex-none h-full">
         <Grid>
           {isBrowser && gamestate === "alive" && (
             <>
@@ -78,9 +64,9 @@ const Game: FC = () => {
           ))}
           {gamestate === "gameover" && <GameOver onClick={startNewGame} />}
         </Grid>
-      </GridContainer>
+      </div>
       <Legend score={score} peekShapes={peekShapes} level={level} />
-    </Container>
+    </div>
   );
 };
 

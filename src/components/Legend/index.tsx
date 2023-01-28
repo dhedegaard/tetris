@@ -1,26 +1,10 @@
-import styled from "@emotion/styled";
 import isEqual from "lodash/isEqual";
 import { FC, memo } from "react";
 import { ShapeElement } from "../shapes";
+import styles from "./index.module.css";
 import Level from "./Level";
 import NextShape from "./NextShape";
 import Score from "./Score";
-
-const LegendContainer = styled.div`
-  background-color: #000;
-  font-size: 2vh;
-  aspect-ratio: 120 / 400;
-  display: flex;
-  flex-direction: column;
-  padding: 8px;
-  gap: 8px;
-  align-self: normal;
-  justify-content: space-between;
-  width: 100%;
-  overflow-y: auto;
-  overflow: hidden;
-  box-sizing: border-box;
-`;
 
 interface Props {
   score: number;
@@ -29,20 +13,13 @@ interface Props {
 }
 
 const Legend: FC<Props> = ({ score, level, peekShapes }) => (
-  <LegendContainer>
-    <ScoreAndLevel>
+  <div className={styles.legendContainer}>
+    <div className="flex flex-col gap-[8px] items-stretch">
       <Score score={score} />
       <Level level={level} />
-    </ScoreAndLevel>
+    </div>
     <NextShape nextShapes={peekShapes} />
-  </LegendContainer>
+  </div>
 );
 
 export default memo(Legend, isEqual);
-
-const ScoreAndLevel = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: stretch;
-`;

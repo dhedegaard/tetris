@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import { memo, useMemo } from "react";
 import useBlocks from "../hooks/useBlocks";
 import useShape from "../hooks/useShape";
@@ -42,6 +41,7 @@ const Bounds = ({ x, y, side, ...props }: Props) => {
   return (
     <line
       {...props}
+      className="transition-all duration-[40ms] ease-in-out opacity-30"
       x1={renderedX}
       y1={y + 1}
       x2={renderedX}
@@ -54,8 +54,4 @@ const Bounds = ({ x, y, side, ...props }: Props) => {
 
 Bounds.displayName = "Bounds";
 
-export default styled(memo(Bounds))`
-  // TODO: This is sort of wrong, fix it later.
-  transition: all 40ms ease;
-  opacity: 0.3;
-`;
+export default memo(Bounds);

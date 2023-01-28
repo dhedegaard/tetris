@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import { FC, memo, Reducer, useEffect, useMemo, useReducer } from "react";
 import { Coordinate } from "../store/slices/blocks";
 import Block from "./Block";
@@ -43,17 +42,17 @@ const ShapeDrawer: FC<Props> = memo(({ x, y, shape, coordinates }) => {
   );
 
   return (
-    <G transform={transform} color={shape.color} fill={shape.color}>
+    <g
+      transform={transform}
+      color={shape.color}
+      fill={shape.color}
+      className="will-change-transform"
+    >
       {blocks}
-    </G>
+    </g>
   );
 });
 ShapeDrawer.displayName = "ShapeDrawer";
-
-const G = styled.g`
-  transform-origin: 50% 50%;
-  will-change: transform;
-`;
 
 export default ShapeDrawer;
 

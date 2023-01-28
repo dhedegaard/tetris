@@ -24,7 +24,8 @@ const tetrisStore = configureStore({
 
 export default tetrisStore;
 
-export type TetrisStoreState = ReturnType<typeof tetrisStore["getState"]>;
+export interface TetrisStoreState
+  extends ReturnType<typeof tetrisStore["getState"]> {}
 
 export type TetrisStoreDispatch = typeof tetrisStore.dispatch;
 
