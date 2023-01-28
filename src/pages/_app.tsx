@@ -2,6 +2,7 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import { FC } from "react";
 import { font } from "../font";
+import "../styles/global.css";
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   return (

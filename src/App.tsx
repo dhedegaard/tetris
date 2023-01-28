@@ -10,23 +10,12 @@ import GlobalPanel from "./GlobalPanel";
 const GlobalStyle: FC = () => (
   <Global
     styles={css`
-      html {
-        height: -webkit-fill-available;
-      }
       html * {
         font-family: ${font.style.fontFamily} !important;
         ${font.style.fontStyle != null &&
         `font-style: ${font.style.fontStyle};`}
         ${font.style.fontWeight != null &&
         `font-weight: ${font.style.fontWeight};`}
-      }
-      body {
-        margin: 0;
-        user-select: none;
-        background-color: rgb(34, 34, 34);
-        height: 100vh;
-        height: -webkit-fill-available;
-        box-sizing: border-box;
       }
     `}
   />
