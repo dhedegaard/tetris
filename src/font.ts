@@ -5,4 +5,5 @@ export const font = Press_Start_2P({
   preload: true,
   subsets: ["latin"],
   display: "fallback",
+  variable: "--font",
 });
