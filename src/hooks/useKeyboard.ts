@@ -31,6 +31,9 @@ const REPEAT_INTERVAL = 75;
 
 const useKeyboard = () => {
   const dispatch = useTetrisDispatch();
+  const gamestate = useTetrisSelector((state) => state.gamestate.gamestate);
+  const gamestateRef = useRef(gamestate);
+  gamestateRef.current = gamestate;
 
   // Handle a key being pressed.
   const handleKey = useCallback(
@@ -63,7 +66,11 @@ const useKeyboard = () => {
 
         case keybinds.goToBottom:
           // space
-          dispatch(moveGoToBottom());
+          if (gamestateRef.current === "gameover") {
+            dispatch(startNewGame());
+          } else {
+            dispatch(moveGoToBottom());
+          }
           break;
       }
     },
