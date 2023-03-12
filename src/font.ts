@@ -1,4 +1,4 @@
-import { Press_Start_2P } from "@next/font/google";
+import { Press_Start_2P } from "next/font/google";
 
 export const font = Press_Start_2P({
   weight: "400",
