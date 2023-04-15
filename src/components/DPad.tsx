@@ -6,7 +6,7 @@ import styles from "./DPad.module.css";
 export const DPad = memo(function DPad() {
   const dispatch = useTetrisDispatch();
 
-  const handleClickUp = useCallback<MouseEventHandler<SVGRectElement>>(
+  const handleClickRotate = useCallback<MouseEventHandler<SVGElement>>(
     (event) => {
       event.preventDefault();
       event.stopPropagation();
@@ -14,7 +14,7 @@ export const DPad = memo(function DPad() {
     },
     [dispatch]
   );
-  const handleClickLeft = useCallback<MouseEventHandler<SVGRectElement>>(
+  const handleClickLeft = useCallback<MouseEventHandler<SVGElement>>(
     (event) => {
       event.preventDefault();
       event.stopPropagation();
@@ -22,7 +22,7 @@ export const DPad = memo(function DPad() {
     },
     [dispatch]
   );
-  const handleClickRight = useCallback<MouseEventHandler<SVGRectElement>>(
+  const handleClickRight = useCallback<MouseEventHandler<SVGElement>>(
     (event) => {
       event.preventDefault();
       event.stopPropagation();
@@ -30,7 +30,7 @@ export const DPad = memo(function DPad() {
     },
     [dispatch]
   );
-  const handleClickDown = useCallback<MouseEventHandler<SVGRectElement>>(
+  const handleClickDown = useCallback<MouseEventHandler<SVGElement>>(
     (event) => {
       event.preventDefault();
       event.stopPropagation();
@@ -86,7 +86,7 @@ export const DPad = memo(function DPad() {
           y={0}
           width={1}
           height={1}
-          onClick={handleClickUp}
+          onClick={handleClickRotate}
         />
         <rect
           fill="transparent"
@@ -111,6 +111,28 @@ export const DPad = memo(function DPad() {
           width={1}
           height={1}
           onClick={handleClickDown}
+        />
+      </svg>
+
+      <svg
+        viewBox="0 0 1 1"
+        className={`${styles.DPad} fixed bottom-[80px] right-6 w-[60px]`}
+        fill="#ccc"
+        color="#999"
+      >
+        <circle
+          cx={0.5}
+          cy={0.5}
+          r={0.5}
+          fill="currentFill"
+          onClick={handleClickRotate}
+        />
+        <circle
+          cx={0.5}
+          cy={0.5}
+          r={0.35}
+          strokeWidth={0.025}
+          stroke="currentColor"
         />
       </svg>
     </>
