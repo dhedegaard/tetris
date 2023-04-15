@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react";
+import { memo, MouseEventHandler, useCallback } from "react";
 import { attemptToDoMove } from "../store/actions/game";
 import { useTetrisDispatch } from "../store/tetris";
 import styles from "./DPad.module.css";
@@ -6,20 +6,36 @@ import styles from "./DPad.module.css";
 export const DPad = memo(function DPad() {
   const dispatch = useTetrisDispatch();
 
-  const handleClickUp = useCallback(
-    () => dispatch(attemptToDoMove("ROTATE")),
+  const handleClickUp = useCallback<MouseEventHandler<SVGRectElement>>(
+    (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      dispatch(attemptToDoMove("ROTATE"));
+    },
     [dispatch]
   );
-  const handleClickLeft = useCallback(
-    () => dispatch(attemptToDoMove("LEFT")),
+  const handleClickLeft = useCallback<MouseEventHandler<SVGRectElement>>(
+    (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      dispatch(attemptToDoMove("LEFT"));
+    },
     [dispatch]
   );
-  const handleClickRight = useCallback(
-    () => dispatch(attemptToDoMove("RIGHT")),
+  const handleClickRight = useCallback<MouseEventHandler<SVGRectElement>>(
+    (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      dispatch(attemptToDoMove("RIGHT"));
+    },
     [dispatch]
   );
-  const handleClickDown = useCallback(
-    () => dispatch(attemptToDoMove("DOWN")),
+  const handleClickDown = useCallback<MouseEventHandler<SVGRectElement>>(
+    (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      dispatch(attemptToDoMove("DOWN"));
+    },
     [dispatch]
   );
 
