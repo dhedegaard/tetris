@@ -12,7 +12,6 @@ import usePosition from "./usePosition";
 import useScore from "./useScore";
 import useShape from "./useShape";
 import useShapeBounds from "./useShapeBounds";
-import { useSwipe } from "./useSwipe";
 
 /** A hook that contains all the logic regarding tetris. */
 const useTetris = () => {
@@ -36,7 +35,6 @@ const useTetris = () => {
 
   // Handle inputs.
   useKeyboard();
-  const swipeableHandler = useSwipe();
   useGamepad();
 
   return useMemo(
@@ -49,7 +47,6 @@ const useTetris = () => {
       score,
       peekShapes,
       level,
-      swipeableHandler,
       shapeBounds,
       startNewGame: () => dispatch(startNewGame()),
     }),
@@ -63,7 +60,6 @@ const useTetris = () => {
       position,
       score,
       shape,
-      swipeableHandler,
       shapeBounds,
     ]
   );
