@@ -48,8 +48,24 @@ export const DPad = memo(function DPad() {
         color="#999"
         strokeWidth={0}
       >
-        <rect fill="currentFill" x={1} y={0} width={1} height={3} rx={0.2} />
-        <rect fill="currentFill" x={0} y={1} width={3} height={1} rx={0.2} />
+        <rect
+          fill="currentFill"
+          x={1}
+          y={0}
+          width={1}
+          height={3}
+          rx={0.2}
+          className="pointer-events-none"
+        />
+        <rect
+          fill="currentFill"
+          x={0}
+          y={1}
+          width={3}
+          height={1}
+          rx={0.2}
+          className="pointer-events-none"
+        />
 
         <circle
           cx={1.5}
@@ -57,6 +73,7 @@ export const DPad = memo(function DPad() {
           r={0.3}
           strokeWidth={0.03}
           stroke="currentColor"
+          className="pointer-events-none"
         />
         <circle
           cx={0.5}
@@ -64,6 +81,7 @@ export const DPad = memo(function DPad() {
           r={0.3}
           strokeWidth={0.03}
           stroke="currentColor"
+          className="pointer-events-none"
         />
         <circle
           cx={2.5}
@@ -71,6 +89,7 @@ export const DPad = memo(function DPad() {
           r={0.3}
           strokeWidth={0.03}
           stroke="currentColor"
+          className="pointer-events-none"
         />
         <circle
           cx={1.5}
@@ -78,6 +97,7 @@ export const DPad = memo(function DPad() {
           r={0.3}
           strokeWidth={0.03}
           stroke="currentColor"
+          className="pointer-events-none"
         />
 
         <rect
@@ -133,6 +153,7 @@ export const DPad = memo(function DPad() {
           r={0.35}
           strokeWidth={0.025}
           stroke="currentColor"
+          className="pointer-events-none"
         />
       </svg>
     </>
