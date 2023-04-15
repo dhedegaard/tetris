@@ -11,8 +11,9 @@
   align-items: stretch;
   overflow-y: auto;
   overflow-x: hidden;
-
-  @media (max-width: 425px) {
+}
+@media (max-width: 450px) {
+  .panel {
     display: none;
   }
 }
