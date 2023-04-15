@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Provider } from "react-redux";
 import Block from "./components/Block";
 import Bounds from "./components/Bounds";
+import { DPad } from "./components/DPad";
 import Grid from "./components/Grid";
 import Legend from "./components/Legend";
 import { Shape } from "./components/shapes";
@@ -32,6 +33,7 @@ const Game: FC = () => {
       className="relative flex h-full box-border gap-[4px] bg-[purple]"
       {...swipeableHandler}
     >
+      <DPad />
       <div className="box-border aspect-[1/2] flex-none h-full">
         <Grid>
           {isBrowser && gamestate === "alive" && (
