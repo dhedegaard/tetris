@@ -23,16 +23,12 @@ const Game: FC = () => {
     score,
     peekShapes,
     level,
-    swipeableHandler,
     startNewGame,
     shapeBounds,
   } = useTetris();
 
   return (
-    <div
-      className="relative flex h-full box-border gap-[4px] bg-[purple]"
-      {...swipeableHandler}
-    >
+    <div className="relative flex h-full box-border gap-[4px] bg-[purple]">
       <DPad />
       <div className="box-border aspect-[1/2] flex-none h-full">
         <Grid>
