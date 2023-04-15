@@ -45,9 +45,40 @@ export const DPad = memo(function DPad() {
         viewBox="0 0 3 3"
         className={`${styles.DPad} fixed bottom-10 left-10 w-[150px]`}
         fill="#ccc"
+        color="#999"
+        strokeWidth={0}
       >
         <rect fill="currentFill" x={1} y={0} width={1} height={3} rx={0.2} />
         <rect fill="currentFill" x={0} y={1} width={3} height={1} rx={0.2} />
+
+        <circle
+          cx={1.5}
+          cy={0.5}
+          r={0.3}
+          strokeWidth={0.03}
+          stroke="currentColor"
+        />
+        <circle
+          cx={0.5}
+          cy={1.5}
+          r={0.3}
+          strokeWidth={0.03}
+          stroke="currentColor"
+        />
+        <circle
+          cx={2.5}
+          cy={1.5}
+          r={0.3}
+          strokeWidth={0.03}
+          stroke="currentColor"
+        />
+        <circle
+          cx={1.5}
+          cy={2.5}
+          r={0.3}
+          strokeWidth={0.03}
+          stroke="currentColor"
+        />
 
         <rect
           fill="transparent"
