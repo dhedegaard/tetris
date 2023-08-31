@@ -4,21 +4,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@reduxjs/toolkit": "^1.9.3",
+    "@reduxjs/toolkit": "^1.9.5",
     "bowser": "^2.11.0",
     "lodash": "^4.17.21",
     "next": "^13.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^8.0.5",
+    "react-redux": "^8.1.2",
     "react-use": "^17.4.0",
     "redux": "^4.2.1",
-    "typescript": "^4.9.5"
+    "typescript": "^5.2.2"
   },
   "scripts": {
     "start": "next start",
-    "watch": "next dev",
-    "build": "next build && next export",
+    "dev": "next dev",
+    "build": "next build",
+    "export": "next export",
     "predeploy": "npm run build",
     "test": "jest",
     "lint": "next lint"
@@ -30,17 +31,17 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@types/jest": "^29.4.0",
-    "@types/lodash": "^4.14.191",
-    "@types/node": "^18.11.18",
-    "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.11",
-    "autoprefixer": "^10.4.14",
-    "eslint": "^8.36.0",
-    "eslint-config-next": "^13.2.4",
-    "jest": "^29.5.0",
-    "jest-environment-jsdom": "^29.5.0",
-    "postcss": "^8.4.21",
-    "tailwindcss": "^3.2.7"
+    "@types/jest": "^29.5.4",
+    "@types/lodash": "^4.14.197",
+    "@types/node": "^18.17.12",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "autoprefixer": "^10.4.15",
+    "eslint": "^8.48.0",
+    "eslint-config-next": "^13.4.19",
+    "jest": "^29.6.4",
+    "jest-environment-jsdom": "^29.6.4",
+    "postcss": "^8.4.29",
+    "tailwindcss": "^3.3.3"
   }
 }
