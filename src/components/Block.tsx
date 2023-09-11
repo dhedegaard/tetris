@@ -1,12 +1,12 @@
+import { memo, SVGProps } from "react";
 import styles from "./Block.module.css";
-import { FC, memo, SVGProps } from "react";
 
-interface Props {
+interface Props extends SVGProps<SVGRectElement> {
   x: number;
   y: number;
 }
 
-const Block: FC<Props & SVGProps<SVGRectElement>> = (props) => (
+const Block = (props: Props) => (
   <rect
     {...props}
     width={1}
