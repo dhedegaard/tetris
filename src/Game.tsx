@@ -5,7 +5,7 @@ import Bounds from "./components/Bounds";
 import { DPad } from "./components/DPad";
 import Grid from "./components/Grid";
 import Legend from "./components/Legend";
-import { Shape } from "./components/shapes";
+import { ShapeRenderer } from "./components/shapes";
 import GameOver from "./GameOver";
 import useTetris from "./hooks";
 import { useIsBrowser } from "./hooks/useIsBrowser";
@@ -34,7 +34,7 @@ const Game: FC = () => {
         <Grid>
           {isBrowser && gamestate === "alive" && (
             <>
-              <Shape
+              <ShapeRenderer
                 direction={direction}
                 shape={shape}
                 x={position.x}

@@ -1,7 +1,7 @@
 import isEqual from "lodash/isEqual";
 import { FC, memo } from "react";
 import { useIsBrowser } from "../../hooks/useIsBrowser";
-import { Direction, Shape, ShapeElement } from "../shapes";
+import { Direction, ShapeRenderer, ShapeElement } from "../shapes";
 import styles from "./NextShape.module.css";
 
 interface Props {
@@ -24,7 +24,12 @@ const NextShape: FC<Props> = ({ nextShapes }) => {
           key={shape.key}
           className="block m-[10px]"
         >
-          <Shape direction={Direction.RIGHT} shape={shape} x={1} y={1} />
+          <ShapeRenderer
+            direction={Direction.RIGHT}
+            shape={shape}
+            x={1}
+            y={1}
+          />
         </svg>
       ))}
     </div>

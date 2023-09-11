@@ -1,5 +1,5 @@
-import uniqueId from "lodash/uniqueId";
 import shuffle from "lodash/shuffle";
+import uniqueId from "lodash/uniqueId";
 import { FC, useMemo } from "react";
 import ShapeDrawer, { Coordinates } from "../ShapeDrawer";
 import I, { COLOR_I } from "./I";
@@ -53,7 +53,7 @@ export interface ShapeProps {
   children?: undefined;
 }
 
-export type Shapes = "I" | "J" | "L" | "O" | "S" | "T" | "Z";
+export type Shape = "I" | "J" | "L" | "O" | "S" | "T" | "Z";
 export const SHAPES = Object.freeze([
   "I",
   "J",
@@ -62,10 +62,10 @@ export const SHAPES = Object.freeze([
   "S",
   "T",
   "Z",
-] as Shapes[]);
+] as Shape[]);
 
 export const calculateCoordinates = (
-  shape: Shapes,
+  shape: Shape,
   shapeProps: ShapeProps
 ): Coordinates => {
   switch (shape) {
@@ -86,9 +86,9 @@ export const calculateCoordinates = (
   }
 };
 
-export const colorFromShape = (shape: Shapes): string => colorMap[shape];
+export const colorFromShape = (shape: Shape): string => colorMap[shape];
 
-const colorMap: { [key in Shapes]: string } = {
+const colorMap: { [key in Shape]: string } = {
   I: COLOR_I,
   J: COLOR_J,
   L: COLOR_L,
@@ -103,7 +103,7 @@ interface Props extends ShapeProps {
 }
 
 /** Renders a given shape. */
-export const Shape: FC<Props> = ({ shape, x, y, direction }) => {
+export const ShapeRenderer: FC<Props> = ({ shape, x, y, direction }) => {
   const coordinates = useMemo(
     () =>
       calculateCoordinates(shape.shape, {
@@ -130,7 +130,7 @@ export const getRandomShapes = () =>
   }));
 
 export interface ShapeElement {
-  shape: Shapes;
+  shape: Shape;
   key: string;
   color: string;
   coordinates: Coordinates;
