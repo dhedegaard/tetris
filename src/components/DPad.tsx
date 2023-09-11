@@ -1,49 +1,49 @@
-import { memo, MouseEventHandler, useCallback } from "react";
-import { attemptToDoMove } from "../store/actions/game";
-import { useTetrisDispatch } from "../store/tetris";
-import styles from "./DPad.module.css";
+import { memo, MouseEventHandler, useCallback } from 'react'
+import { attemptToDoMove } from '../store/actions/game'
+import { useTetrisDispatch } from '../store/tetris'
+import styles from './DPad.module.css'
 
 export const DPad = memo(function DPad() {
-  const dispatch = useTetrisDispatch();
+  const dispatch = useTetrisDispatch()
 
   const handleClickRotate = useCallback<MouseEventHandler<SVGElement>>(
     (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      dispatch(attemptToDoMove("ROTATE"));
+      event.preventDefault()
+      event.stopPropagation()
+      dispatch(attemptToDoMove('ROTATE'))
     },
     [dispatch]
-  );
+  )
   const handleClickLeft = useCallback<MouseEventHandler<SVGElement>>(
     (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      dispatch(attemptToDoMove("LEFT"));
+      event.preventDefault()
+      event.stopPropagation()
+      dispatch(attemptToDoMove('LEFT'))
     },
     [dispatch]
-  );
+  )
   const handleClickRight = useCallback<MouseEventHandler<SVGElement>>(
     (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      dispatch(attemptToDoMove("RIGHT"));
+      event.preventDefault()
+      event.stopPropagation()
+      dispatch(attemptToDoMove('RIGHT'))
     },
     [dispatch]
-  );
+  )
   const handleClickDown = useCallback<MouseEventHandler<SVGElement>>(
     (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      dispatch(attemptToDoMove("DOWN"));
+      event.preventDefault()
+      event.stopPropagation()
+      dispatch(attemptToDoMove('DOWN'))
     },
     [dispatch]
-  );
+  )
 
   return (
     <>
       <svg
         viewBox="0 0 3 3"
-        className={`${styles["DPad"]} fixed bottom-10 left-10 w-[150px]`}
+        className={`${styles['DPad']} fixed bottom-10 left-10 w-[150px]`}
         fill="#ccc"
         color="#999"
         strokeWidth={0}
@@ -100,53 +100,19 @@ export const DPad = memo(function DPad() {
           className="pointer-events-none"
         />
 
-        <rect
-          fill="transparent"
-          x={1}
-          y={0}
-          width={1}
-          height={1}
-          onClick={handleClickRotate}
-        />
-        <rect
-          fill="transparent"
-          x={0}
-          y={1}
-          width={1}
-          height={1}
-          onClick={handleClickLeft}
-        />
-        <rect
-          fill="transparent"
-          x={2}
-          y={1}
-          width={1}
-          height={1}
-          onClick={handleClickRight}
-        />
-        <rect
-          fill="transparent"
-          x={1}
-          y={2}
-          width={1}
-          height={1}
-          onClick={handleClickDown}
-        />
+        <rect fill="transparent" x={1} y={0} width={1} height={1} onClick={handleClickRotate} />
+        <rect fill="transparent" x={0} y={1} width={1} height={1} onClick={handleClickLeft} />
+        <rect fill="transparent" x={2} y={1} width={1} height={1} onClick={handleClickRight} />
+        <rect fill="transparent" x={1} y={2} width={1} height={1} onClick={handleClickDown} />
       </svg>
 
       <svg
         viewBox="0 0 1 1"
-        className={`${styles["DPad"]} fixed bottom-[80px] right-6 w-[60px]`}
+        className={`${styles['DPad']} fixed bottom-[80px] right-6 w-[60px]`}
         fill="#ccc"
         color="#999"
       >
-        <circle
-          cx={0.5}
-          cy={0.5}
-          r={0.5}
-          fill="currentFill"
-          onClick={handleClickRotate}
-        />
+        <circle cx={0.5} cy={0.5} r={0.5} fill="currentFill" onClick={handleClickRotate} />
         <circle
           cx={0.5}
           cy={0.5}
@@ -157,5 +123,5 @@ export const DPad = memo(function DPad() {
         />
       </svg>
     </>
-  );
-});
+  )
+})

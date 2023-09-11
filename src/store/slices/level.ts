@@ -1,5 +1,5 @@
-import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TetrisStoreState } from "../tetris";
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { TetrisStoreState } from '../tetris'
 
 /**
  * The various break points for the tick rate, based on what level you're on.
@@ -23,54 +23,54 @@ const LEVEL_TO_TICK_RATE: Readonly<Map<number, number>> = Object.freeze(
     [19, 0.03],
     [29, 0.02],
   ])
-);
+)
 
 /** Takes a given level, and converts it to a tick rate, in seconds. */
 export const calculateTickRate = (level: number): number => {
   // If we're able to map the level directly, do so.
-  const tickrate1 = LEVEL_TO_TICK_RATE.get(level);
+  const tickrate1 = LEVEL_TO_TICK_RATE.get(level)
   if (tickrate1 != null) {
-    return tickrate1;
+    return tickrate1
   }
   // Otherwise, find the closes match below the level.
-  let tickrate = Number.MAX_VALUE;
+  let tickrate = Number.MAX_VALUE
   for (const [key, rate] of LEVEL_TO_TICK_RATE.entries()) {
     if (key <= level && rate < tickrate) {
-      tickrate = rate;
+      tickrate = rate
     }
   }
-  return tickrate;
-};
+  return tickrate
+}
 
 /** Each level progresses when 10 rows have been cleared. */
-const calculateLevel = (rowsCleared: number) => Math.floor(rowsCleared / 10);
+const calculateLevel = (rowsCleared: number) => Math.floor(rowsCleared / 10)
 
 export const levelSlice = createSlice({
-  name: "level",
+  name: 'level',
   initialState: {
     rowsCleared: 0,
   },
   reducers: {
     resetLevel: (state) => {
-      state.rowsCleared = 0;
+      state.rowsCleared = 0
     },
     incrementRowsCleared: (state, action: PayloadAction<number>) => {
-      state.rowsCleared += action.payload;
+      state.rowsCleared += action.payload
     },
   },
-});
+})
 
-export const levelActions = levelSlice.actions;
+export const levelActions = levelSlice.actions
 
-export default levelSlice.reducer;
+export default levelSlice.reducer
 
-const selectRowsCleared = (state: TetrisStoreState) => state.level.rowsCleared;
+const selectRowsCleared = (state: TetrisStoreState) => state.level.rowsCleared
 
 export const selectLevel = createSelector(selectRowsCleared, (rowsCleared) =>
   calculateLevel(rowsCleared)
-);
+)
 
 export const selectTickrate = createSelector(
   selectLevel,
   (level) => calculateTickRate(level) * 1_000
-);
+)

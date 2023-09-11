@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC } from 'react'
 
 /** Handles playing music, whenever the prop is true. */
 const Music: FC<{}> = () => (
@@ -10,6 +10,6 @@ const Music: FC<{}> = () => (
     frameBorder={0}
     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
   />
-);
+)
 
-export default Music;
+export default Music

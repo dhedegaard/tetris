@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-const DEFAULT_POSITION = Object.freeze({ x: 4, y: 1 });
+const DEFAULT_POSITION = Object.freeze({ x: 4, y: 1 })
 
 const positionSlice = createSlice({
-  name: "position",
+  name: 'position',
   initialState: {
     position: {
       x: DEFAULT_POSITION.x,
@@ -11,20 +11,17 @@ const positionSlice = createSlice({
     },
   },
   reducers: {
-    movePosition: (
-      state,
-      action: PayloadAction<{ dx: number; dy: number }>
-    ) => {
-      state.position.x += action.payload.dx;
-      state.position.y += action.payload.dy;
+    movePosition: (state, action: PayloadAction<{ dx: number; dy: number }>) => {
+      state.position.x += action.payload.dx
+      state.position.y += action.payload.dy
     },
 
     resetPosition: (state) => {
-      state.position = DEFAULT_POSITION;
+      state.position = DEFAULT_POSITION
     },
   },
-});
+})
 
-export const positionActions = positionSlice.actions;
+export const positionActions = positionSlice.actions
 
-export default positionSlice.reducer;
+export default positionSlice.reducer

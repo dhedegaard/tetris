@@ -1,15 +1,15 @@
-import { FC, memo, Reducer, useEffect, useMemo, useReducer } from "react";
-import { Coordinate } from "../store/slices/blocks";
-import Block from "./Block";
-import { ShapeElement } from "./shapes";
+import { FC, memo, Reducer, useEffect, useMemo, useReducer } from 'react'
+import { Coordinate } from '../store/slices/blocks'
+import Block from './Block'
+import { ShapeElement } from './shapes'
 
-export type Coordinates = Coordinate[];
+export type Coordinates = Coordinate[]
 
 interface Props {
-  coordinates: Coordinates;
-  shape: ShapeElement;
-  x: number;
-  y: number;
+  coordinates: Coordinates
+  shape: ShapeElement
+  x: number
+  y: number
 }
 
 const ShapeDrawer: FC<Props> = memo(({ x, y, shape, coordinates }) => {
@@ -19,27 +19,22 @@ const ShapeDrawer: FC<Props> = memo(({ x, y, shape, coordinates }) => {
     oldX: x,
     oldY: y,
     oldShape: shape,
-  });
+  })
 
   useEffect(() => {
-    dispatch({ x, y, shape });
-  }, [x, y, shape]);
+    dispatch({ x, y, shape })
+  }, [x, y, shape])
 
   const blocks = useMemo(
     () =>
-      coordinates.map((coord, index) => (
-        <Block key={`elem_${shape.color}_${index}`} {...coord} />
-      )),
+      coordinates.map((coord, index) => <Block key={`elem_${shape.color}_${index}`} {...coord} />),
     [coordinates, shape.color]
-  );
+  )
 
   const transform = useMemo(
-    () =>
-      `translate(${oldShape === shape ? curX : x}, ${
-        oldShape === shape ? curY : y
-      })`,
+    () => `translate(${oldShape === shape ? curX : x}, ${oldShape === shape ? curY : y})`,
     [curX, curY, oldShape, shape, x, y]
-  );
+  )
 
   return (
     <g
@@ -50,19 +45,19 @@ const ShapeDrawer: FC<Props> = memo(({ x, y, shape, coordinates }) => {
     >
       {blocks}
     </g>
-  );
-});
-ShapeDrawer.displayName = "ShapeDrawer";
+  )
+})
+ShapeDrawer.displayName = 'ShapeDrawer'
 
-export default ShapeDrawer;
+export default ShapeDrawer
 
 const reducer: Reducer<
   {
-    curX: number;
-    curY: number;
-    oldX: number;
-    oldY: number;
-    oldShape: ShapeElement;
+    curX: number
+    curY: number
+    oldX: number
+    oldY: number
+    oldShape: ShapeElement
   },
   { x: number; y: number; shape: ShapeElement }
 > = (state, action) => ({
@@ -72,4 +67,4 @@ const reducer: Reducer<
   oldX: action.shape === state.oldShape ? state.curX : action.x,
   oldY: action.shape === state.oldShape ? state.curY : action.y,
   oldShape: action.shape,
-});
+})

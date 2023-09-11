@@ -1,20 +1,20 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit'
 
 const gamestateSlice = createSlice({
-  name: "gamestate",
+  name: 'gamestate',
   initialState: {
-    gamestate: "alive" as "alive" | "gameover",
+    gamestate: 'alive' as 'alive' | 'gameover',
   },
   reducers: {
     setAlive: (state) => {
-      state.gamestate = "alive";
+      state.gamestate = 'alive'
     },
     setGameover: (state) => {
-      state.gamestate = "gameover";
+      state.gamestate = 'gameover'
     },
   },
-});
+})
 
-export const gamestateActions = gamestateSlice.actions;
+export const gamestateActions = gamestateSlice.actions
 
-export default gamestateSlice.reducer;
+export default gamestateSlice.reducer

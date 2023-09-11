@@ -1,9 +1,9 @@
-import { Press_Start_2P } from "next/font/google";
+import { Press_Start_2P } from 'next/font/google'
 
 export const font = Press_Start_2P({
-  weight: "400",
+  weight: '400',
   preload: true,
-  subsets: ["latin"],
-  display: "fallback",
-  variable: "--font",
-});
+  subsets: ['latin'],
+  display: 'fallback',
+  variable: '--font',
+})

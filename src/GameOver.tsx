@@ -1,15 +1,9 @@
-import { FC, memo, SVGProps } from "react";
+import { FC, memo, SVGProps } from 'react'
 
-type Props = SVGProps<SVGRectElement>;
+type Props = SVGProps<SVGRectElement>
 
 const GameOver: FC<Props> = (props) => (
-  <g
-    width={20}
-    transform="translate(1, 7.5)"
-    fill="#000"
-    color="#fff"
-    className="cursor-pointer"
-  >
+  <g width={20} transform="translate(1, 7.5)" fill="#000" color="#fff" className="cursor-pointer">
     <rect
       {...props}
       fill="currentFill"
@@ -52,6 +46,6 @@ const GameOver: FC<Props> = (props) => (
       try again
     </text>
   </g>
-);
+)
 
-export default memo(GameOver);
+export default memo(GameOver)

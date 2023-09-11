@@ -1,23 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { Direction, nextDirection } from "../../components/shapes";
+import { createSlice } from '@reduxjs/toolkit'
+import { Direction, nextDirection } from '../../components/shapes'
 
-const DEFAULT_DIRECTION = "RIGHT";
+const DEFAULT_DIRECTION = 'RIGHT'
 
 const directionSlice = createSlice({
-  name: "direction",
+  name: 'direction',
   initialState: {
     direction: DEFAULT_DIRECTION as Direction,
   },
   reducers: {
     resetDirection: (state) => {
-      state.direction = DEFAULT_DIRECTION;
+      state.direction = DEFAULT_DIRECTION
     },
     rotateDirection: (state) => {
-      state.direction = nextDirection(state.direction);
+      state.direction = nextDirection(state.direction)
     },
   },
-});
+})
 
-export const directionActions = directionSlice.actions;
+export const directionActions = directionSlice.actions
 
-export default directionSlice.reducer;
+export default directionSlice.reducer
