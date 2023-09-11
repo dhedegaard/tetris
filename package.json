@@ -31,6 +31,8 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@tsconfig/next": "^2.0.0",
+    "@tsconfig/strictest": "^2.0.2",
     "@types/jest": "^29.5.4",
     "@types/lodash": "^4.14.197",
     "@types/node": "^18.17.12",

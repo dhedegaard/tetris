@@ -3,12 +3,10 @@ import { Direction, nextDirection } from "../../components/shapes";
 
 const DEFAULT_DIRECTION = "RIGHT";
 
-const directionSlice = createSlice<{
-  direction: Direction;
-}>({
+const directionSlice = createSlice({
   name: "direction",
   initialState: {
-    direction: DEFAULT_DIRECTION,
+    direction: DEFAULT_DIRECTION as Direction,
   },
   reducers: {
     resetDirection: (state) => {

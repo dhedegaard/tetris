@@ -28,12 +28,12 @@ const LEVEL_TO_TICK_RATE: Readonly<Map<number, number>> = Object.freeze(
 /** Takes a given level, and converts it to a tick rate, in seconds. */
 export const calculateTickRate = (level: number): number => {
   // If we're able to map the level directly, do so.
-  let tickrate = LEVEL_TO_TICK_RATE.get(level);
-  if (tickrate != null) {
-    return tickrate;
+  const tickrate1 = LEVEL_TO_TICK_RATE.get(level);
+  if (tickrate1 != null) {
+    return tickrate1;
   }
   // Otherwise, find the closes match below the level.
-  tickrate = Number.MAX_VALUE;
+  let tickrate = Number.MAX_VALUE;
   for (const [key, rate] of LEVEL_TO_TICK_RATE.entries()) {
     if (key <= level && rate < tickrate) {
       tickrate = rate;

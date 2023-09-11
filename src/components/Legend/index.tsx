@@ -13,7 +13,7 @@ interface Props {
 }
 
 const Legend: FC<Props> = ({ score, level, peekShapes }) => (
-  <div className={styles.legendContainer}>
+  <div className={styles["legendContainer"]}>
     <div className="flex flex-col gap-[8px] items-stretch">
       <Score score={score} />
       <Level level={level} />

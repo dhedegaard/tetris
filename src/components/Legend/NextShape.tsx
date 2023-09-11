@@ -1,7 +1,7 @@
 import isEqual from "lodash/isEqual";
 import { FC, memo } from "react";
 import { useIsBrowser } from "../../hooks/useIsBrowser";
-import { Direction, ShapeRenderer, ShapeElement } from "../shapes";
+import { ShapeElement, ShapeRenderer } from "../shapes";
 import styles from "./NextShape.module.css";
 
 interface Props {
@@ -15,8 +15,8 @@ const NextShape: FC<Props> = ({ nextShapes }) => {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.title}>Next:</div>
+    <div className={styles["container"]}>
+      <div className={styles["title"]}>Next:</div>
       {nextShapes.map((shape) => (
         <svg
           viewBox="0 0 5 3"

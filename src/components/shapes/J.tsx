@@ -1,4 +1,4 @@
-import { Direction, ShapeProps } from ".";
+import { ShapeProps } from ".";
 import { Coordinates } from "../ShapeDrawer";
 
 export const COLOR_J = "lightblue";

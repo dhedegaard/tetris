@@ -45,7 +45,6 @@ export interface ShapeProps {
   x: number;
   y: number;
   direction: Direction;
-  children?: undefined;
 }
 
 export type Shape = "I" | "J" | "L" | "O" | "S" | "T" | "Z";
