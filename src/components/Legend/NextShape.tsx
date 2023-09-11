@@ -24,12 +24,7 @@ const NextShape: FC<Props> = ({ nextShapes }) => {
           key={shape.key}
           className="block m-[10px]"
         >
-          <ShapeRenderer
-            direction={Direction.RIGHT}
-            shape={shape}
-            x={1}
-            y={1}
-          />
+          <ShapeRenderer direction="RIGHT" shape={shape} x={1} y={1} />
         </svg>
       ))}
     </div>

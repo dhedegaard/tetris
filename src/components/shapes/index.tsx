@@ -10,22 +10,17 @@ import S, { COLOR_S } from "./S";
 import T, { COLOR_T } from "./T";
 import Z, { COLOR_Z } from "./Z";
 
-export enum Direction {
-  UP,
-  DOWN,
-  LEFT,
-  RIGHT,
-}
+export type Direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
 
 export const directionToRotation = (direction: Direction) => {
   switch (direction) {
-    case Direction.UP:
+    case "UP":
       return 270;
-    case Direction.LEFT:
+    case "LEFT":
       return 180;
-    case Direction.DOWN:
+    case "DOWN":
       return 90;
-    case Direction.RIGHT:
+    case "RIGHT":
       return 0;
     default:
       throw new TypeError(`Unknown direction: ${direction}`);
@@ -35,14 +30,14 @@ export const directionToRotation = (direction: Direction) => {
 /** Returns the new direction based on a current direction. */
 export const nextDirection = (direction: Direction): Direction => {
   switch (direction) {
-    case Direction.UP:
-      return Direction.RIGHT;
-    case Direction.RIGHT:
-      return Direction.DOWN;
-    case Direction.DOWN:
-      return Direction.LEFT;
-    case Direction.LEFT:
-      return Direction.UP;
+    case "UP":
+      return "RIGHT";
+    case "RIGHT":
+      return "DOWN";
+    case "DOWN":
+      return "LEFT";
+    case "LEFT":
+      return "UP";
   }
 };
 
@@ -123,7 +118,7 @@ export const getRandomShapes = () =>
     key: uniqueId("shape-"),
     color: colorFromShape(shape),
     coordinates: calculateCoordinates(shape, {
-      direction: Direction.RIGHT,
+      direction: "RIGHT",
       x: 0,
       y: 0,
     }),

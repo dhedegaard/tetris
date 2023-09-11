@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Direction, nextDirection } from "../../components/shapes";
 
-const DEFAULT_DIRECTION = Direction.RIGHT;
+const DEFAULT_DIRECTION = "RIGHT";
 
-const directionSlice = createSlice({
+const directionSlice = createSlice<{
+  direction: Direction;
+}>({
   name: "direction",
   initialState: {
     direction: DEFAULT_DIRECTION,

@@ -5,28 +5,28 @@ export const COLOR_L = "orange";
 
 const L = ({ direction, x, y }: ShapeProps): Coordinates => {
   switch (direction) {
-    case Direction.UP:
+    case "UP":
       return [
         { x, y: y - 1 },
         { x, y },
         { x, y: y + 1 },
         { x: x + 1, y: y + 1 },
       ];
-    case Direction.RIGHT:
+    case "RIGHT":
       return [
         { x: x - 1, y: y + 1 },
         { x: x - 1, y },
         { x, y },
         { x: x + 1, y },
       ];
-    case Direction.DOWN:
+    case "DOWN":
       return [
         { x, y: y - 1 },
         { x: x - 1, y: y - 1 },
         { x, y },
         { x, y: y + 1 },
       ];
-    case Direction.LEFT:
+    case "LEFT":
       return [
         { x: x - 1, y },
         { x, y },

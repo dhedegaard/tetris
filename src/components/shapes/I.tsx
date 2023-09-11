@@ -5,16 +5,16 @@ export const COLOR_I = "cyan";
 
 const I = ({ direction, x, y }: ShapeProps): Coordinates => {
   switch (direction) {
-    case Direction.UP:
-    case Direction.DOWN:
+    case "UP":
+    case "DOWN":
       return [
         { x, y: y - 1 },
         { x, y },
         { x, y: y + 1 },
         { x, y: y + 2 },
       ];
-    case Direction.LEFT:
-    case Direction.RIGHT:
+    case "LEFT":
+    case "RIGHT":
       return [
         { x: x - 1, y },
         { x, y },
