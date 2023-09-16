@@ -34,7 +34,7 @@ export const calculateTickRate = (level: number): number => {
   }
   // Otherwise, find the closes match below the level.
   let tickrate = Number.MAX_VALUE
-  for (const [key, rate] of LEVEL_TO_TICK_RATE.entries()) {
+  for (const [key, rate] of Array.from(LEVEL_TO_TICK_RATE.entries())) {
     if (key <= level && rate < tickrate) {
       tickrate = rate
     }
