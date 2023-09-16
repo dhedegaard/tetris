@@ -32,7 +32,8 @@ const Bounds = ({ x, y, side, ...props }: Props) => {
       case 'right':
         return x + 1 - WIDTH
       default:
-        throw new TypeError(`Invalid side: ${side}`)
+        // @ts-expect-error - exhaustive check
+        throw new TypeError(`Invalid side: ${side.toString()}`)
     }
   }, [side, x])
 

@@ -23,7 +23,8 @@ export const directionToRotation = (direction: Direction) => {
     case 'RIGHT':
       return 0
     default:
-      throw new TypeError(`Unknown direction: ${direction}`)
+      // @ts-expect-error - exhaustive check
+      throw new TypeError(`Unknown direction: ${direction.toString()}`)
   }
 }
 
@@ -38,6 +39,9 @@ export const nextDirection = (direction: Direction): Direction => {
       return 'LEFT'
     case 'LEFT':
       return 'UP'
+    default:
+      // @ts-expect-error - exhaustive check
+      throw new TypeError(`Unknown direction: ${direction.toString()}`)
   }
 }
 
@@ -66,6 +70,9 @@ export const calculateCoordinates = (shape: Shape, shapeProps: ShapeProps): Coor
       return T(shapeProps)
     case 'Z':
       return Z(shapeProps)
+    default:
+      // @ts-expect-error - exhaustive check
+      throw new TypeError(`Unknown shape: ${shape.toString()}`)
   }
 }
 

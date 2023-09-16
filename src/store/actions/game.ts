@@ -155,7 +155,8 @@ export const attemptToDoMove =
             y: position.y,
           })
         default:
-          throw new TypeError(`Unknown operation: ${operation}`)
+          // @ts-expect-error - exhaustive check
+          throw new TypeError(`Unknown operation: ${operation.toString()}`)
       }
     })()
 
@@ -179,7 +180,8 @@ export const attemptToDoMove =
           dispatch(directionActions.rotateDirection())
           break
         default:
-          throw new TypeError(`Unknown operation: ${operation}`)
+          // @ts-expect-error - exhaustive check
+          throw new TypeError(`Unknown operation: ${operation.toString()}`)
       }
     }
   }
