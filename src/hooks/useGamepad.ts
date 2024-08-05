@@ -62,7 +62,8 @@ const useGamepad = () => {
               lastClickedRef.current['moveToBottom'] = now + 850
             }
           }
-        } else if (buttons[0]?.pressed && gamestateRef.current === 'gameover') {
+        }
+        if (gamestateRef.current === 'gameover' && buttons[0]?.pressed === true) {
           // A
           dispatch(startNewGame())
         }
