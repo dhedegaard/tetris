@@ -34,7 +34,7 @@ export const clearFilledRows =
     // calculate the level beforehand.
     const level = selectLevel(getState())
 
-    while (true) {
+    for (;;) {
       const state = getState()
       const [filledRow] = selectFilledRows(state)
       if (filledRow == null) {
@@ -86,7 +86,9 @@ const calculateScore = (level: number, linesCleared: number): number => {
     case 4:
       return 1200 * (level + 1)
   }
-  throw new Error('Unhandled case, level:' + level + ', linesCleared:' + linesCleared)
+  throw new Error(
+    `Unhandled case, level:${level.toString()}, linesCleared:${linesCleared.toString()}`
+  )
 }
 
 export const attemptPersistBlocks =
@@ -283,7 +285,9 @@ export const runTicks =
     dispatch(runningActions.setStopped())
   }
 
-const rafPromise = () =>
-  new Promise<true>((resolve) => {
-    requestAnimationFrame(() => resolve(true))
+const rafPromise = (): Promise<boolean> =>
+  new Promise<boolean>((resolve) => {
+    requestAnimationFrame(() => {
+      resolve(true)
+    })
   })

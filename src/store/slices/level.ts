@@ -35,7 +35,7 @@ export const calculateTickRate = (level: number): number => {
   // Otherwise, find the lowest tickrate, at or below the level.
   return Array.from(LEVEL_TO_TICK_RATE.entries())
     .filter(([key]) => key <= level)
-    .reduce((tickrate, [_, rate]) => Math.min(rate, tickrate), Number.MAX_VALUE)
+    .reduce((tickrate, [, rate]) => Math.min(rate, tickrate), Number.MAX_VALUE)
 }
 
 /** Each level progresses when 10 rows have been cleared. */

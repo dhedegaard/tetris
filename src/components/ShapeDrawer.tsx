@@ -27,12 +27,15 @@ const ShapeDrawer: FC<Props> = memo(({ x, y, shape, coordinates }) => {
 
   const blocks = useMemo(
     () =>
-      coordinates.map((coord, index) => <Block key={`elem_${shape.color}_${index}`} {...coord} />),
+      coordinates.map((coord, index) => (
+        <Block key={`elem_${shape.color}_${index.toString()}`} {...coord} />
+      )),
     [coordinates, shape.color]
   )
 
   const transform = useMemo(
-    () => `translate(${oldShape === shape ? curX : x}, ${oldShape === shape ? curY : y})`,
+    () =>
+      `translate(${String(oldShape === shape ? curX : x)}, ${String(oldShape === shape ? curY : y)})`,
     [curX, curY, oldShape, shape, x, y]
   )
 

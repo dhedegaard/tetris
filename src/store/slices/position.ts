@@ -6,8 +6,8 @@ const positionSlice = createSlice({
   name: 'position',
   initialState: {
     position: {
-      x: DEFAULT_POSITION.x,
-      y: DEFAULT_POSITION.y,
+      x: DEFAULT_POSITION.x as number,
+      y: DEFAULT_POSITION.y as number,
     },
   },
   reducers: {

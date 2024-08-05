@@ -27,7 +27,7 @@ const useTetris = () => {
 
   // Handle ticks
   useEffect(() => {
-    dispatch(runTicks())
+    void dispatch(runTicks())
     return () => {
       dispatch(runningActions.setStopped())
     }
@@ -48,7 +48,9 @@ const useTetris = () => {
       peekShapes,
       level,
       shapeBounds,
-      startNewGame: () => dispatch(startNewGame()),
+      startNewGame: () => {
+        dispatch(startNewGame())
+      },
     }),
     [blocks, direction, dispatch, gamestate, level, peekShapes, position, score, shape, shapeBounds]
   )
