@@ -1,6 +1,7 @@
 import shuffle from 'lodash/shuffle'
 import uniqueId from 'lodash/uniqueId'
 import { FC, useMemo } from 'react'
+import { match } from 'ts-pattern'
 import ShapeDrawer, { Coordinates } from '../ShapeDrawer'
 import I, { COLOR_I } from './I'
 import J, { COLOR_J } from './J'
@@ -12,38 +13,24 @@ import Z, { COLOR_Z } from './Z'
 
 export type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT'
 
-export const directionToRotation = (direction: Direction) => {
-  switch (direction) {
-    case 'UP':
-      return 270
-    case 'LEFT':
-      return 180
-    case 'DOWN':
-      return 90
-    case 'RIGHT':
-      return 0
-    default:
-      // @ts-expect-error - exhaustive check
-      throw new TypeError(`Unknown direction: ${direction.toString()}`)
-  }
-}
+export const directionToRotation = (direction: Direction): number =>
+  match(direction)
+    .returnType<number>()
+    .with('UP', () => 270)
+    .with('LEFT', () => 180)
+    .with('DOWN', () => 90)
+    .with('RIGHT', () => 0)
+    .exhaustive()
 
 /** Returns the new direction based on a current direction. */
-export const nextDirection = (direction: Direction): Direction => {
-  switch (direction) {
-    case 'UP':
-      return 'RIGHT'
-    case 'RIGHT':
-      return 'DOWN'
-    case 'DOWN':
-      return 'LEFT'
-    case 'LEFT':
-      return 'UP'
-    default:
-      // @ts-expect-error - exhaustive check
-      throw new TypeError(`Unknown direction: ${direction.toString()}`)
-  }
-}
+export const nextDirection = (direction: Direction): Direction =>
+  match(direction)
+    .returnType<Direction>()
+    .with('UP', () => 'RIGHT')
+    .with('RIGHT', () => 'DOWN')
+    .with('DOWN', () => 'LEFT')
+    .with('LEFT', () => 'UP')
+    .exhaustive()
 
 export interface ShapeProps {
   x: number
@@ -54,27 +41,17 @@ export interface ShapeProps {
 export type Shape = 'I' | 'J' | 'L' | 'O' | 'S' | 'T' | 'Z'
 export const SHAPES = Object.freeze(['I', 'J', 'L', 'O', 'S', 'T', 'Z'] as Shape[])
 
-export const calculateCoordinates = (shape: Shape, shapeProps: ShapeProps): Coordinates => {
-  switch (shape) {
-    case 'I':
-      return I(shapeProps)
-    case 'J':
-      return J(shapeProps)
-    case 'L':
-      return L(shapeProps)
-    case 'O':
-      return O(shapeProps)
-    case 'S':
-      return S(shapeProps)
-    case 'T':
-      return T(shapeProps)
-    case 'Z':
-      return Z(shapeProps)
-    default:
-      // @ts-expect-error - exhaustive check
-      throw new TypeError(`Unknown shape: ${shape.toString()}`)
-  }
-}
+export const calculateCoordinates = (shape: Shape, shapeProps: ShapeProps): Coordinates =>
+  match(shape)
+    .returnType<Coordinates>()
+    .with('I', () => I(shapeProps))
+    .with('J', () => J(shapeProps))
+    .with('L', () => L(shapeProps))
+    .with('O', () => O(shapeProps))
+    .with('S', () => S(shapeProps))
+    .with('T', () => T(shapeProps))
+    .with('Z', () => Z(shapeProps))
+    .exhaustive()
 
 export const colorFromShape = (shape: Shape): string => colorMap[shape]
 
