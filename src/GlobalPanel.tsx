@@ -14,14 +14,18 @@ const GlobalPanel: FC<Props> = ({ toggleMusic, musicEnabled }) => (
       <div className={styles['toggle']}>
         <div
           className={styles['text']}
-          onClick={useCallback(() => toggleMusic(true), [toggleMusic])}
+          onClick={useCallback(() => {
+            toggleMusic(true)
+          }, [toggleMusic])}
         >
           {musicEnabled ? <>&gt; </> : <>&nbsp; </>}
           On
         </div>{' '}
         <div
           className={styles['text']}
-          onClick={useCallback(() => toggleMusic(false), [toggleMusic])}
+          onClick={useCallback(() => {
+            toggleMusic(false)
+          }, [toggleMusic])}
         >
           {!musicEnabled ? <>&gt; </> : <>&nbsp; </>}
           Off

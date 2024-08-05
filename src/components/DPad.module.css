@@ -1,6 +1,5 @@
 .DPad {
   display: none;
-  max-width: 40vw;
 }
 
 @media (pointer: coarse) and (hover: none) {

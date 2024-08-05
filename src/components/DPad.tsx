@@ -43,7 +43,7 @@ export const DPad = memo(function DPad() {
     <>
       <svg
         viewBox="0 0 3 3"
-        className={`${styles['DPad']} fixed bottom-10 left-10 w-[150px]`}
+        className={`${styles['DPad'] as string} fixed bottom-10 left-10 w-[150px] max-w-[40vw]`}
         fill="#ccc"
         color="#999"
         strokeWidth={0}

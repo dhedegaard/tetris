@@ -80,7 +80,9 @@ const useGamepad = () => {
       handleGamepad(gamepad)
     }
     window.addEventListener('gamepadconnected', handler, { passive: true })
-    return () => window.removeEventListener('gamepadconnected', handler)
+    return () => {
+      window.removeEventListener('gamepadconnected', handler)
+    }
   }, [handleGamepad])
 }
 
