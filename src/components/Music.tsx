@@ -1,7 +1,7 @@
 import { memo } from 'react'
 
 /** Handles playing music, whenever the prop is true. */
-const Music = memo(function Music() {
+export const Music = memo(function Music() {
   return (
     <iframe
       className="absolute right-[-20px] top-[-20px]"
@@ -13,5 +13,3 @@ const Music = memo(function Music() {
     />
   )
 })
-
-export default Music

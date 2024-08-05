@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
-import useShape from './useShape'
+import { useShape } from './useShape'
 
-const useShapeBounds = () => {
+export const useShapeBounds = () => {
   const { concretePositions } = useShape()
 
   return useMemo(
@@ -28,5 +28,3 @@ const useShapeBounds = () => {
     [concretePositions]
   )
 }
-
-export default useShapeBounds

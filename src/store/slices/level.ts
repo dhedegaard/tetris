@@ -58,7 +58,7 @@ export const levelSlice = createSlice({
 
 export const levelActions = levelSlice.actions
 
-export default levelSlice.reducer
+export const levelReducer = levelSlice.reducer
 
 const selectRowsCleared = (state: TetrisStoreState) => state.level.rowsCleared
 

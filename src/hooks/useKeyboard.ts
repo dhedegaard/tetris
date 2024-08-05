@@ -25,7 +25,7 @@ const keybinds = keyboard1
 const FIRST_REPEAT_INTERVAL = 400
 const REPEAT_INTERVAL = 75
 
-const useKeyboard = () => {
+export const useKeyboard = () => {
   const dispatch = useTetrisDispatch()
   const gamestate = useTetrisSelector((state) => state.gamestate.gamestate)
   const gamestateRef = useRef(gamestate)
@@ -128,5 +128,3 @@ const useKeyboard = () => {
     }
   }, [dispatch, handleKey, pressKey])
 }
-
-export default useKeyboard

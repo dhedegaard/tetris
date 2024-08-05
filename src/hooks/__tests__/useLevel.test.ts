@@ -1,5 +1,5 @@
 import { calculateTickRate } from '../../store/slices/level'
-import useLevel from '../useLevel'
+import { useLevel } from '../useLevel'
 
 describe(useLevel.name, () => {
   describe(calculateTickRate.name, () => {

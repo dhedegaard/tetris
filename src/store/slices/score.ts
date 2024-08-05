@@ -17,4 +17,4 @@ const scoreSlice = createSlice({
 
 export const scoreActions = scoreSlice.actions
 
-export default scoreSlice.reducer
+export const scoreReducer = scoreSlice.reducer

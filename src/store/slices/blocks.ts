@@ -40,7 +40,7 @@ const blocksSlice = createSlice({
 
 export const blocksActions = blocksSlice.actions
 
-export default blocksSlice.reducer
+export const blocksReducer = blocksSlice.reducer
 
 /**
  * Returns true if the blocks were persisted, otherwise the

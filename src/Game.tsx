@@ -1,17 +1,17 @@
-import { FC } from 'react'
+import { memo } from 'react'
 import { Provider } from 'react-redux'
-import Block from './components/Block'
-import Bounds from './components/Bounds'
+import { Block } from './components/Block'
+import { Bounds } from './components/Bounds'
 import { DPad } from './components/DPad'
-import Grid from './components/Grid'
-import Legend from './components/Legend'
+import { Grid } from './components/Grid'
+import { Legend } from './components/Legend'
 import { ShapeRenderer } from './components/shapes'
-import GameOver from './GameOver'
-import useTetris from './hooks'
+import { GameOver } from './GameOver'
+import { useTetris } from './hooks'
 import { useIsBrowser } from './hooks/useIsBrowser'
-import tetrisStore from './store/tetris'
+import { tetrisStore } from './store/tetris'
 
-const Game: FC = () => {
+export const Game = memo(function Game() {
   const isBrowser = useIsBrowser()
 
   const {
@@ -61,12 +61,12 @@ const Game: FC = () => {
       <Legend score={score} peekShapes={peekShapes} level={level} />
     </div>
   )
-}
+})
 
-const GameWithStore: FC = () => (
-  <Provider store={tetrisStore}>
-    <Game />
-  </Provider>
-)
-
-export default GameWithStore
+export const GameWithStore = memo(function GameWithStore() {
+  return (
+    <Provider store={tetrisStore}>
+      <Game />
+    </Provider>
+  )
+})

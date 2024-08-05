@@ -20,4 +20,4 @@ const directionSlice = createSlice({
 
 export const directionActions = directionSlice.actions
 
-export default directionSlice.reducer
+export const directionReducer = directionSlice.reducer

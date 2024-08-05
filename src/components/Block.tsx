@@ -6,13 +6,13 @@ interface Props extends SVGProps<SVGRectElement> {
   y: number
 }
 
-const Block = (props: Props) => (
-  <rect
-    {...props}
-    width={1}
-    height={1}
-    className={`stroke-black stroke-[0.02] text-inherit ${styles['block'] as string}`}
-  />
-)
-
-export default memo(Block)
+export const Block = memo<Props>(function Block(props: Props) {
+  return (
+    <rect
+      {...props}
+      width={1}
+      height={1}
+      className={`stroke-black stroke-[0.02] text-inherit ${styles['block'] as string}`}
+    />
+  )
+})

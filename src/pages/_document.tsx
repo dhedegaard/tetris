@@ -1,7 +1,7 @@
 import { Head, Html, Main, NextScript } from 'next/document'
-import { FC } from 'react'
+import { memo } from 'react'
 
-const Document: FC = () => {
+const Document = memo(function Document() {
   return (
     <Html lang="en">
       <Head>
@@ -21,6 +21,6 @@ const Document: FC = () => {
       </body>
     </Html>
   )
-}
+})
 
 export default Document

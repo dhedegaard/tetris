@@ -3,7 +3,7 @@ import { Coordinates } from '../ShapeDrawer'
 
 export const COLOR_T = '#ec10ec'
 
-const T = ({ direction, x, y }: ShapeProps): Coordinates => {
+export const T = ({ direction, x, y }: ShapeProps): Coordinates => {
   const result: Coordinates = [{ x, y }]
   if (direction !== 'DOWN') {
     result.push({ x, y: y - 1 })
@@ -19,5 +19,3 @@ const T = ({ direction, x, y }: ShapeProps): Coordinates => {
   }
   return result
 }
-
-export default T

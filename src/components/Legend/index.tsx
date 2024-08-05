@@ -1,10 +1,10 @@
 import isEqual from 'lodash/isEqual'
-import { FC, memo } from 'react'
+import { memo } from 'react'
 import { ShapeElement } from '../shapes'
 import styles from './index.module.css'
-import Level from './Level'
-import NextShape from './NextShape'
-import Score from './Score'
+import { Level } from './Level'
+import { NextShape } from './NextShape'
+import { Score } from './Score'
 
 interface Props {
   score: number
@@ -12,14 +12,14 @@ interface Props {
   peekShapes: readonly ShapeElement[]
 }
 
-const Legend: FC<Props> = ({ score, level, peekShapes }) => (
-  <div className={styles['legendContainer']}>
-    <div className="flex flex-col items-stretch gap-[8px]">
-      <Score score={score} />
-      <Level level={level} />
+export const Legend = memo<Props>(function Legend({ score, level, peekShapes }) {
+  return (
+    <div className={styles['legendContainer']}>
+      <div className="flex flex-col items-stretch gap-[8px]">
+        <Score score={score} />
+        <Level level={level} />
+      </div>
+      <NextShape nextShapes={peekShapes} />
     </div>
-    <NextShape nextShapes={peekShapes} />
-  </div>
-)
-
-export default memo(Legend, isEqual)
+  )
+}, isEqual)

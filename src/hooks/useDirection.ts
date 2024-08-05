@@ -3,10 +3,8 @@ import { TetrisStoreState, useTetrisSelector } from '../store/tetris'
 
 const selectDirection = (state: TetrisStoreState) => state.direction.direction
 
-const useDirections = () => {
+export const useDirection = () => {
   const direction = useTetrisSelector(selectDirection)
 
   return useMemo(() => ({ direction }), [direction])
 }
-
-export default useDirections

@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { attemptToDoMove, moveGoToBottom, startNewGame } from '../store/actions/game'
 import { useTetrisDispatch } from '../store/tetris'
-import useGamestate, { Gamestate } from './useGamestate'
+import { Gamestate, useGamestate } from './useGamestate'
 
 const DEFAULT_INTERVAL = 150
-const useGamepad = () => {
+
+export const useGamepad = () => {
   const dispatch = useTetrisDispatch()
   const { gamestate } = useGamestate()
   const gamestateRef = useRef<Gamestate>(gamestate)
@@ -86,5 +87,3 @@ const useGamepad = () => {
     }
   }, [handleGamepad])
 }
-
-export default useGamepad

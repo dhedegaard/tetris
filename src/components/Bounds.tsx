@@ -1,7 +1,7 @@
 import { memo, useMemo } from 'react'
 import { match } from 'ts-pattern'
-import useBlocks from '../hooks/useBlocks'
-import useShape from '../hooks/useShape'
+import { useBlocks } from '../hooks/useBlocks'
+import { useShape } from '../hooks/useShape'
 
 interface Props {
   x: number
@@ -11,7 +11,7 @@ interface Props {
 
 const WIDTH = 0.05
 
-const Bounds = ({ x, y, side, ...props }: Props) => {
+export const Bounds = memo<Props>(function Bounds({ x, y, side, ...props }) {
   const {
     shape: { color },
   } = useShape()
@@ -48,8 +48,4 @@ const Bounds = ({ x, y, side, ...props }: Props) => {
       strokeWidth={WIDTH}
     />
   )
-}
-
-Bounds.displayName = 'Bounds'
-
-export default memo(Bounds)
+})

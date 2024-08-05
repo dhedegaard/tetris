@@ -24,4 +24,4 @@ const positionSlice = createSlice({
 
 export const positionActions = positionSlice.actions
 
-export default positionSlice.reducer
+export const positionReducer = positionSlice.reducer

@@ -1,5 +1,4 @@
-import isEqual from 'lodash/isEqual'
-import { FC, memo } from 'react'
+import { memo } from 'react'
 import { useIsBrowser } from '../../hooks/useIsBrowser'
 import { ShapeElement, ShapeRenderer } from '../shapes'
 import styles from './NextShape.module.css'
@@ -8,7 +7,7 @@ interface Props {
   nextShapes: readonly ShapeElement[]
 }
 
-const NextShape: FC<Props> = ({ nextShapes }) => {
+export const NextShape = memo<Props>(function NextShape({ nextShapes }) {
   const isBrowser = useIsBrowser()
   if (!isBrowser) {
     return null
@@ -24,6 +23,4 @@ const NextShape: FC<Props> = ({ nextShapes }) => {
       ))}
     </div>
   )
-}
-
-export default memo(NextShape, isEqual)
+})

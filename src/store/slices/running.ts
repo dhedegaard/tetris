@@ -15,6 +15,6 @@ const runningSlice = createSlice({
   },
 })
 
-export default runningSlice.reducer
+export const runningReducer = runningSlice.reducer
 
 export const runningActions = runningSlice.actions

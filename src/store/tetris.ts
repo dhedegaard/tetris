@@ -1,28 +1,26 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import blocks from './slices/blocks'
-import direction from './slices/direction'
-import gamestate from './slices/gamestate'
-import level from './slices/level'
-import position from './slices/position'
-import running from './slices/running'
-import score from './slices/score'
-import shape from './slices/shape'
+import { blocksReducer } from './slices/blocks'
+import { directionReducer } from './slices/direction'
+import { gamestateReducer } from './slices/gamestate'
+import { levelReducer } from './slices/level'
+import { positionReducer } from './slices/position'
+import { runningReducer } from './slices/running'
+import { scoreReducer } from './slices/score'
+import { shapeReducer } from './slices/shape'
 
-const tetrisStore = configureStore({
+export const tetrisStore = configureStore({
   reducer: {
-    gamestate,
-    position,
-    shape,
-    score,
-    direction,
-    level,
-    blocks,
-    running,
+    gamestate: gamestateReducer,
+    position: positionReducer,
+    shape: shapeReducer,
+    score: scoreReducer,
+    direction: directionReducer,
+    level: levelReducer,
+    blocks: blocksReducer,
+    running: runningReducer,
   },
 })
-
-export default tetrisStore
 
 export type TetrisStoreState = ReturnType<(typeof tetrisStore)['getState']>
 

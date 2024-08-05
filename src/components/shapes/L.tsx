@@ -3,7 +3,7 @@ import { Coordinates } from '../ShapeDrawer'
 
 export const COLOR_L = 'orange'
 
-const L = ({ direction, x, y }: ShapeProps): Coordinates => {
+export const L = ({ direction, x, y }: ShapeProps): Coordinates => {
   switch (direction) {
     case 'UP':
       return [
@@ -35,5 +35,3 @@ const L = ({ direction, x, y }: ShapeProps): Coordinates => {
       ]
   }
 }
-
-export default L

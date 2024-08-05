@@ -6,9 +6,7 @@ import { TetrisStoreState, useTetrisSelector } from '../store/tetris'
 const scoreSelector = (state: TetrisStoreState) => state.score.score
 
 /** Handles keeping track of the current score in the game. */
-const useScore = () => {
+export const useScore = () => {
   const score = useTetrisSelector(scoreSelector)
   return useMemo(() => ({ score }), [score])
 }
-
-export default useScore

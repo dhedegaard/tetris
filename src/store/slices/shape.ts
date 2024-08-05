@@ -20,7 +20,7 @@ const shapeSlice = createSlice({
 
 export const shapeActions = shapeSlice.actions
 
-export default shapeSlice.reducer
+export const shapeReducer = shapeSlice.reducer
 
 const selectShapeQueue = (state: TetrisStoreState) => state.shape.shapeQueue
 

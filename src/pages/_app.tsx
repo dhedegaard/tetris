@@ -1,10 +1,10 @@
 import { AppProps } from 'next/app'
 import Head from 'next/head'
-import { FC } from 'react'
+import { memo } from 'react'
 import { font } from '../font'
 import '../styles/global.css'
 
-const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
+const MyApp = memo<AppProps>(function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
@@ -14,6 +14,6 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
       <Component {...pageProps} className={font.className} />
     </>
   )
-}
+})
 
 export default MyApp

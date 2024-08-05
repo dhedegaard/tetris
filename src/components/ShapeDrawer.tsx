@@ -1,6 +1,6 @@
-import { FC, memo, Reducer, useEffect, useMemo, useReducer } from 'react'
+import { memo, Reducer, useEffect, useMemo, useReducer } from 'react'
 import { Coordinate } from '../store/slices/blocks'
-import Block from './Block'
+import { Block } from './Block'
 import { ShapeElement } from './shapes'
 
 export type Coordinates = Coordinate[]
@@ -12,7 +12,7 @@ interface Props {
   y: number
 }
 
-const ShapeDrawer: FC<Props> = memo(({ x, y, shape, coordinates }) => {
+export const ShapeDrawer = memo<Props>(function ShapeDrawer({ x, y, shape, coordinates }) {
   const [{ curX, curY, oldShape }, dispatch] = useReducer(reducer, {
     curX: x,
     curY: y,
@@ -50,9 +50,6 @@ const ShapeDrawer: FC<Props> = memo(({ x, y, shape, coordinates }) => {
     </g>
   )
 })
-ShapeDrawer.displayName = 'ShapeDrawer'
-
-export default ShapeDrawer
 
 const reducer: Reducer<
   {
