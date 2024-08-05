@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { attemptToDoMove, moveGoToBottom, startNewGame } from '../store/actions/game'
 import { useTetrisDispatch } from '../store/tetris'
-import useGamestate from './useGamestate'
+import useGamestate, { Gamestate } from './useGamestate'
 
 const DEFAULT_INTERVAL = 150
 const useGamepad = () => {
   const dispatch = useTetrisDispatch()
   const { gamestate } = useGamestate()
-  const gamestateRef = useRef(gamestate)
+  const gamestateRef = useRef<Gamestate>(gamestate)
   gamestateRef.current = gamestate
 
   const lastClickedRef = useRef<{ [key: string]: number }>({})

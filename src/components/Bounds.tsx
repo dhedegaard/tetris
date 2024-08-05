@@ -1,4 +1,5 @@
 import { memo, useMemo } from 'react'
+import { match } from 'ts-pattern'
 import useBlocks from '../hooks/useBlocks'
 import useShape from '../hooks/useShape'
 
@@ -25,17 +26,15 @@ const Bounds = ({ x, y, side, ...props }: Props) => {
 
   // Determine the absolute X values to render based on the side, the width and
   // the current X position.
-  const renderedX = useMemo(() => {
-    switch (side) {
-      case 'left':
-        return x + WIDTH
-      case 'right':
-        return x + 1 - WIDTH
-      default:
-        // @ts-expect-error - exhaustive check
-        throw new TypeError(`Invalid side: ${side.toString()}`)
-    }
-  }, [side, x])
+  const renderedX = useMemo(
+    () =>
+      match(side)
+        .returnType<number>()
+        .with('left', () => x + WIDTH)
+        .with('right', () => x + 1 - WIDTH)
+        .exhaustive(),
+    [side, x]
+  )
 
   return (
     <line

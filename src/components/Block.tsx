@@ -11,7 +11,7 @@ const Block = (props: Props) => (
     {...props}
     width={1}
     height={1}
-    className={`stroke-black stroke-[0.02] ${styles['block']}`}
+    className={`stroke-black stroke-[0.02] text-inherit ${styles['block'] as string}`}
   />
 )
 

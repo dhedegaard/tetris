@@ -1,4 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit'
+import { match } from 'ts-pattern'
 import { Coordinates } from '../../components/ShapeDrawer'
 import { calculateCoordinates, colorFromShape, nextDirection } from '../../components/shapes'
 import { Block, blocksActions } from '../slices/blocks'
@@ -130,61 +131,53 @@ export const attemptToDoMove =
     } = state
 
     // Determine the position after the move (calculateCoordinates).
-    const newPositions = (() => {
-      switch (operation) {
-        case 'LEFT':
-          return calculateCoordinates(currentShape.shape, {
-            direction,
-            x: position.x - 1,
-            y: position.y,
-          })
-        case 'RIGHT':
-          return calculateCoordinates(currentShape.shape, {
-            direction,
-            x: position.x + 1,
-            y: position.y,
-          })
-        case 'DOWN':
-          return calculateCoordinates(currentShape.shape, {
-            direction,
-            x: position.x,
-            y: position.y + 1,
-          })
-        case 'ROTATE':
-          return calculateCoordinates(currentShape.shape, {
-            direction: nextDirection(direction),
-            x: position.x,
-            y: position.y,
-          })
-        default:
-          // @ts-expect-error - exhaustive check
-          throw new TypeError(`Unknown operation: ${operation.toString()}`)
-      }
-    })()
+    const newPositions = match(operation)
+      .returnType<Coordinates>()
+      .with('LEFT', () =>
+        calculateCoordinates(currentShape.shape, {
+          direction,
+          x: position.x - 1,
+          y: position.y,
+        })
+      )
+      .with('RIGHT', () =>
+        calculateCoordinates(currentShape.shape, {
+          direction,
+          x: position.x + 1,
+          y: position.y,
+        })
+      )
+      .with('DOWN', () =>
+        calculateCoordinates(currentShape.shape, {
+          direction,
+          x: position.x,
+          y: position.y + 1,
+        })
+      )
+      .with('ROTATE', () =>
+        calculateCoordinates(currentShape.shape, {
+          direction: nextDirection(direction),
+          x: position.x,
+          y: position.y,
+        })
+      )
+      .exhaustive()
 
     // Check if the spots are free in the new positions.
     if (arePositionsFree(newPositions, blocks)) {
       // Apply the operations.
-      switch (operation) {
-        case 'LEFT':
-        case 'RIGHT':
+      match(operation)
+        .with('LEFT', 'RIGHT', () =>
           dispatch(
             positionActions.movePosition({
               dx: operation === 'LEFT' ? -1 : operation === 'RIGHT' ? +1 : 0,
               dy: 0,
             })
           )
-          break
-        case 'DOWN':
-          dispatch(doTick())
-          break
-        case 'ROTATE':
-          dispatch(directionActions.rotateDirection())
-          break
-        default:
-          // @ts-expect-error - exhaustive check
-          throw new TypeError(`Unknown operation: ${operation.toString()}`)
-      }
+        )
+        .with('DOWN', () => dispatch(doTick()))
+        .with('ROTATE', () => dispatch(directionActions.rotateDirection()))
+        .exhaustive()
     }
   }
 
