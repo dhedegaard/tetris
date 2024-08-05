@@ -40,7 +40,7 @@ const Bounds = ({ x, y, side, ...props }: Props) => {
   return (
     <line
       {...props}
-      className="transition-all duration-[40ms] ease-in-out opacity-30"
+      className="opacity-30 transition-all duration-[40ms] ease-in-out"
       x1={renderedX}
       y1={y + 1}
       x2={renderedX}

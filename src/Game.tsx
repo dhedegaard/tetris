@@ -28,9 +28,9 @@ const Game: FC = () => {
   } = useTetris()
 
   return (
-    <div className="relative flex h-full box-border gap-[4px] bg-[purple]">
+    <div className="relative box-border flex h-full gap-[4px] bg-[purple]">
       <DPad />
-      <div className="box-border aspect-[1/2] flex-none h-full">
+      <div className="box-border aspect-[1/2] h-full flex-none">
         <Grid>
           {isBrowser && gamestate === 'alive' && (
             <>

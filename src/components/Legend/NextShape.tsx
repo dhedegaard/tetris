@@ -18,7 +18,7 @@ const NextShape: FC<Props> = ({ nextShapes }) => {
     <div className={styles['container']}>
       <div className={styles['title']}>Next:</div>
       {nextShapes.map((shape) => (
-        <svg viewBox="0 0 5 3" width="100%" key={shape.key} className="block m-[10px]">
+        <svg viewBox="0 0 5 3" width="100%" key={shape.key} className="m-[10px] block">
           <ShapeRenderer direction="RIGHT" shape={shape} x={1} y={1} />
         </svg>
       ))}

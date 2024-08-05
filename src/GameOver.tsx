@@ -21,7 +21,7 @@ const GameOver: FC<Props> = (props) => (
       fill="currentColor"
       lengthAdjust="spacingAndGlyphs"
       textLength="65%"
-      className="pointer-events-none select-none uppercase text-[0.125vh]"
+      className="pointer-events-none select-none text-[0.125vh] uppercase"
     >
       Game over
     </text>
@@ -31,7 +31,7 @@ const GameOver: FC<Props> = (props) => (
       fill="currentColor"
       lengthAdjust="spacingAndGlyphs"
       textLength="70%"
-      className="uppercase text-[0.08vh] pointer-events-none select-none"
+      className="pointer-events-none select-none text-[0.08vh] uppercase"
     >
       Press &apos;r&apos; to
     </text>
@@ -41,7 +41,7 @@ const GameOver: FC<Props> = (props) => (
       fill="currentColor"
       lengthAdjust="spacingAndGlyphs"
       textLength="60%"
-      className="uppercase text-[0.08vh] pointer-events-none select-none"
+      className="pointer-events-none select-none text-[0.08vh] uppercase"
     >
       try again
     </text>
