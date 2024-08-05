@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 
 export const useIsBrowser = () => {
   const [isBrowser, setIsBrowser] = useState(false)
-  useEffect(() => setIsBrowser(true), [])
+  useEffect(() => {
+    setIsBrowser(true)
+  }, [])
   return isBrowser
 }
