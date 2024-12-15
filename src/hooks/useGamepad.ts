@@ -28,35 +28,39 @@ export const useGamepad = () => {
         const now = Date.now()
         const { buttons, axes } = gamepad
         if (gamestateRef.current === 'alive') {
-          if (buttons[12]?.pressed || buttons[0]?.pressed || (axes[1] != null && axes[1] < -0.9)) {
+          if (
+            buttons[12]?.pressed === true ||
+            buttons[0]?.pressed === true ||
+            (axes[1] != null && axes[1] < -0.9)
+          ) {
             // Up or A
             if (moveNullOrAfterInterval('ROTATE')) {
               dispatch(attemptToDoMove('ROTATE'))
               lastClickedRef.current['ROTATE'] = now
             }
           }
-          if (buttons[13]?.pressed || (axes[1] != null && axes[1] > 0.9)) {
+          if (buttons[13]?.pressed === true || (axes[1] != null && axes[1] > 0.9)) {
             // Down
             if (moveNullOrAfterInterval('DOWN')) {
               dispatch(attemptToDoMove('DOWN'))
               lastClickedRef.current['DOWN'] = now - 125
             }
           }
-          if (buttons[14]?.pressed || (axes[0] != null && axes[0] < -0.9)) {
+          if (buttons[14]?.pressed === true || (axes[0] != null && axes[0] < -0.9)) {
             // Left
             if (moveNullOrAfterInterval('LEFT')) {
               dispatch(attemptToDoMove('LEFT'))
               lastClickedRef.current['LEFT'] = now
             }
           }
-          if (buttons[15]?.pressed || (axes[0] != null && axes[0] > 0.9)) {
+          if (buttons[15]?.pressed === true || (axes[0] != null && axes[0] > 0.9)) {
             // Right
             if (moveNullOrAfterInterval('RIGHT')) {
               dispatch(attemptToDoMove('RIGHT'))
               lastClickedRef.current['RIGHT'] = now
             }
           }
-          if (buttons[1]?.pressed) {
+          if (buttons[1]?.pressed === true) {
             // B
             if (moveNullOrAfterInterval('moveToBottom')) {
               dispatch(moveGoToBottom())
