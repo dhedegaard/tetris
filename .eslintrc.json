@@ -9,5 +9,19 @@
   "parserOptions": {
     "project": true
   },
-  "root": true
+  "root": true,
+  "rules": {
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "eqeqeq": ["error", "smart"],
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      { "checksVoidReturn": { "attributes": false } }
+    ],
+    "@typescript-eslint/strict-boolean-expressions": "error",
+    "prefer-const": "error",
+    "@typescript-eslint/restrict-template-expressions": [
+      "error",
+      { "allowBoolean": true, "allowNumber": true, "allowNullish": true }
+    ]
+  }
 }
