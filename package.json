@@ -3,6 +3,7 @@
   "homepage": "https://tetris.dhedegaard.dk",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "engines": {
     "node": ">=22"
   },
