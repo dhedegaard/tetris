@@ -70,7 +70,13 @@ export const Game = memo(function Game() {
           )}
 
           {blocks.map(({ x, y, color }) => (
-            <Block x={x} y={y} fill={color} key={`block_${String(x)}_${String(y)}`} />
+            <Block
+              x={x}
+              y={y}
+              fill={color}
+              key={`block_${String(x)}_${String(y)}`}
+              renderType="normal"
+            />
           ))}
           {gamestate === 'gameover' && <GameOver onClick={startNewGame} />}
         </Grid>

@@ -67,7 +67,6 @@ const colorMap: { [key in Shape]: string } = {
 
 interface Props extends ShapeProps, Pick<ShapeDrawerProps, 'renderType'> {
   shape: ShapeElement
-  renderType: 'ghost' | 'normal'
 }
 
 /** Renders a given shape. */

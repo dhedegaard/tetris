@@ -1,13 +1,12 @@
 import { memo, Reducer, SVGProps, useEffect, useMemo, useReducer } from 'react'
 import { match } from 'ts-pattern'
 import { Coordinate } from '../store/slices/blocks'
-import { Block } from './Block'
+import { Block, type BlockProps } from './Block'
 import { ShapeElement } from './shapes'
 
 export type Coordinates = Coordinate[]
 
-export interface ShapeDrawerProps {
-  renderType: 'ghost' | 'normal'
+export interface ShapeDrawerProps extends Pick<BlockProps, 'renderType'> {
   coordinates: Coordinates
   shape: ShapeElement
   x: number
@@ -36,7 +35,13 @@ export const ShapeDrawer = memo<ShapeDrawerProps>(function ShapeDrawer({
   const blocks = useMemo(
     () =>
       coordinates.map((coord, index) => (
-        <Block key={`elem_${shape.color}_${index.toString()}`} {...coord} />
+        <Block
+          key={`elem_${shape.color}_${index.toString()}`}
+          {...coord}
+          stroke="red"
+          strokeWidth={1}
+          renderType={renderType}
+        />
       )),
     [coordinates, shape.color]
   )
