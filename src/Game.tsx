@@ -8,6 +8,7 @@ import { Legend } from './components/Legend'
 import { ShapeRenderer } from './components/shapes'
 import { GameOver } from './GameOver'
 import { useTetris } from './hooks'
+import { useBottomShape } from './hooks/useBottomShape'
 import { useIsBrowser } from './hooks/useIsBrowser'
 import { tetrisStore } from './store/tetris'
 
@@ -26,6 +27,7 @@ export const Game = memo(function Game() {
     startNewGame,
     shapeBounds,
   } = useTetris()
+  const { bottomYOffset } = useBottomShape()
 
   return (
     <div className="relative box-border flex h-full gap-[4px] bg-[purple]">
@@ -34,7 +36,22 @@ export const Game = memo(function Game() {
         <Grid>
           {isBrowser && gamestate === 'alive' && (
             <>
-              <ShapeRenderer direction={direction} shape={shape} x={position.x} y={position.y} />
+              <ShapeRenderer
+                direction={direction}
+                shape={shape}
+                x={position.x}
+                y={position.y}
+                renderType="normal"
+              />
+              {bottomYOffset > 0 && (
+                <ShapeRenderer
+                  direction={direction}
+                  shape={shape}
+                  x={position.x}
+                  y={position.y + bottomYOffset}
+                  renderType="ghost"
+                />
+              )}
               {shapeBounds.leftBottomElement != null && (
                 <Bounds
                   x={shapeBounds.leftBottomElement.x}
