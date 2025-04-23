@@ -15,14 +15,7 @@ export const Block = memo<BlockProps>(function Block({ renderType, ...props }) {
       {...props}
       width={1}
       height={1}
-      className={clsx(
-        styles['block'] as string,
-        'stroke-[0.025] text-inherit',
-        match(renderType)
-          .with('ghost', () => 'opacity-40')
-          .with('normal', () => 'stroke-black')
-          .exhaustive()
-      )}
+      className={clsx(styles['block'] as string, 'stroke-black stroke-[0.025] text-inherit')}
     />
   )
 })

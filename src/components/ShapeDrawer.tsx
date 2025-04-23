@@ -38,8 +38,6 @@ export const ShapeDrawer = memo<ShapeDrawerProps>(function ShapeDrawer({
         <Block
           key={`elem_${shape.color}_${index.toString()}_${renderType}`}
           {...coord}
-          stroke="red"
-          strokeWidth={1}
           renderType={renderType}
         />
       )),
@@ -57,6 +55,7 @@ export const ShapeDrawer = memo<ShapeDrawerProps>(function ShapeDrawer({
       transform={transform}
       color={shape.color}
       fill={shape.color}
+      stroke={shape.color}
       opacity={useMemo(
         () =>
           match(renderType)
