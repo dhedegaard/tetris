@@ -8,7 +8,7 @@ export interface BlockProps extends SVGProps<SVGRectElement> {
   y: number
 }
 
-export const Block = memo(function Block({ x, y, ...props }: BlockProps) {
+export const Block = memo<BlockProps>(function Block({ x, y, ...props }) {
   return (
     <rect
       {...useMemo(() => ({ ...props, renderType: undefined }), [props])}
