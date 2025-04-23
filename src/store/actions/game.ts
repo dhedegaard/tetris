@@ -245,7 +245,6 @@ export const runTicks =
     } = getState()
     if (running) {
       // If there's already a RAF loop, stop here and let it do the work.
-      // eslint-disable-next-line no-console
       console.warn('Trying to runTicks(), but were already running.')
       return
     }
