@@ -1,4 +1,4 @@
-import { shuffle, uniqueId } from 'lodash-es'
+import { shuffle } from 'lodash-es'
 import { FC, memo, useMemo } from 'react'
 import { match } from 'ts-pattern'
 import { Coordinates, ShapeDrawer, type ShapeDrawerProps } from '../ShapeDrawer'
@@ -92,7 +92,7 @@ export const ShapeRenderer: FC<Props> = memo(function ShapeRenderer({
 export const getRandomShapes = () =>
   shuffle(SHAPES).map((shape) => ({
     shape,
-    key: uniqueId('shape-'),
+    key: `shape-${crypto.randomUUID()}`,
     color: colorFromShape(shape),
     coordinates: calculateCoordinates(shape, {
       direction: 'RIGHT',
