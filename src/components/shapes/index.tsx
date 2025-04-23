@@ -1,6 +1,6 @@
 import shuffle from 'lodash-es/shuffle'
 import uniqueId from 'lodash-es/uniqueId'
-import { FC, useMemo } from 'react'
+import { FC, memo, useMemo } from 'react'
 import { match } from 'ts-pattern'
 import { Coordinates, ShapeDrawer, type ShapeDrawerProps } from '../ShapeDrawer'
 import { COLOR_I, I } from './I'
@@ -70,7 +70,13 @@ interface Props extends ShapeProps, Pick<ShapeDrawerProps, 'renderType'> {
 }
 
 /** Renders a given shape. */
-export const ShapeRenderer: FC<Props> = ({ shape, x, y, direction, renderType }) => {
+export const ShapeRenderer: FC<Props> = memo(function ShapeRenderer({
+  shape,
+  x,
+  y,
+  direction,
+  renderType,
+}) {
   const coordinates = useMemo(
     () =>
       calculateCoordinates(shape.shape, {
@@ -82,7 +88,7 @@ export const ShapeRenderer: FC<Props> = ({ shape, x, y, direction, renderType })
   )
 
   return <ShapeDrawer shape={shape} x={x} y={y} coordinates={coordinates} renderType={renderType} />
-}
+})
 
 export const getRandomShapes = () =>
   shuffle(SHAPES).map((shape) => ({
