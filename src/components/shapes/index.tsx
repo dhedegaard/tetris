@@ -1,5 +1,4 @@
-import shuffle from 'lodash-es/shuffle'
-import uniqueId from 'lodash-es/uniqueId'
+import { shuffle, uniqueId } from 'lodash-es'
 import { FC, memo, useMemo } from 'react'
 import { match } from 'ts-pattern'
 import { Coordinates, ShapeDrawer, type ShapeDrawerProps } from '../ShapeDrawer'

@@ -1,7 +1,7 @@
 import clsx from 'clsx'
+import { omit } from 'lodash-es'
 import { SVGProps } from 'react'
 import styles from './Block.module.css'
-import { omit } from 'lodash-es'
 
 export interface BlockProps extends SVGProps<SVGRectElement> {
   renderType: 'ghost' | 'normal'
