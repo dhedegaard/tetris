@@ -1,4 +1,3 @@
-import { isEqual } from 'lodash-es'
 import { memo } from 'react'
 import { ShapeElement } from '../shapes'
 import styles from './index.module.css'
@@ -22,4 +21,4 @@ export const Legend = memo<Props>(function Legend({ score, level, peekShapes }) 
       <NextShape nextShapes={peekShapes} />
     </div>
   )
-}, isEqual)
+})
