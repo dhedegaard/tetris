@@ -1,4 +1,4 @@
-import isEqual from 'lodash/isEqual'
+import isEqual from 'lodash-es/isEqual'
 import { memo } from 'react'
 import { ShapeElement } from '../shapes'
 import styles from './index.module.css'

@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import styles from './App.module.css'
 import { GameWithStore } from './Game'
 import { GlobalPanel } from './GlobalPanel'
@@ -8,7 +8,7 @@ import { Music } from './components/Music'
 import { font } from './font'
 import './styles/global.css'
 
-export const App = memo(function App() {
+export const App = () => {
   const [musicEnabled, setMusicEnabled] = useState(false)
 
   const toggleMusic = useCallback((enabled: boolean) => {
@@ -26,4 +26,4 @@ export const App = memo(function App() {
       </main>
     </>
   )
-})
+}
