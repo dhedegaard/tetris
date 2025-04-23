@@ -18,7 +18,7 @@ export const NextShape = memo<Props>(function NextShape({ nextShapes }) {
       <div className={styles['title']}>Next:</div>
       {nextShapes.map((shape) => (
         <svg viewBox="0 0 5 3" width="100%" key={shape.key} className="m-[10px] block">
-          <ShapeRenderer direction="RIGHT" shape={shape} x={1} y={1} />
+          <ShapeRenderer direction="RIGHT" shape={shape} x={1} y={1} renderType="normal" />
         </svg>
       ))}
     </div>

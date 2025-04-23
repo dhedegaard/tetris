@@ -1,18 +1,22 @@
-import { memo, SVGProps } from 'react'
+import clsx from 'clsx'
+import { memo, SVGProps, useMemo } from 'react'
 import styles from './Block.module.css'
 
-interface Props extends SVGProps<SVGRectElement> {
+export interface BlockProps extends SVGProps<SVGRectElement> {
+  renderType: 'ghost' | 'normal'
   x: number
   y: number
 }
 
-export const Block = memo<Props>(function Block(props: Props) {
+export const Block = memo(function Block({ x, y, ...props }: BlockProps) {
   return (
     <rect
-      {...props}
+      {...useMemo(() => ({ ...props, renderType: undefined }), [props])}
+      x={x}
+      y={y}
       width={1}
       height={1}
-      className={`stroke-black stroke-[0.02] text-inherit ${styles['block'] as string}`}
+      className={clsx(styles['block'] as string, 'stroke-black stroke-[0.025] text-inherit')}
     />
   )
 })

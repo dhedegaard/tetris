@@ -1,18 +1,25 @@
-import { memo, Reducer, useEffect, useMemo, useReducer } from 'react'
+import { memo, Reducer, SVGProps, useEffect, useMemo, useReducer } from 'react'
+import { match } from 'ts-pattern'
 import { Coordinate } from '../store/slices/blocks'
-import { Block } from './Block'
+import { Block, type BlockProps } from './Block'
 import { ShapeElement } from './shapes'
 
 export type Coordinates = Coordinate[]
 
-interface Props {
+export interface ShapeDrawerProps extends Pick<BlockProps, 'renderType'> {
   coordinates: Coordinates
   shape: ShapeElement
   x: number
   y: number
 }
 
-export const ShapeDrawer = memo<Props>(function ShapeDrawer({ x, y, shape, coordinates }) {
+export const ShapeDrawer = memo<ShapeDrawerProps>(function ShapeDrawer({
+  x,
+  y,
+  shape,
+  coordinates,
+  renderType,
+}) {
   const [{ curX, curY, oldShape }, dispatch] = useReducer(reducer, {
     curX: x,
     curY: y,
@@ -28,9 +35,13 @@ export const ShapeDrawer = memo<Props>(function ShapeDrawer({ x, y, shape, coord
   const blocks = useMemo(
     () =>
       coordinates.map((coord, index) => (
-        <Block key={`elem_${shape.color}_${index.toString()}`} {...coord} />
+        <Block
+          key={`elem_${shape.color}_${index.toString()}_${renderType}`}
+          {...coord}
+          renderType={renderType}
+        />
       )),
-    [coordinates, shape.color]
+    [coordinates, shape.color, renderType]
   )
 
   const transform = useMemo(
@@ -44,6 +55,16 @@ export const ShapeDrawer = memo<Props>(function ShapeDrawer({ x, y, shape, coord
       transform={transform}
       color={shape.color}
       fill={shape.color}
+      stroke={shape.color}
+      opacity={useMemo(
+        () =>
+          match(renderType)
+            .returnType<SVGProps<SVGGElement>['opacity']>()
+            .with('ghost', () => 0.4)
+            .with('normal', () => undefined)
+            .exhaustive(),
+        [renderType]
+      )}
       className="will-change-transform"
     >
       {blocks}

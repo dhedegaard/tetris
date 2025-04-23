@@ -9,7 +9,7 @@ interface Props {
   side: 'left' | 'right'
 }
 
-const WIDTH = 0.05
+const WIDTH = 0.02
 
 export const Bounds = memo<Props>(function Bounds({ x, y, side, ...props }) {
   const {
@@ -30,8 +30,8 @@ export const Bounds = memo<Props>(function Bounds({ x, y, side, ...props }) {
     () =>
       match(side)
         .returnType<number>()
-        .with('left', () => x + WIDTH)
-        .with('right', () => x + 1 - WIDTH)
+        .with('left', () => x)
+        .with('right', () => x + 1)
         .exhaustive(),
     [side, x]
   )
