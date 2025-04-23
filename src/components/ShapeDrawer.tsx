@@ -36,14 +36,14 @@ export const ShapeDrawer = memo<ShapeDrawerProps>(function ShapeDrawer({
     () =>
       coordinates.map((coord, index) => (
         <Block
-          key={`elem_${shape.color}_${index.toString()}`}
+          key={`elem_${shape.color}_${index.toString()}_${renderType}`}
           {...coord}
           stroke="red"
           strokeWidth={1}
           renderType={renderType}
         />
       )),
-    [coordinates, shape.color]
+    [coordinates, shape.color, renderType]
   )
 
   const transform = useMemo(
