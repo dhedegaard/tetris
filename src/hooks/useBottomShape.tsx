@@ -10,11 +10,12 @@ export const useBottomShape = () => {
     () =>
       Math.min(
         ...concretePositions.map<number>(({ x, y }) => {
-          // TODO: Terrible perf probably, fix later.
-          const minYPosition = Math.min(
-            ...blocks.filter((block) => block.x === x && block.y >= y).map((block) => block.y),
-            20
-          )
+          let minYPosition = 20
+          for (const block of blocks.filter((block) => block.x === x)) {
+            if (block.y >= y && block.y < minYPosition) {
+              minYPosition = block.y
+            }
+          }
           return Math.max(minYPosition - y - 1, 0)
         })
       ),
