@@ -170,7 +170,7 @@ export const attemptToDoMove =
         .with('LEFT', 'RIGHT', () =>
           dispatch(
             positionActions.movePosition({
-              dx: operation === 'LEFT' ? -1 : operation === 'RIGHT' ? +1 : 0,
+              dx: operation === 'LEFT' ? -1 : operation === 'RIGHT' ? 1 : 0,
               dy: 0,
             })
           )
@@ -212,7 +212,7 @@ export const doTick =
 
     // Move down if space is free.
     if (arePositionsFree(newPositions, blocks)) {
-      dispatch(positionActions.movePosition({ dx: 0, dy: +1 }))
+      dispatch(positionActions.movePosition({ dx: 0, dy: 1 }))
       return 'moved-down'
     }
 
