@@ -17,6 +17,11 @@ const shapeSlice = createSlice({
       state.hasRandomizedInitialQueue = true
     },
 
+    resetQueue: (state) => {
+      state.shapeQueue = getRandomShapes()
+      state.hasRandomizedInitialQueue = true
+    },
+
     nextShape: (state) => {
       if (state.shapeQueue.length < SHAPES.length) {
         // If we're in danger of running out of shapes, add more.

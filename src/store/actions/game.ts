@@ -18,7 +18,7 @@ export const startNewGame =
     }
 
     dispatch(blocksActions.clearAllBlocks())
-    dispatch(shapeActions.nextShape())
+    dispatch(shapeActions.resetQueue())
     dispatch(positionActions.resetPosition())
     dispatch(directionActions.resetDirection())
     dispatch(gamestateActions.setAlive())
