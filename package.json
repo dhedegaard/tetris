@@ -15,7 +15,6 @@
     "react": "19.2.6",
     "react-dom": "19.2.6",
     "react-redux": "^9.2.0",
-    "react-use": "^17.6.0",
     "redux": "^5.0.1",
     "ts-pattern": "^5.9.0",
     "typescript": "^5.9.3"
@@ -42,7 +41,6 @@
     "postcss": "^8.5.14",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "tailwindcss": "^4.3.0",
-    "ts-node": "^10.9.2",
     "typescript-eslint": "^8.59.2"
   },
   "overrides": {
