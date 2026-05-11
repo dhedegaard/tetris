@@ -1,7 +1,7 @@
 import { memo, useMemo } from 'react'
-import { match } from 'ts-pattern'
 import { useBlocks } from '../hooks/useBlocks'
 import { useShape } from '../hooks/useShape'
+import { assertNever } from '../lib/assert-never'
 
 interface Props {
   x: number
@@ -26,15 +26,19 @@ export const Bounds = memo<Props>(function Bounds({ x, y, side, ...props }) {
 
   // Determine the absolute X values to render based on the side, the width and
   // the current X position.
-  const renderedX = useMemo(
-    () =>
-      match(side)
-        .returnType<number>()
-        .with('left', () => x)
-        .with('right', () => x + 1)
-        .exhaustive(),
-    [side, x]
-  )
+  const renderedX = useMemo(() => {
+    switch (side) {
+      case 'left': {
+        return x
+      }
+      case 'right': {
+        return x + 1
+      }
+      default: {
+        assertNever(side satisfies never)
+      }
+    }
+  }, [side, x])
 
   return (
     <line
