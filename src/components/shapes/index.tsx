@@ -1,6 +1,5 @@
 import { shuffle } from 'lodash-es'
 import { FC, memo, useMemo } from 'react'
-import { match } from 'ts-pattern'
 import { assertNever } from '../../lib/assert-never'
 import { Coordinates, ShapeDrawer, type ShapeDrawerProps } from '../ShapeDrawer'
 import { COLOR_I, I } from './I'
@@ -14,14 +13,25 @@ import { COLOR_Z, Z } from './Z'
 export type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT'
 
 /** Returns the new direction based on a current direction. */
-export const nextDirection = (direction: Direction): Direction =>
-  match(direction)
-    .returnType<Direction>()
-    .with('UP', () => 'RIGHT')
-    .with('RIGHT', () => 'DOWN')
-    .with('DOWN', () => 'LEFT')
-    .with('LEFT', () => 'UP')
-    .exhaustive()
+export const nextDirection = (direction: Direction): Direction => {
+  switch (direction) {
+    case 'UP': {
+      return 'RIGHT'
+    }
+    case 'RIGHT': {
+      return 'DOWN'
+    }
+    case 'DOWN': {
+      return 'LEFT'
+    }
+    case 'LEFT': {
+      return 'UP'
+    }
+    default: {
+      assertNever(direction satisfies never)
+    }
+  }
+}
 
 export interface ShapeProps {
   x: number

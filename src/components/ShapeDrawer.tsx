@@ -1,5 +1,5 @@
-import { memo, Reducer, SVGProps, useEffect, useMemo, useReducer } from 'react'
-import { match } from 'ts-pattern'
+import { memo, Reducer, useEffect, useMemo, useReducer } from 'react'
+import { assertNever } from '../lib/assert-never'
 import { Coordinate } from '../store/slices/blocks'
 import { Block, type BlockProps } from './Block'
 import { ShapeElement } from './shapes'
@@ -56,15 +56,19 @@ export const ShapeDrawer = memo<ShapeDrawerProps>(function ShapeDrawer({
       color={shape.color}
       fill={shape.color}
       stroke={shape.color}
-      opacity={useMemo(
-        () =>
-          match(renderType)
-            .returnType<SVGProps<SVGGElement>['opacity']>()
-            .with('ghost', () => 0.4)
-            .with('normal', () => undefined)
-            .exhaustive(),
-        [renderType]
-      )}
+      opacity={useMemo(() => {
+        switch (renderType) {
+          case 'ghost': {
+            return 0.4
+          }
+          case 'normal': {
+            return undefined
+          }
+          default: {
+            assertNever(renderType satisfies never)
+          }
+        }
+      }, [renderType])}
       className="will-change-transform"
     >
       {blocks}
