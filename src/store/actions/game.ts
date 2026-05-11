@@ -2,6 +2,7 @@ import { createSelector } from '@reduxjs/toolkit'
 import { match } from 'ts-pattern'
 import { Coordinates } from '../../components/ShapeDrawer'
 import { calculateCoordinates, colorFromShape, nextDirection } from '../../components/shapes'
+import { assertNever } from '../../lib/assert-never'
 import { Block, blocksActions } from '../slices/blocks'
 import { directionActions } from '../slices/direction'
 import { gamestateActions } from '../slices/gamestate'
@@ -169,18 +170,28 @@ export const attemptToDoMove =
     // Check if the spots are free in the new positions.
     if (arePositionsFree(newPositions, blocks)) {
       // Apply the operations.
-      match(operation)
-        .with('LEFT', 'RIGHT', () =>
-          dispatch(
-            positionActions.movePosition({
-              dx: operation === 'LEFT' ? -1 : operation === 'RIGHT' ? 1 : 0,
-              dy: 0,
-            })
-          )
-        )
-        .with('DOWN', () => dispatch(doTick()))
-        .with('ROTATE', () => dispatch(directionActions.rotateDirection()))
-        .exhaustive()
+      switch (operation) {
+        case 'LEFT': {
+          dispatch(positionActions.movePosition({ dx: -1, dy: 0 }))
+          break
+        }
+        case 'RIGHT': {
+          dispatch(positionActions.movePosition({ dx: 1, dy: 0 }))
+          break
+        }
+        case 'DOWN': {
+          dispatch(doTick())
+          break
+        }
+        case 'ROTATE': {
+          dispatch(directionActions.rotateDirection())
+          break
+        }
+        default: {
+          // eslint-disable-next-line @typescript-eslint/only-throw-error
+          throw assertNever(operation satisfies never)
+        }
+      }
     }
   }
 
