@@ -80,24 +80,23 @@ export const ShapeRenderer: FC<Props> = memo(function ShapeRenderer({
   return <ShapeDrawer shape={shape} x={x} y={y} coordinates={coordinates} renderType={renderType} />
 })
 
-const createShapeElement = (shape: Shape, key: string): ShapeElement => ({
-  shape,
-  key,
-  color: colorFromShape(shape),
-  coordinates: calculateCoordinates(shape, {
-    direction: 'RIGHT',
-    x: 0,
-    y: 0,
-  }),
-}) satisfies ShapeElement
+const createShapeElement = (shape: Shape, key: string): ShapeElement =>
+  ({
+    shape,
+    key,
+    color: colorFromShape(shape),
+    coordinates: calculateCoordinates(shape, {
+      direction: 'RIGHT',
+      x: 0,
+      y: 0,
+    }),
+  }) satisfies ShapeElement
 
 export const getInitialShapes = () =>
   SHAPES.map((shape) => createShapeElement(shape, `initial-shape-${shape}`))
 
 export const getRandomShapes = () =>
-  shuffle(SHAPES).map((shape) =>
-    createShapeElement(shape, `shape-${crypto.randomUUID()}`)
-  )
+  shuffle(SHAPES).map((shape) => createShapeElement(shape, `shape-${crypto.randomUUID()}`))
 
 export interface ShapeElement {
   shape: Shape

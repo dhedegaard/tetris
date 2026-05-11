@@ -26,7 +26,11 @@ export const useShapeBounds = () => {
 }
 
 const isFurtherLeftBottom = (candidate: Coordinate, current: Coordinate | undefined): boolean =>
-  current == null || candidate.x < current.x || (candidate.x === current.x && candidate.y > current.y)
+  current == null ||
+  candidate.x < current.x ||
+  (candidate.x === current.x && candidate.y > current.y)
 
 const isFurtherRightBottom = (candidate: Coordinate, current: Coordinate | undefined): boolean =>
-  current == null || candidate.x > current.x || (candidate.x === current.x && candidate.y > current.y)
+  current == null ||
+  candidate.x > current.x ||
+  (candidate.x === current.x && candidate.y > current.y)

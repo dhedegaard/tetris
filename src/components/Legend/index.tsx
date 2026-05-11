@@ -12,12 +12,7 @@ interface Props {
   isShapeQueueReady: boolean
 }
 
-export const Legend = memo<Props>(function Legend({
-  score,
-  level,
-  peekShapes,
-  isShapeQueueReady,
-}) {
+export const Legend = memo<Props>(function Legend({ score, level, peekShapes, isShapeQueueReady }) {
   return (
     <div className={styles['legendContainer']}>
       <div className="flex flex-col items-stretch gap-[8px]">

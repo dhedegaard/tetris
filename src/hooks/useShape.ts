@@ -1,6 +1,10 @@
 import { useMemo } from 'react'
 import { calculateCoordinates } from '../components/shapes'
-import { selectCurrentShape, selectIsShapeQueueReady, selectPeekShapes } from '../store/slices/shape'
+import {
+  selectCurrentShape,
+  selectIsShapeQueueReady,
+  selectPeekShapes,
+} from '../store/slices/shape'
 import { useTetrisSelector } from '../store/tetris'
 import { useDirection } from './useDirection'
 import { usePosition } from './usePosition'

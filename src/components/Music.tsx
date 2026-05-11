@@ -4,7 +4,7 @@ import { memo } from 'react'
 export const Music = memo(function Music() {
   return (
     <iframe
-      className="absolute right-[-20px] top-[-20px]"
+      className="absolute top-[-20px] right-[-20px]"
       width="10"
       height="10"
       src="https://www.youtube.com/embed/NmCCQxVBfyM?controls=0&autoplay=1&loop=1"

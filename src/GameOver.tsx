@@ -22,7 +22,7 @@ export const GameOver = memo<Props>(function GameOver(props) {
         fill="currentColor"
         lengthAdjust="spacingAndGlyphs"
         textLength="65%"
-        className="pointer-events-none select-none text-[0.125vh] uppercase"
+        className="pointer-events-none text-[0.125vh] uppercase select-none"
       >
         Game over
       </text>
@@ -32,7 +32,7 @@ export const GameOver = memo<Props>(function GameOver(props) {
         fill="currentColor"
         lengthAdjust="spacingAndGlyphs"
         textLength="70%"
-        className="pointer-events-none select-none text-[0.08vh] uppercase"
+        className="pointer-events-none text-[0.08vh] uppercase select-none"
       >
         Press &apos;r&apos; to
       </text>
@@ -42,7 +42,7 @@ export const GameOver = memo<Props>(function GameOver(props) {
         fill="currentColor"
         lengthAdjust="spacingAndGlyphs"
         textLength="60%"
-        className="pointer-events-none select-none text-[0.08vh] uppercase"
+        className="pointer-events-none text-[0.08vh] uppercase select-none"
       >
         try again
       </text>
