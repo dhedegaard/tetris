@@ -1,6 +1,7 @@
 import { shuffle } from 'lodash-es'
 import { FC, memo, useMemo } from 'react'
 import { match } from 'ts-pattern'
+import { assertNever } from '../../lib/assert-never'
 import { Coordinates, ShapeDrawer, type ShapeDrawerProps } from '../ShapeDrawer'
 import { COLOR_I, I } from './I'
 import { COLOR_J, J } from './J'
@@ -31,17 +32,34 @@ export interface ShapeProps {
 export type Shape = 'I' | 'J' | 'L' | 'O' | 'S' | 'T' | 'Z'
 export const SHAPES = Object.freeze(['I', 'J', 'L', 'O', 'S', 'T', 'Z'] as Shape[])
 
-export const calculateCoordinates = (shape: Shape, shapeProps: ShapeProps): Coordinates =>
-  match(shape)
-    .returnType<Coordinates>()
-    .with('I', () => I(shapeProps))
-    .with('J', () => J(shapeProps))
-    .with('L', () => L(shapeProps))
-    .with('O', () => O(shapeProps))
-    .with('S', () => S(shapeProps))
-    .with('T', () => T(shapeProps))
-    .with('Z', () => Z(shapeProps))
-    .exhaustive()
+export const calculateCoordinates = (shape: Shape, shapeProps: ShapeProps): Coordinates => {
+  switch (shape) {
+    case 'I': {
+      return I(shapeProps)
+    }
+    case 'J': {
+      return J(shapeProps)
+    }
+    case 'L': {
+      return L(shapeProps)
+    }
+    case 'O': {
+      return O(shapeProps)
+    }
+    case 'S': {
+      return S(shapeProps)
+    }
+    case 'T': {
+      return T(shapeProps)
+    }
+    case 'Z': {
+      return Z(shapeProps)
+    }
+    default: {
+      assertNever(shape satisfies never)
+    }
+  }
+}
 
 export const colorFromShape = (shape: Shape): string => colorMap[shape]
 
