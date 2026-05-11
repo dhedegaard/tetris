@@ -1,13 +1,22 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit'
-import { getRandomShapes, ShapeElement, SHAPES } from '../../components/shapes'
+import { getInitialShapes, getRandomShapes, SHAPES } from '../../components/shapes'
 import { TetrisStoreState } from '../tetris'
 
 const shapeSlice = createSlice({
   name: 'shape',
   initialState: () => ({
-    shapeQueue: [...getRandomShapes()] as ShapeElement[],
+    shapeQueue: getInitialShapes(),
+    hasRandomizedInitialQueue: false,
   }),
   reducers: {
+    randomizeInitialQueue: (state) => {
+      if (state.hasRandomizedInitialQueue) {
+        return
+      }
+      state.shapeQueue = getRandomShapes()
+      state.hasRandomizedInitialQueue = true
+    },
+
     nextShape: (state) => {
       if (state.shapeQueue.length < SHAPES.length) {
         // If we're in danger of running out of shapes, add more.

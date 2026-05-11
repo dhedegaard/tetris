@@ -1,5 +1,4 @@
 import { memo } from 'react'
-import { useIsBrowser } from '../../hooks/useIsBrowser'
 import { ShapeElement, ShapeRenderer } from '../shapes'
 import styles from './NextShape.module.css'
 
@@ -8,11 +7,6 @@ interface Props {
 }
 
 export const NextShape = memo<Props>(function NextShape({ nextShapes }) {
-  const isBrowser = useIsBrowser()
-  if (!isBrowser) {
-    return null
-  }
-
   return (
     <div className={styles['container']}>
       <div className={styles['title']}>Next:</div>

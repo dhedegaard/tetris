@@ -9,12 +9,9 @@ import { ShapeRenderer } from './components/shapes'
 import { GameOver } from './GameOver'
 import { useTetris } from './hooks'
 import { useBottomShape } from './hooks/useBottomShape'
-import { useIsBrowser } from './hooks/useIsBrowser'
 import { tetrisStore } from './store/tetris'
 
 export const Game = memo(function Game() {
-  const isBrowser = useIsBrowser()
-
   const {
     direction,
     shape,
@@ -34,7 +31,7 @@ export const Game = memo(function Game() {
       <DPad />
       <div className="box-border aspect-[1/2] h-full flex-none">
         <Grid>
-          {isBrowser && gamestate === 'alive' && (
+          {gamestate === 'alive' && (
             <>
               <ShapeRenderer
                 direction={direction}
