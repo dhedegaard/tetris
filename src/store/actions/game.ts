@@ -12,11 +12,7 @@ import { selectCurrentShape, shapeActions } from '../slices/shape'
 import { TetrisStoreDispatch, TetrisStoreState } from '../tetris'
 
 export const startNewGame =
-  () => (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
-    if (getState().gamestate.gamestate !== 'gameover') {
-      return
-    }
-
+  () => (dispatch: TetrisStoreDispatch) => {
     dispatch(blocksActions.clearAllBlocks())
     dispatch(shapeActions.resetQueue())
     dispatch(positionActions.resetPosition())
