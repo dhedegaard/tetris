@@ -122,6 +122,10 @@ export const attemptToDoMove =
   (operation: 'LEFT' | 'RIGHT' | 'DOWN' | 'ROTATE') =>
   (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
     const state = getState()
+    if (state.gamestate.gamestate !== 'alive') {
+      return
+    }
+
     const currentShape = selectCurrentShape(state)
     const {
       blocks: { blocks },
