@@ -109,6 +109,21 @@ const attemptPersistBlocks =
     dispatch(shapeActions.nextShape())
     dispatch(clearFilledRows())
 
+    const newState = getState()
+    const newCurrentShape = selectCurrentShape(newState)
+    const newShapeBlocks = calculateCoordinates(newCurrentShape.shape, {
+      direction: newState.direction.direction,
+      x: newState.position.position.x,
+      y: newState.position.position.y,
+    })
+    if (!arePositionsFree(newShapeBlocks, newState.blocks.blocks)) {
+      const newBlockColor = colorFromShape(newCurrentShape.shape)
+      newShapeBlocks.forEach((block) =>
+        dispatch(blocksActions.upsertBlock({ ...block, color: newBlockColor }))
+      )
+      dispatch(gamestateActions.setGameover())
+    }
+
     return true
   }
 

@@ -24,6 +24,12 @@ const blocksSlice = createSlice({
       }
       state.blocks.push(action.payload)
     },
+    upsertBlock: (state, action: PayloadAction<Block>) => {
+      state.blocks = state.blocks.filter(
+        (e) => e.x !== action.payload.x || e.y !== action.payload.y
+      )
+      state.blocks.push(action.payload)
+    },
     clearRow: (state, action: PayloadAction<number>) => {
       // Remove the given index.
       state.blocks = state.blocks.filter((e) => e.y !== action.payload)
