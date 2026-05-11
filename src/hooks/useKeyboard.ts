@@ -29,7 +29,9 @@ export const useKeyboard = () => {
   const dispatch = useTetrisDispatch()
   const gamestate = useTetrisSelector((state) => state.gamestate.gamestate)
   const gamestateRef = useRef(gamestate)
-  gamestateRef.current = gamestate
+  useEffect(() => {
+    gamestateRef.current = gamestate
+  }, [gamestate])
 
   // Handle a key being pressed.
   const handleKey = useCallback(

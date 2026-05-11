@@ -3,7 +3,5 @@ import type { NextConfig } from 'next'
 export default {
   reactStrictMode: true,
   output: 'export',
-  experimental: {
-    reactCompiler: true,
-  },
+  reactCompiler: true,
 } satisfies NextConfig

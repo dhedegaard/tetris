@@ -9,7 +9,9 @@ export const useGamepad = () => {
   const dispatch = useTetrisDispatch()
   const { gamestate } = useGamestate()
   const gamestateRef = useRef<Gamestate>(gamestate)
-  gamestateRef.current = gamestate
+  useEffect(() => {
+    gamestateRef.current = gamestate
+  }, [gamestate])
 
   const lastClickedRef = useRef<{ [key: string]: number }>({})
   const handleGamepad = useCallback(
