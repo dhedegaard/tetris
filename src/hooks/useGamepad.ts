@@ -103,16 +103,40 @@ export const useGamepad = () => {
     [dispatch, stopGamepad]
   )
 
+  const scanGamepads = useCallback(() => {
+    let gamepads: readonly (Gamepad | null)[]
+    try {
+      const getGamepads = (
+        navigator as Omit<Navigator, 'getGamepads'> & { getGamepads?: Navigator['getGamepads'] }
+      ).getGamepads
+      if (getGamepads == null) {
+        return
+      }
+      gamepads = getGamepads.call(navigator)
+    } catch {
+      return
+    }
+
+    for (const gamepad of gamepads) {
+      if (gamepad != null && gamepad.connected && !animationFrameRefs.current.has(gamepad.index)) {
+        handleGamepad(gamepad)
+      }
+    }
+  }, [handleGamepad])
+
   useEffect(() => {
     mountedRef.current = true
     const animationFrames = animationFrameRefs.current
 
     const handler = ({ gamepad }: GamepadEvent) => {
       handleGamepad(gamepad)
+      scanGamepads()
     }
     const disconnectHandler = ({ gamepad }: GamepadEvent) => {
       stopGamepad(gamepad.index)
     }
+
+    scanGamepads()
     window.addEventListener('gamepadconnected', handler, { passive: true })
     window.addEventListener('gamepaddisconnected', disconnectHandler, { passive: true })
     return () => {
@@ -125,5 +149,5 @@ export const useGamepad = () => {
       animationFrames.clear()
       lastClickedRef.current = {}
     }
-  }, [handleGamepad, stopGamepad])
+  }, [handleGamepad, scanGamepads, stopGamepad])
 }
