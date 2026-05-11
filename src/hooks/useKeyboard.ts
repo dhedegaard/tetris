@@ -77,12 +77,20 @@ export const useKeyboard = () => {
   )
 
   const pressedKeys = useRef(new Set<string>())
+  const animationFrameRefs = useRef(new Map<string, number>())
   const handlePressedKey = useCallback(
     (key: string) => {
+      const existingAnimationFrame = animationFrameRefs.current.get(key)
+      if (existingAnimationFrame != null) {
+        cancelAnimationFrame(existingAnimationFrame)
+        animationFrameRefs.current.delete(key)
+      }
+
       let start = Date.now()
       let first = true
       const handler: FrameRequestCallback = () => {
         if (!pressedKeys.current.has(key)) {
+          animationFrameRefs.current.delete(key)
           return
         }
         const now = Date.now()
@@ -91,9 +99,9 @@ export const useKeyboard = () => {
           first = false
           handleKey(key)
         }
-        requestAnimationFrame(handler)
+        animationFrameRefs.current.set(key, requestAnimationFrame(handler))
       }
-      requestAnimationFrame(handler)
+      animationFrameRefs.current.set(key, requestAnimationFrame(handler))
     },
     [handleKey]
   )
@@ -115,23 +123,30 @@ export const useKeyboard = () => {
   )
 
   useEffect(() => {
+    const currentPressedKeys = pressedKeys.current
+    const currentAnimationFrameRefs = animationFrameRefs.current
     const keydownHandler = (evt: KeyboardEvent) => {
       if (handledKeys.has(evt.key)) {
         evt.preventDefault()
-      }
 
-      if (!evt.repeat) {
-        pressKey(evt.key)
+        if (!evt.repeat) {
+          pressKey(evt.key)
+        }
       }
     }
     const keyupHandler = (evt: KeyboardEvent) => {
-      pressedKeys.current.delete(evt.key)
+      currentPressedKeys.delete(evt.key)
     }
     document.addEventListener('keydown', keydownHandler)
     document.addEventListener('keyup', keyupHandler, { passive: true })
     return () => {
       document.removeEventListener('keydown', keydownHandler)
       document.removeEventListener('keyup', keyupHandler)
+      currentPressedKeys.clear()
+      for (const animationFrame of currentAnimationFrameRefs.values()) {
+        cancelAnimationFrame(animationFrame)
+      }
+      currentAnimationFrameRefs.clear()
     }
   }, [dispatch, handleKey, pressKey])
 }
