@@ -13,16 +13,31 @@ export const useGamepad = () => {
     gamestateRef.current = gamestate
   }, [gamestate])
 
+  const mountedRef = useRef(false)
+  const animationFrameRefs = useRef(new Map<number, number>())
   const lastClickedRef = useRef<{ [key: string]: number }>({})
   const handleGamepad = useCallback(
     (_gamepad: Gamepad) => {
+      const gamepadIndex = _gamepad.index
+      const existingAnimationFrame = animationFrameRefs.current.get(gamepadIndex)
+      if (existingAnimationFrame != null) {
+        cancelAnimationFrame(existingAnimationFrame)
+        animationFrameRefs.current.delete(gamepadIndex)
+      }
+
       const moveNullOrAfterInterval = (move: string) => {
         const lastClicked = lastClickedRef.current[move]
         return lastClicked == null || Date.now() - lastClicked >= DEFAULT_INTERVAL
       }
 
       const handler: FrameRequestCallback = () => {
-        const gamepad = navigator.getGamepads()[_gamepad.index]
+        animationFrameRefs.current.delete(gamepadIndex)
+
+        if (!mountedRef.current) {
+          return
+        }
+
+        const gamepad = navigator.getGamepads()[gamepadIndex]
         if (gamepad == null || !gamepad.connected) {
           return
         }
@@ -75,21 +90,28 @@ export const useGamepad = () => {
           dispatch(startNewGame())
         }
 
-        // Repeat if we're not supposed to cancel.
-        requestAnimationFrame(handler)
+        animationFrameRefs.current.set(gamepadIndex, requestAnimationFrame(handler))
       }
-      requestAnimationFrame(handler)
+      animationFrameRefs.current.set(gamepadIndex, requestAnimationFrame(handler))
     },
     [dispatch]
   )
 
   useEffect(() => {
+    mountedRef.current = true
+    const animationFrames = animationFrameRefs.current
+
     const handler = ({ gamepad }: GamepadEvent) => {
       handleGamepad(gamepad)
     }
     window.addEventListener('gamepadconnected', handler, { passive: true })
     return () => {
+      mountedRef.current = false
       window.removeEventListener('gamepadconnected', handler)
+      for (const animationFrame of animationFrames.values()) {
+        cancelAnimationFrame(animationFrame)
+      }
+      animationFrames.clear()
     }
   }, [handleGamepad])
 }
