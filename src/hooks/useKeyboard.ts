@@ -12,7 +12,7 @@ interface Keybinds {
   newGame: string
 }
 
-export const keyboard1: Keybinds = {
+const keyboard1: Keybinds = {
   moveLeft: 'ArrowLeft',
   moveRight: 'ArrowRight',
   rotate: 'ArrowUp',

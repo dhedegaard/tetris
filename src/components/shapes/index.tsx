@@ -12,15 +12,6 @@ import { COLOR_Z, Z } from './Z'
 
 export type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT'
 
-export const directionToRotation = (direction: Direction): number =>
-  match(direction)
-    .returnType<number>()
-    .with('UP', () => 270)
-    .with('LEFT', () => 180)
-    .with('DOWN', () => 90)
-    .with('RIGHT', () => 0)
-    .exhaustive()
-
 /** Returns the new direction based on a current direction. */
 export const nextDirection = (direction: Direction): Direction =>
   match(direction)

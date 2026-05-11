@@ -11,7 +11,7 @@ import { useTetris } from './hooks'
 import { useBottomShape } from './hooks/useBottomShape'
 import { tetrisStore } from './store/tetris'
 
-export const Game = memo(function Game() {
+const Game = memo(function Game() {
   const {
     direction,
     shape,

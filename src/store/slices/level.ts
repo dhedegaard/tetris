@@ -26,7 +26,7 @@ const LEVEL_TO_TICK_RATE: Readonly<Map<number, number>> = Object.freeze(
 )
 
 /** Takes a given level, and converts it to a tick rate, in seconds. */
-export const calculateTickRate = (level: number): number => {
+const calculateTickRate = (level: number): number => {
   // If we're able to map the level directly, do so.
   const tickrate1 = LEVEL_TO_TICK_RATE.get(level)
   if (tickrate1 != null) {
@@ -41,7 +41,7 @@ export const calculateTickRate = (level: number): number => {
 /** Each level progresses when 10 rows have been cleared. */
 const calculateLevel = (rowsCleared: number) => Math.floor(rowsCleared / 10)
 
-export const levelSlice = createSlice({
+const levelSlice = createSlice({
   name: 'level',
   initialState: {
     rowsCleared: 0,

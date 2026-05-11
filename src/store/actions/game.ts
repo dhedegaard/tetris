@@ -26,7 +26,7 @@ export const startNewGame =
     dispatch(levelActions.resetLevel())
   }
 
-export const clearFilledRows =
+const clearFilledRows =
   () => (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
     let rowsCleared = 0
 
@@ -91,7 +91,7 @@ const calculateScore = (level: number, linesCleared: number): number => {
   )
 }
 
-export const attemptPersistBlocks =
+const attemptPersistBlocks =
   (blocks: Block[]) =>
   (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState): boolean => {
     const state = getState()
@@ -184,7 +184,7 @@ export const moveGoToBottom = () => (dispatch: TetrisStoreDispatch) => {
   while (dispatch(doTick()) === 'moved-down') {}
 }
 
-export const doTick =
+const doTick =
   () =>
   (
     dispatch: TetrisStoreDispatch,
