@@ -39,8 +39,8 @@
     "eslint-config-prettier": "^10.1.8",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "tailwindcss": "^4.3.0",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.59.2"
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.3"
   },
   "overrides": {
     "@types/react": "19.2.14",
