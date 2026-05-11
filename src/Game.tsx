@@ -23,6 +23,7 @@ export const Game = memo(function Game() {
     level,
     startNewGame,
     shapeBounds,
+    isShapeQueueReady,
   } = useTetris()
   const { bottomYOffset } = useBottomShape()
 
@@ -31,7 +32,7 @@ export const Game = memo(function Game() {
       <DPad />
       <div className="box-border aspect-[1/2] h-full flex-none">
         <Grid>
-          {gamestate === 'alive' && (
+          {isShapeQueueReady && gamestate === 'alive' && (
             <>
               <ShapeRenderer
                 direction={direction}
@@ -66,19 +67,25 @@ export const Game = memo(function Game() {
             </>
           )}
 
-          {blocks.map(({ x, y, color }) => (
-            <Block
-              x={x}
-              y={y}
-              fill={color}
-              key={`block_${String(x)}_${String(y)}`}
-              renderType="normal"
-            />
-          ))}
+          {isShapeQueueReady &&
+            blocks.map(({ x, y, color }) => (
+              <Block
+                x={x}
+                y={y}
+                fill={color}
+                key={`block_${String(x)}_${String(y)}`}
+                renderType="normal"
+              />
+            ))}
           {gamestate === 'gameover' && <GameOver onClick={startNewGame} />}
         </Grid>
       </div>
-      <Legend score={score} peekShapes={peekShapes} level={level} />
+      <Legend
+        score={score}
+        peekShapes={peekShapes}
+        level={level}
+        isShapeQueueReady={isShapeQueueReady}
+      />
     </div>
   )
 })

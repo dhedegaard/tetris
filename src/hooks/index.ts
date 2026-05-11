@@ -17,7 +17,7 @@ import { useShapeBounds } from './useShapeBounds'
 export const useTetris = () => {
   const { gamestate } = useGamestate()
   const { position } = usePosition()
-  const { shape, peekShapes } = useShape()
+  const { shape, peekShapes, isShapeQueueReady } = useShape()
   const { direction } = useDirection()
   const { score } = useScore()
   const { blocks } = useBlocks()
@@ -33,12 +33,16 @@ export const useTetris = () => {
 
   // Handle ticks
   useEffect(() => {
+    if (!isShapeQueueReady) {
+      return
+    }
+
     let cancelled = false
     void dispatch(runTicks(() => cancelled))
     return () => {
       cancelled = true
     }
-  }, [dispatch])
+  }, [dispatch, isShapeQueueReady])
 
   // Handle inputs.
   useKeyboard()
@@ -53,12 +57,25 @@ export const useTetris = () => {
       gamestate,
       score,
       peekShapes,
+      isShapeQueueReady,
       level,
       shapeBounds,
       startNewGame: () => {
         dispatch(startNewGame())
       },
     }),
-    [blocks, direction, dispatch, gamestate, level, peekShapes, position, score, shape, shapeBounds]
+    [
+      blocks,
+      direction,
+      dispatch,
+      gamestate,
+      isShapeQueueReady,
+      level,
+      peekShapes,
+      position,
+      score,
+      shape,
+      shapeBounds,
+    ]
   )
 }

@@ -9,16 +9,22 @@ interface Props {
   score: number
   level: number
   peekShapes: readonly ShapeElement[]
+  isShapeQueueReady: boolean
 }
 
-export const Legend = memo<Props>(function Legend({ score, level, peekShapes }) {
+export const Legend = memo<Props>(function Legend({
+  score,
+  level,
+  peekShapes,
+  isShapeQueueReady,
+}) {
   return (
     <div className={styles['legendContainer']}>
       <div className="flex flex-col items-stretch gap-[8px]">
         <Score score={score} />
         <Level level={level} />
       </div>
-      <NextShape nextShapes={peekShapes} />
+      <NextShape nextShapes={peekShapes} isShapeQueueReady={isShapeQueueReady} />
     </div>
   )
 })

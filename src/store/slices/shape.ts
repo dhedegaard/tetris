@@ -33,6 +33,9 @@ export const shapeReducer = shapeSlice.reducer
 
 const selectShapeQueue = (state: TetrisStoreState) => state.shape.shapeQueue
 
+export const selectIsShapeQueueReady = (state: TetrisStoreState) =>
+  state.shape.hasRandomizedInitialQueue
+
 export const selectCurrentShape = createSelector(selectShapeQueue, ([firstShape]) => {
   if (firstShape == null) {
     throw new Error('The shape queue is empty.')
