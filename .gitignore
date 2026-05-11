@@ -27,3 +27,5 @@ yarn-error.log*
 out
 *.tsbuildinfo
 cache
+next-env.d.ts
+
