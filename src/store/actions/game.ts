@@ -27,35 +27,34 @@ export const startNewGame =
     dispatch(levelActions.resetLevel())
   }
 
-const clearFilledRows =
-  () => (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
-    let rowsCleared = 0
+const clearFilledRows = () => (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
+  let rowsCleared = 0
 
-    // The scoring later depends on the level before clearing rows, so we
-    // calculate the level beforehand.
-    const level = selectLevel(getState())
+  // The scoring later depends on the level before clearing rows, so we
+  // calculate the level beforehand.
+  const level = selectLevel(getState())
 
-    for (;;) {
-      const state = getState()
-      const [filledRow] = selectFilledRows(state)
-      if (filledRow == null) {
-        break
-      }
-
-      // Clear the filled rows and increment.
-      dispatch(blocksActions.clearRow(filledRow))
-      rowsCleared++
+  for (;;) {
+    const state = getState()
+    const [filledRow] = selectFilledRows(state)
+    if (filledRow == null) {
+      break
     }
 
-    // Increase the score based on the nubmer of rows cleared and the current
-    // level.
-    if (rowsCleared > 0) {
-      dispatch(levelActions.incrementRowsCleared(rowsCleared))
-      dispatch(scoreActions.increaseScore(calculateScore(level, rowsCleared)))
-    }
-
-    return rowsCleared
+    // Clear the filled rows and increment.
+    dispatch(blocksActions.clearRow(filledRow))
+    rowsCleared++
   }
+
+  // Increase the score based on the nubmer of rows cleared and the current
+  // level.
+  if (rowsCleared > 0) {
+    dispatch(levelActions.incrementRowsCleared(rowsCleared))
+    dispatch(scoreActions.increaseScore(calculateScore(level, rowsCleared)))
+  }
+
+  return rowsCleared
+}
 
 const selectBlocks = (state: TetrisStoreState) => state.blocks.blocks
 const selectFilledRows = createSelector(selectBlocks, (blocks) => {
