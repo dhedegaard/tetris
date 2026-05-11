@@ -7,7 +7,6 @@ import { directionActions } from '../slices/direction'
 import { gamestateActions } from '../slices/gamestate'
 import { levelActions, selectLevel, selectTickrate } from '../slices/level'
 import { positionActions } from '../slices/position'
-import { runningActions } from '../slices/running'
 import { scoreActions } from '../slices/score'
 import { selectCurrentShape, shapeActions } from '../slices/shape'
 import { TetrisStoreDispatch, TetrisStoreState } from '../tetris'
@@ -236,19 +235,13 @@ const arePositionsFree = (positions: Coordinates, blocks: Block[]): boolean =>
   )
 
 export const runTicks =
-  () => async (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
+  (isCancelled: () => boolean) =>
+  async (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
     const {
       position: {
         position: { y: oldY },
       },
-      running: { running },
     } = getState()
-    if (running) {
-      // If there's already a RAF loop, stop here and let it do the work.
-      console.warn('Trying to runTicks(), but were already running.')
-      return
-    }
-    dispatch(runningActions.setRunning())
 
     let lastTick = Date.now()
     let lastY = oldY
@@ -256,7 +249,7 @@ export const runTicks =
       const now = Date.now()
       const state = getState()
 
-      if (!state.running.running) {
+      if (isCancelled()) {
         break
       }
 
@@ -274,7 +267,6 @@ export const runTicks =
         dispatch(doTick())
       }
     }
-    dispatch(runningActions.setStopped())
   }
 
 const rafPromise = (): Promise<boolean> =>

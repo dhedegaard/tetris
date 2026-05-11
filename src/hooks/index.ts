@@ -1,6 +1,5 @@
 import { useEffect, useMemo } from 'react'
 import { runTicks, startNewGame } from '../store/actions/game'
-import { runningActions } from '../store/slices/running'
 import { shapeActions } from '../store/slices/shape'
 import { useTetrisDispatch } from '../store/tetris'
 import { useBlocks } from './useBlocks'
@@ -34,9 +33,10 @@ export const useTetris = () => {
 
   // Handle ticks
   useEffect(() => {
-    void dispatch(runTicks())
+    let cancelled = false
+    void dispatch(runTicks(() => cancelled))
     return () => {
-      dispatch(runningActions.setStopped())
+      cancelled = true
     }
   }, [dispatch])
 

@@ -5,7 +5,6 @@ import { directionReducer } from './slices/direction'
 import { gamestateReducer } from './slices/gamestate'
 import { levelReducer } from './slices/level'
 import { positionReducer } from './slices/position'
-import { runningReducer } from './slices/running'
 import { scoreReducer } from './slices/score'
 import { shapeReducer } from './slices/shape'
 
@@ -18,7 +17,6 @@ export const tetrisStore = configureStore({
     direction: directionReducer,
     level: levelReducer,
     blocks: blocksReducer,
-    running: runningReducer,
   },
 })
 
