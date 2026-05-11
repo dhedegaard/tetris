@@ -1,8 +1,8 @@
 import clsx from 'clsx'
-import { memo, SVGProps } from 'react'
+import { memo, type SVGProps } from 'react'
 import styles from './Block.module.css'
 
-export interface BlockProps extends SVGProps<SVGRectElement> {
+export interface BlockProps extends Pick<SVGProps<SVGRectElement>, 'fill'> {
   renderType: 'ghost' | 'normal'
   x: number
   y: number
