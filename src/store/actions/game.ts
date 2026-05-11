@@ -188,8 +188,7 @@ export const attemptToDoMove =
           break
         }
         default: {
-          // eslint-disable-next-line @typescript-eslint/only-throw-error
-          throw assertNever(operation satisfies never)
+          assertNever(operation satisfies never)
         }
       }
     }
