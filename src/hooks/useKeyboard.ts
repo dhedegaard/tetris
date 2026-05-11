@@ -21,6 +21,7 @@ export const keyboard1: Keybinds = {
   newGame: 'r',
 }
 const keybinds = keyboard1
+const handledKeys = new Set(Object.values(keybinds))
 
 const FIRST_REPEAT_INTERVAL = 400
 const REPEAT_INTERVAL = 75
@@ -115,6 +116,10 @@ export const useKeyboard = () => {
 
   useEffect(() => {
     const keydownHandler = (evt: KeyboardEvent) => {
+      if (handledKeys.has(evt.key)) {
+        evt.preventDefault()
+      }
+
       if (!evt.repeat) {
         pressKey(evt.key)
       }
@@ -122,7 +127,7 @@ export const useKeyboard = () => {
     const keyupHandler = (evt: KeyboardEvent) => {
       pressedKeys.current.delete(evt.key)
     }
-    document.addEventListener('keydown', keydownHandler, { passive: true })
+    document.addEventListener('keydown', keydownHandler)
     document.addEventListener('keyup', keyupHandler, { passive: true })
     return () => {
       document.removeEventListener('keydown', keydownHandler)
