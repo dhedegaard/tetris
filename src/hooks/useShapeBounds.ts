@@ -1,30 +1,32 @@
 import { useMemo } from 'react'
+import { Coordinate } from '../store/slices/blocks'
 import { useShape } from './useShape'
 
 export const useShapeBounds = () => {
   const { concretePositions } = useShape()
 
-  return useMemo(
-    () => ({
-      leftBottomElement: concretePositions.sort((a, b) => {
-        if (a.x === b.x) {
-          // Sort by bottom element for equal x values first (ie highest
-          // y value).
-          return b.y - a.y
-        }
-        // Find the left most elements.
-        return a.x - b.x
-      })[0],
-      rightBottomElement: concretePositions.sort((a, b) => {
-        if (a.x === b.x) {
-          // Sort by bottom element for equal x values first (ie highest
-          // y value).
-          return b.y - a.y
-        }
-        // Find the right most elements.
-        return b.x - a.x
-      })[0],
-    }),
-    [concretePositions]
-  )
+  return useMemo(() => {
+    let leftBottomElement: Coordinate | undefined
+    let rightBottomElement: Coordinate | undefined
+
+    for (const position of concretePositions) {
+      if (isFurtherLeftBottom(position, leftBottomElement)) {
+        leftBottomElement = position
+      }
+      if (isFurtherRightBottom(position, rightBottomElement)) {
+        rightBottomElement = position
+      }
+    }
+
+    return {
+      leftBottomElement,
+      rightBottomElement,
+    }
+  }, [concretePositions])
 }
+
+const isFurtherLeftBottom = (candidate: Coordinate, current: Coordinate | undefined): boolean =>
+  current == null || candidate.x < current.x || (candidate.x === current.x && candidate.y > current.y)
+
+const isFurtherRightBottom = (candidate: Coordinate, current: Coordinate | undefined): boolean =>
+  current == null || candidate.x > current.x || (candidate.x === current.x && candidate.y > current.y)
