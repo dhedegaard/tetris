@@ -106,4 +106,4 @@ export const createGame = (setup: GameSetup = {}): GameDriver => {
 export const rowWithGaps = (y: number, gaps: number[], color = 'gray'): Block[] =>
   Array.from({ length: 10 }, (_, x) => x)
     .filter((x) => !gaps.includes(x))
-    .map((x) => ({ x, y, color }))
+    .map((x) => ({ x, y, color }) satisfies Block)
