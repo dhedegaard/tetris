@@ -2,7 +2,9 @@
 
 Tetris in the browser (https://tetris.dhedegaard.dk): Next.js 16 App Router as a static export (`output: 'export'`), React 19 with the React Compiler, Redux Toolkit, Tailwind v4 + CSS modules.
 
-No tests and no typecheck script; `npm run build` type-checks. Vercel deploys on push to `main`.
+`npm test` runs Vitest. There's no typecheck script; `npm run build` type-checks. Vercel deploys on push to `main`.
+
+Game-logic tests go through `src/test/game-driver.ts`, the only test code that knows the store's shape — keep it that way so the tests outlive a state-library change.
 
 ## Gotchas
 
