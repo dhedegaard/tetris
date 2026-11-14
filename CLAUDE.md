@@ -8,9 +8,14 @@ Tests live in a `__tests__` directory below the module they test, named `*.test.
 
 Game-logic tests go through `src/store/__tests__/game.test-driver.ts`, the only test code that knows the store's shape — keep it that way so the tests outlive a state-library change.
 
+Gamepad (`useGamepad`) and the touch D-pad (`DPad`, touch screens only) have no automated coverage; check them by hand on the Vercel preview when changing input code.
+
 ## Gotchas
 
 - Landing a piece scores using the level from *before* the line clear.
+- `useTetrisStore` selectors must return stored references or primitives. A selector that builds a new array or object causes an infinite render loop, so derive in `useMemo` instead.
+- The shape queue starts in a fixed order so the static HTML matches the first render; `randomizeInitialQueue` shuffles it once on mount. Don't randomize at store creation.
+- lodash's `shuffle` keeps its own `Math.random`, so mocking `Math.random` in tests doesn't affect it. Assert on shape keys instead.
 
 ## Conventions
 
