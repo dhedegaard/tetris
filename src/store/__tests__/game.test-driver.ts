@@ -1,6 +1,6 @@
 // Store-agnostic driver for game-logic tests. Only this file knows how the
 // store is implemented, so the tests survive swapping the state library.
-import { createShapeElement, type Direction, type Shape } from '../components/shapes'
+import { createShapeElement, type Direction, type Shape } from '../../components/shapes'
 import {
   attemptToDoMove,
   type MoveOperation,
@@ -8,11 +8,11 @@ import {
   randomizeInitialQueue,
   runTicks,
   startNewGame,
-} from './actions/game'
-import { type Block, type Coordinate } from './slices/blocks'
-import { selectLevel, selectTickrate } from './slices/level'
-import { selectCurrentShape, upcomingShapes } from './slices/shape'
-import { createTetrisStore, type Gamestate, type TetrisState } from './tetris'
+} from '../actions/game'
+import { type Block, type Coordinate } from '../slices/blocks'
+import { selectLevel, selectTickrate } from '../slices/level'
+import { selectCurrentShape, upcomingShapes } from '../slices/shape'
+import { createTetrisStore, type Gamestate, type TetrisState } from '../tetris'
 
 export interface GameSetup {
   blocks?: Block[]

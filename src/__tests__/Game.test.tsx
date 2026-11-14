@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, expect, it, vi } from 'vitest'
-import { Game } from './Game'
-import { createInitialState, tetrisStore } from './store/tetris'
+import { Game } from '../Game'
+import { createInitialState, tetrisStore } from '../store/tetris'
 
 afterEach(() => {
   cleanup()

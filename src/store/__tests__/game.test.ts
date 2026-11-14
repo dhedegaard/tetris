@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { SHAPES } from '../components/shapes'
+import { SHAPES } from '../../components/shapes'
 import { createGame, rowWithGaps } from './game.test-driver'
 
 const ALL_SHAPES = [...SHAPES]
