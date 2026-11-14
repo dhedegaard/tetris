@@ -272,6 +272,23 @@ describe('shape queue', () => {
     expect(game.snapshot().queueKeys).toEqual(first.queueKeys)
   })
 
+  it('orders the shuffled queue by Math.random', () => {
+    const shuffledWith = (value: number) => {
+      vi.spyOn(Math, 'random').mockReturnValue(value)
+      const game = createGame({ isShapeQueueReady: false })
+      game.randomizeInitialQueue()
+      return game.snapshot().queue
+    }
+    const low = shuffledWith(0)
+    const high = shuffledWith(0.99)
+    // Exact orders would pin the library's internals; these catch a no-op shuffle.
+    expect(low).not.toEqual(ALL_SHAPES)
+    expect(high).not.toEqual(ALL_SHAPES)
+    expect(low).not.toEqual(high)
+    expect([...low].sort()).toEqual(ALL_SHAPES)
+    expect([...high].sort()).toEqual(ALL_SHAPES)
+  })
+
   it('refills with all seven shapes when fewer than seven are queued', () => {
     const game = createGame({ queue: ['O', 'I'] })
     game.dropToBottom()

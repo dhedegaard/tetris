@@ -1,4 +1,4 @@
-import { shuffle } from 'lodash-es'
+import { shuffle } from 'fast-shuffle'
 import { type FC, memo, useMemo } from 'react'
 import { assertNever } from '../../lib/assert-never'
 import { type Coordinates, ShapeDrawer, type ShapeDrawerProps } from '../ShapeDrawer'
