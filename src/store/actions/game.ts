@@ -10,14 +10,22 @@ import { assertNever } from '../../lib/assert-never'
 import { Block, withoutRow, withPersistedBlock, withUpsertedBlock } from '../slices/blocks'
 import { selectLevel, selectTickrate } from '../slices/level'
 import { advanceShapeQueue, selectCurrentShape } from '../slices/shape'
-import { createInitialState, DEFAULT_DIRECTION, DEFAULT_POSITION, TetrisStore } from '../tetris'
+import { createInitialState, spawnState, TetrisState, TetrisStore } from '../tetris'
+import type { Coordinate } from '../slices/blocks'
+
+type TetrisUpdate = Partial<TetrisState>
+
+interface MoveTarget extends Coordinate {
+  direction: Direction
+}
 
 export type MoveOperation = 'LEFT' | 'RIGHT' | 'DOWN' | 'ROTATE'
 
-const randomQueue = () => ({ shapeQueue: getRandomShapes(), hasRandomizedInitialQueue: true })
+const randomQueue = () =>
+  ({ shapeQueue: getRandomShapes(), hasRandomizedInitialQueue: true }) satisfies TetrisUpdate
 
 export const startNewGame = (store: TetrisStore) => {
-  store.setState({ ...createInitialState(), ...randomQueue() })
+  store.setState({ ...createInitialState(), ...randomQueue() } satisfies TetrisState)
 }
 
 /** Replaces the deterministic server-rendered queue with a random one, once. */
@@ -43,7 +51,7 @@ const clearFilledRows = (store: TetrisStore) => {
       blocks,
       rowsCleared: state.rowsCleared + rowsCleared,
       score: state.score + calculateScore(selectLevel(state), rowsCleared),
-    })
+    } satisfies TetrisUpdate)
   }
 }
 
@@ -85,17 +93,16 @@ const attemptPersistBlocks = (store: TetrisStore, blocks: Block[]): boolean => {
 
   if (blocks.some((e) => state.blocks.some((f) => e.x === f.x && e.y === f.y))) {
     // One or more blocks overlap with existing blocks, the game is over.
-    store.setState({ gamestate: 'gameover' })
+    store.setState({ gamestate: 'gameover' } satisfies TetrisUpdate)
     return false
   }
 
   // Persist the blocks, reset various things and go to the next shape.
   store.setState({
     blocks: blocks.reduce(withPersistedBlock, state.blocks),
-    position: { ...DEFAULT_POSITION },
-    direction: DEFAULT_DIRECTION,
+    ...spawnState(),
     shapeQueue: advanceShapeQueue(state.shapeQueue),
-  })
+  } satisfies TetrisUpdate)
   clearFilledRows(store)
 
   const newState = store.getState()
@@ -113,7 +120,7 @@ const attemptPersistBlocks = (store: TetrisStore, blocks: Block[]): boolean => {
         newState.blocks
       ),
       gamestate: 'gameover',
-    })
+    } satisfies TetrisUpdate)
   }
 
   return true
@@ -127,16 +134,16 @@ export const attemptToDoMove = (store: TetrisStore, operation: MoveOperation) =>
   }
 
   const { x, y } = state.position
-  const target = ((): { x: number; y: number; direction: Direction } => {
+  const target = ((): MoveTarget => {
     switch (operation) {
       case 'LEFT':
-        return { x: x - 1, y, direction: state.direction }
+        return { x: x - 1, y, direction: state.direction } satisfies MoveTarget
       case 'RIGHT':
-        return { x: x + 1, y, direction: state.direction }
+        return { x: x + 1, y, direction: state.direction } satisfies MoveTarget
       case 'DOWN':
-        return { x, y: y + 1, direction: state.direction }
+        return { x, y: y + 1, direction: state.direction } satisfies MoveTarget
       case 'ROTATE':
-        return { x, y, direction: nextDirection(state.direction) }
+        return { x, y, direction: nextDirection(state.direction) } satisfies MoveTarget
       default:
         return assertNever(operation satisfies never)
     }
@@ -150,7 +157,10 @@ export const attemptToDoMove = (store: TetrisStore, operation: MoveOperation) =>
   if (operation === 'DOWN') {
     doTick(store)
   } else {
-    store.setState({ position: { x: target.x, y: target.y }, direction: target.direction })
+    store.setState({
+      position: { x: target.x, y: target.y },
+      direction: target.direction,
+    } satisfies TetrisUpdate)
   }
 }
 
@@ -176,7 +186,7 @@ const doTick = (store: TetrisStore): 'moved-down' | 'persisted-and-new-shape' | 
 
   // Move down if space is free.
   if (arePositionsFree(newPositions, blocks)) {
-    store.setState({ position: { x: position.x, y: position.y + 1 } })
+    store.setState({ position: { x: position.x, y: position.y + 1 } } satisfies TetrisUpdate)
     return 'moved-down'
   }
 

@@ -18,21 +18,24 @@ export interface TetrisState {
 
 export type TetrisStore = StoreApi<TetrisState>
 
-export const DEFAULT_POSITION: Readonly<Coordinate> = Object.freeze({ x: 4, y: 1 })
-export const DEFAULT_DIRECTION: Direction = 'RIGHT'
+type SpawnState = Pick<TetrisState, 'position' | 'direction'>
 
-export const createInitialState = (): TetrisState => ({
-  gamestate: 'alive',
-  position: { ...DEFAULT_POSITION },
-  direction: DEFAULT_DIRECTION,
-  // Deterministic so the static HTML matches the first client render; the
-  // client shuffles it on mount.
-  shapeQueue: getInitialShapes(),
-  hasRandomizedInitialQueue: false,
-  score: 0,
-  rowsCleared: 0,
-  blocks: [],
-})
+/** Where and how each new piece starts. */
+export const spawnState = () =>
+  ({ position: { x: 4, y: 1 }, direction: 'RIGHT' }) satisfies SpawnState
+
+export const createInitialState = () =>
+  ({
+    gamestate: 'alive',
+    ...spawnState(),
+    // Deterministic so the static HTML matches the first client render; the
+    // client shuffles it on mount.
+    shapeQueue: getInitialShapes(),
+    hasRandomizedInitialQueue: false,
+    score: 0,
+    rowsCleared: 0,
+    blocks: [],
+  }) satisfies TetrisState
 
 export const createTetrisStore = (initialState: Partial<TetrisState> = {}): TetrisStore =>
   createStore<TetrisState>()(() => ({ ...createInitialState(), ...initialState }))

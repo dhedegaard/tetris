@@ -1,9 +1,10 @@
 import { useMemo } from 'react'
 import { calculateCoordinates } from '../components/shapes'
 import {
-  peekShapes as getPeekShapes,
   selectCurrentShape,
   selectIsShapeQueueReady,
+  selectShapeQueue,
+  upcomingShapes,
 } from '../store/slices/shape'
 import { useTetrisStore } from '../store/tetris'
 import { useDirection } from './useDirection'
@@ -11,8 +12,8 @@ import { usePosition } from './usePosition'
 
 /** Handles logic for determining the next shape to use. */
 export const useShape = () => {
-  const shapeQueue = useTetrisStore((state) => state.shapeQueue)
-  const peekShapes = useMemo(() => getPeekShapes(shapeQueue), [shapeQueue])
+  const shapeQueue = useTetrisStore(selectShapeQueue)
+  const peekShapes = useMemo(() => upcomingShapes(shapeQueue), [shapeQueue])
   const currentShape = useTetrisStore(selectCurrentShape)
   const isShapeQueueReady = useTetrisStore(selectIsShapeQueueReady)
   const { position } = usePosition()

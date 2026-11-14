@@ -5,6 +5,8 @@ import type { TetrisState } from '../tetris'
 export const advanceShapeQueue = (queue: readonly ShapeElement[]): ShapeElement[] =>
   (queue.length < SHAPES.length ? [...queue, ...getRandomShapes()] : queue).slice(1)
 
+export const selectShapeQueue = (state: TetrisState) => state.shapeQueue
+
 export const selectIsShapeQueueReady = (state: TetrisState) => state.hasRandomizedInitialQueue
 
 export const selectCurrentShape = (state: TetrisState): ShapeElement => {
@@ -16,4 +18,4 @@ export const selectCurrentShape = (state: TetrisState): ShapeElement => {
 }
 
 /** The upcoming shapes shown in the legend. */
-export const peekShapes = (queue: readonly ShapeElement[]) => queue.slice(1, 3)
+export const upcomingShapes = (queue: readonly ShapeElement[]) => queue.slice(1, 3)

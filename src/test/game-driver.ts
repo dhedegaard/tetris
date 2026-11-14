@@ -11,7 +11,7 @@ import {
 } from '../store/actions/game'
 import { Block, Coordinate } from '../store/slices/blocks'
 import { selectLevel, selectTickrate } from '../store/slices/level'
-import { peekShapes, selectCurrentShape } from '../store/slices/shape'
+import { selectCurrentShape, upcomingShapes } from '../store/slices/shape'
 import { createTetrisStore, Gamestate } from '../store/tetris'
 
 export interface GameSetup {
@@ -71,7 +71,7 @@ export const createGame = (setup: GameSetup = {}): GameDriver => {
         position: { ...state.position },
         direction: state.direction,
         currentShape: selectCurrentShape(state).shape,
-        peekShapes: peekShapes(state.shapeQueue).map((e) => e.shape),
+        peekShapes: upcomingShapes(state.shapeQueue).map((e) => e.shape),
         queue: state.shapeQueue.map((e) => e.shape),
         isShapeQueueReady: state.hasRandomizedInitialQueue,
         blocks: sortBlocks(state.blocks),
