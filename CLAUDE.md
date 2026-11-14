@@ -1,8 +1,8 @@
 # CLAUDE.md
 
-Tetris in the browser (https://tetris.dhedegaard.dk): Next.js 16 App Router as a static export (`output: 'export'`), React 19 with the React Compiler, Zustand, Tailwind v4 + CSS modules.
+Tetris in the browser (https://tetris.dhedegaard.dk): Next.js 16 App Router as a static export (`output: 'export'`).
 
-`npm test` runs Vitest. There's no typecheck script; `npm run build` type-checks. Vercel deploys on push to `main`.
+There's no typecheck script; `npm run build` type-checks. Vercel deploys on push to `main`.
 
 Bundle size: `npx next analyze --output --snapshot <name>`, then `npx next analyze export --snapshot <name> | gzip > …`. In the 2026-11-14 audit, Next + React were ~206 KB of the ~245 KB compressed client output on `/`. `src/App.tsx` is the only client entry and everything under it renders on first paint, so lazy-splitting the app (~14 KB) isn't worth it.
 
