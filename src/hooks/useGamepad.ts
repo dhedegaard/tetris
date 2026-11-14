@@ -1,17 +1,10 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { attemptToDoMove, moveGoToBottom, startNewGame } from '../store/actions/game'
 import { tetrisStore } from '../store/tetris'
-import { Gamestate, useGamestate } from './useGamestate'
 
 const DEFAULT_INTERVAL = 150
 
 export const useGamepad = () => {
-  const { gamestate } = useGamestate()
-  const gamestateRef = useRef<Gamestate>(gamestate)
-  useEffect(() => {
-    gamestateRef.current = gamestate
-  }, [gamestate])
-
   const mountedRef = useRef(false)
   const animationFrameRefs = useRef(new Map<number, number>())
   const lastClickedRef = useRef<{ [key: string]: number }>({})
@@ -49,7 +42,7 @@ export const useGamepad = () => {
 
         const now = Date.now()
         const { buttons, axes } = gamepad
-        if (gamestateRef.current === 'alive') {
+        if (tetrisStore.getState().gamestate === 'alive') {
           if (
             buttons[12]?.pressed === true ||
             buttons[0]?.pressed === true ||
@@ -90,7 +83,7 @@ export const useGamepad = () => {
             }
           }
         }
-        if (gamestateRef.current === 'gameover' && buttons[0]?.pressed === true) {
+        if (tetrisStore.getState().gamestate === 'gameover' && buttons[0]?.pressed === true) {
           // A
           startNewGame(tetrisStore)
         }

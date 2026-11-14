@@ -108,7 +108,7 @@ export const ShapeRenderer: FC<Props> = memo(function ShapeRenderer({
   return <ShapeDrawer shape={shape} x={x} y={y} coordinates={coordinates} renderType={renderType} />
 })
 
-const createShapeElement = (shape: Shape, key: string): ShapeElement =>
+export const createShapeElement = (shape: Shape, key: string): ShapeElement =>
   ({
     shape,
     key,

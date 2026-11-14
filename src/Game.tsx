@@ -9,7 +9,7 @@ import { GameOver } from './GameOver'
 import { useTetris } from './hooks'
 import { useBottomShape } from './hooks/useBottomShape'
 
-const Game = memo(function Game() {
+export const Game = memo(function Game() {
   const {
     direction,
     shape,
@@ -86,8 +86,4 @@ const Game = memo(function Game() {
       />
     </div>
   )
-})
-
-export const GameWithStore = memo(function GameWithStore() {
-  return <Game />
 })

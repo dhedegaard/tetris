@@ -2,6 +2,7 @@ import { Coordinates } from '../../components/ShapeDrawer'
 import {
   calculateCoordinates,
   colorFromShape,
+  Direction,
   getRandomShapes,
   nextDirection,
 } from '../../components/shapes'
@@ -9,21 +10,14 @@ import { assertNever } from '../../lib/assert-never'
 import { Block, withoutRow, withPersistedBlock, withUpsertedBlock } from '../slices/blocks'
 import { selectLevel, selectTickrate } from '../slices/level'
 import { advanceShapeQueue, selectCurrentShape } from '../slices/shape'
-import { DEFAULT_DIRECTION, DEFAULT_POSITION, TetrisState, TetrisStore } from '../tetris'
+import { createInitialState, DEFAULT_DIRECTION, DEFAULT_POSITION, TetrisStore } from '../tetris'
 
 export type MoveOperation = 'LEFT' | 'RIGHT' | 'DOWN' | 'ROTATE'
 
+const randomQueue = () => ({ shapeQueue: getRandomShapes(), hasRandomizedInitialQueue: true })
+
 export const startNewGame = (store: TetrisStore) => {
-  store.setState({
-    blocks: [],
-    shapeQueue: getRandomShapes(),
-    hasRandomizedInitialQueue: true,
-    position: { ...DEFAULT_POSITION },
-    direction: DEFAULT_DIRECTION,
-    gamestate: 'alive',
-    score: 0,
-    rowsCleared: 0,
-  })
+  store.setState({ ...createInitialState(), ...randomQueue() })
 }
 
 /** Replaces the deterministic server-rendered queue with a random one, once. */
@@ -31,51 +25,39 @@ export const randomizeInitialQueue = (store: TetrisStore) => {
   if (store.getState().hasRandomizedInitialQueue) {
     return
   }
-  store.setState({ shapeQueue: getRandomShapes(), hasRandomizedInitialQueue: true })
+  store.setState(randomQueue())
 }
 
 const clearFilledRows = (store: TetrisStore) => {
+  const state = store.getState()
+  let { blocks } = state
   let rowsCleared = 0
-
-  // The scoring later depends on the level before clearing rows, so we
-  // calculate the level beforehand.
-  const level = selectLevel(store.getState())
-
-  for (;;) {
-    const [filledRow] = findFilledRows(store.getState().blocks)
-    if (filledRow == null) {
-      break
-    }
-
-    store.setState((state) => ({ blocks: withoutRow(state.blocks, filledRow) }))
+  for (let row = findFilledRow(blocks); row != null; row = findFilledRow(blocks)) {
+    blocks = withoutRow(blocks, row)
     rowsCleared++
   }
 
   if (rowsCleared > 0) {
-    store.setState((state) => ({
+    // Score with the level from before these rows count towards it.
+    store.setState({
+      blocks,
       rowsCleared: state.rowsCleared + rowsCleared,
-      score: state.score + calculateScore(level, rowsCleared),
-    }))
+      score: state.score + calculateScore(selectLevel(state), rowsCleared),
+    })
   }
-
-  return rowsCleared
 }
 
-const findFilledRows = (blocks: readonly Block[]): number[] => {
-  if (blocks.length === 0) {
-    return []
-  }
-
-  const minY = blocks.reduce((min, block) => Math.min(min, block.y), Infinity)
-  const maxY = blocks.reduce((max, block) => Math.max(max, block.y), -Infinity)
-  const result = []
-  for (let y = maxY; y >= minY; y--) {
-    const rowBlocks = blocks.filter((e) => e.y === y)
-    if (rowBlocks.length === 10) {
-      result.push(y)
+/** Any full row; the order rows are cleared in doesn't matter. */
+const findFilledRow = (blocks: readonly Block[]): number | undefined => {
+  const counts = new Map<number, number>()
+  for (const { y } of blocks) {
+    const count = (counts.get(y) ?? 0) + 1
+    if (count === 10) {
+      return y
     }
+    counts.set(y, count)
   }
-  return result
+  return undefined
 }
 
 const calculateScore = (level: number, linesCleared: number): number => {
@@ -144,70 +126,31 @@ export const attemptToDoMove = (store: TetrisStore, operation: MoveOperation) =>
     return
   }
 
-  const currentShape = selectCurrentShape(state)
-  const { blocks, position, direction } = state
-
-  // Determine the position after the move (calculateCoordinates).
-  const newPositions: Coordinates = (() => {
+  const { x, y } = state.position
+  const target = ((): { x: number; y: number; direction: Direction } => {
     switch (operation) {
-      case 'LEFT': {
-        return calculateCoordinates(currentShape.shape, {
-          direction,
-          x: position.x - 1,
-          y: position.y,
-        })
-      }
-      case 'RIGHT': {
-        return calculateCoordinates(currentShape.shape, {
-          direction,
-          x: position.x + 1,
-          y: position.y,
-        })
-      }
-      case 'DOWN': {
-        return calculateCoordinates(currentShape.shape, {
-          direction,
-          x: position.x,
-          y: position.y + 1,
-        })
-      }
-      case 'ROTATE': {
-        return calculateCoordinates(currentShape.shape, {
-          direction: nextDirection(direction),
-          x: position.x,
-          y: position.y,
-        })
-      }
-      default: {
+      case 'LEFT':
+        return { x: x - 1, y, direction: state.direction }
+      case 'RIGHT':
+        return { x: x + 1, y, direction: state.direction }
+      case 'DOWN':
+        return { x, y: y + 1, direction: state.direction }
+      case 'ROTATE':
+        return { x, y, direction: nextDirection(state.direction) }
+      default:
         return assertNever(operation satisfies never)
-      }
     }
   })()
 
-  if (!arePositionsFree(newPositions, blocks)) {
+  if (
+    !arePositionsFree(calculateCoordinates(selectCurrentShape(state).shape, target), state.blocks)
+  ) {
     return
   }
-
-  switch (operation) {
-    case 'LEFT': {
-      store.setState({ position: { x: position.x - 1, y: position.y } })
-      break
-    }
-    case 'RIGHT': {
-      store.setState({ position: { x: position.x + 1, y: position.y } })
-      break
-    }
-    case 'DOWN': {
-      doTick(store)
-      break
-    }
-    case 'ROTATE': {
-      store.setState({ direction: nextDirection(direction) })
-      break
-    }
-    default: {
-      assertNever(operation satisfies never)
-    }
+  if (operation === 'DOWN') {
+    doTick(store)
+  } else {
+    store.setState({ position: { x: target.x, y: target.y }, direction: target.direction })
   }
 }
 
@@ -256,10 +199,8 @@ const arePositionsFree = (positions: Coordinates, blocks: readonly Block[]): boo
   )
 
 export const runTicks = async (store: TetrisStore, isCancelled: () => boolean) => {
-  const positionY = (state: TetrisState) => state.position.y
-
   let lastTick = Date.now()
-  let lastY = positionY(store.getState())
+  let lastY = store.getState().position.y
   while (await rafPromise()) {
     const now = Date.now()
     const state = store.getState()
@@ -269,8 +210,8 @@ export const runTicks = async (store: TetrisStore, isCancelled: () => boolean) =
     }
 
     // If we moved down, reset the last tick.
-    if (lastY !== positionY(state)) {
-      lastY = positionY(state)
+    if (lastY !== state.position.y) {
+      lastY = state.position.y
       lastTick = Date.now()
       continue
     }

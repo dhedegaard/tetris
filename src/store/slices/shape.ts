@@ -15,5 +15,5 @@ export const selectCurrentShape = (state: TetrisState): ShapeElement => {
   return firstShape
 }
 
-/** Returns a new array; subscribe with `useShallow`. */
-export const selectPeekShapes = (state: TetrisState) => state.shapeQueue.slice(1, 3)
+/** The upcoming shapes shown in the legend. */
+export const peekShapes = (queue: readonly ShapeElement[]) => queue.slice(1, 3)

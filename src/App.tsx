@@ -2,7 +2,7 @@
 
 import { memo, useCallback, useState } from 'react'
 import styles from './App.module.css'
-import { GameWithStore } from './Game'
+import { Game } from './Game'
 import { GlobalPanel } from './GlobalPanel'
 import { Music } from './components/Music'
 import { font } from './font'
@@ -22,7 +22,7 @@ export const App = memo(function App() {
         className={`${font.variable} ${styles['main'] as string} mx-auto box-border flex aspect-[1.11] h-auto max-h-[calc(100vh-8px)] items-stretch justify-center gap-[4px] border-4 border-solid border-[purple] bg-[purple] max-sm:aspect-[0.82]`}
       >
         <GlobalPanel musicEnabled={musicEnabled} toggleMusic={toggleMusic} />
-        <GameWithStore />
+        <Game />
       </main>
     </>
   )

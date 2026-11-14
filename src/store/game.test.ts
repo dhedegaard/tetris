@@ -1,7 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { SHAPES } from '../components/shapes'
 import { createGame, rowWithGaps } from '../test/game-driver'
 
-const ALL_SHAPES = ['I', 'J', 'L', 'O', 'S', 'T', 'Z']
+const ALL_SHAPES = [...SHAPES]
 
 afterEach(() => {
   vi.restoreAllMocks()

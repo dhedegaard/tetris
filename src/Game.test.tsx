@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, expect, it, vi } from 'vitest'
-import { GameWithStore } from './Game'
+import { Game } from './Game'
 
 afterEach(() => {
   cleanup()
@@ -15,7 +15,7 @@ const press = (key: string) => {
 
 it('plays through the keyboard until game over, then restarts', async () => {
   const consoleError = vi.spyOn(console, 'error')
-  render(<GameWithStore />)
+  render(<Game />)
   // Let the mount effect shuffle the queue and start the game.
   await act(async () => {})
 

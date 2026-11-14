@@ -27,12 +27,6 @@ const FIRST_REPEAT_INTERVAL = 400
 const REPEAT_INTERVAL = 75
 
 export const useKeyboard = () => {
-  const gamestate = useTetrisStore((state) => state.gamestate)
-  const gamestateRef = useRef(gamestate)
-  useEffect(() => {
-    gamestateRef.current = gamestate
-  }, [gamestate])
-
   // Handle a key being pressed.
   const handleKey = useCallback((key: string) => {
     switch (key) {
@@ -63,7 +57,7 @@ export const useKeyboard = () => {
 
       case keybinds.goToBottom:
         // space
-        if (gamestateRef.current === 'gameover') {
+        if (tetrisStore.getState().gamestate === 'gameover') {
           startNewGame(tetrisStore)
         } else {
           moveGoToBottom(tetrisStore)

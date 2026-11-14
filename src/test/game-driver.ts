@@ -1,39 +1,34 @@
 // Store-agnostic driver for game-logic tests. Only this file knows how the
 // store is implemented, so the tests survive swapping the state library.
-import {
-  calculateCoordinates,
-  colorFromShape,
-  Direction,
-  Shape,
-  ShapeElement,
-} from '../components/shapes'
+import { createShapeElement, Direction, Shape } from '../components/shapes'
 import {
   attemptToDoMove,
+  MoveOperation,
   moveGoToBottom,
   randomizeInitialQueue,
   runTicks,
   startNewGame,
 } from '../store/actions/game'
-import { Block } from '../store/slices/blocks'
+import { Block, Coordinate } from '../store/slices/blocks'
 import { selectLevel, selectTickrate } from '../store/slices/level'
-import { selectCurrentShape, selectPeekShapes } from '../store/slices/shape'
-import { createTetrisStore } from '../store/tetris'
+import { peekShapes, selectCurrentShape } from '../store/slices/shape'
+import { createTetrisStore, Gamestate } from '../store/tetris'
 
 export interface GameSetup {
   blocks?: Block[]
   queue?: Shape[]
-  position?: { x: number; y: number }
+  position?: Coordinate
   direction?: Direction
   score?: number
   rowsCleared?: number
-  gamestate?: 'alive' | 'gameover'
+  gamestate?: Gamestate
   /** Defaults to true, as if the client already randomized the queue. */
   isShapeQueueReady?: boolean
 }
 
 export interface GameSnapshot {
-  gamestate: 'alive' | 'gameover'
-  position: { x: number; y: number }
+  gamestate: Gamestate
+  position: Coordinate
   direction: Direction
   currentShape: Shape
   peekShapes: Shape[]
@@ -47,7 +42,7 @@ export interface GameSnapshot {
 
 export interface GameDriver {
   snapshot: () => GameSnapshot
-  move: (operation: 'LEFT' | 'RIGHT' | 'DOWN' | 'ROTATE') => void
+  move: (operation: MoveOperation) => void
   dropToBottom: () => void
   startNewGame: () => void
   randomizeInitialQueue: () => void
@@ -55,27 +50,17 @@ export interface GameDriver {
   runTicks: () => () => void
 }
 
-const toShapeElement = (shape: Shape, index: number): ShapeElement =>
-  ({
-    shape,
-    key: `test-${shape}-${String(index)}`,
-    color: colorFromShape(shape),
-    coordinates: calculateCoordinates(shape, { direction: 'RIGHT', x: 0, y: 0 }),
-  }) satisfies ShapeElement
-
 const sortBlocks = (blocks: readonly Block[]): Block[] =>
   [...blocks].sort((a, b) => a.y - b.y || a.x - b.x)
 
 export const createGame = (setup: GameSetup = {}): GameDriver => {
+  const { queue, isShapeQueueReady = true, ...rest } = setup
   const store = createTetrisStore({
-    ...(setup.gamestate == null ? {} : { gamestate: setup.gamestate }),
-    ...(setup.position == null ? {} : { position: setup.position }),
-    ...(setup.direction == null ? {} : { direction: setup.direction }),
-    ...(setup.score == null ? {} : { score: setup.score }),
-    ...(setup.rowsCleared == null ? {} : { rowsCleared: setup.rowsCleared }),
-    ...(setup.blocks == null ? {} : { blocks: setup.blocks }),
-    ...(setup.queue == null ? {} : { shapeQueue: setup.queue.map(toShapeElement) }),
-    hasRandomizedInitialQueue: setup.isShapeQueueReady ?? true,
+    ...rest,
+    ...(queue == null
+      ? {}
+      : { shapeQueue: queue.map((shape, i) => createShapeElement(shape, `test-${String(i)}`)) }),
+    hasRandomizedInitialQueue: isShapeQueueReady,
   })
 
   return {
@@ -86,7 +71,7 @@ export const createGame = (setup: GameSetup = {}): GameDriver => {
         position: { ...state.position },
         direction: state.direction,
         currentShape: selectCurrentShape(state).shape,
-        peekShapes: selectPeekShapes(state).map((e) => e.shape),
+        peekShapes: peekShapes(state.shapeQueue).map((e) => e.shape),
         queue: state.shapeQueue.map((e) => e.shape),
         isShapeQueueReady: state.hasRandomizedInitialQueue,
         blocks: sortBlocks(state.blocks),
