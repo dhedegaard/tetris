@@ -1,4 +1,3 @@
-import { Coordinates } from '../../components/ShapeDrawer'
 import {
   calculateCoordinates,
   colorFromShape,
@@ -7,11 +6,16 @@ import {
   nextDirection,
 } from '../../components/shapes'
 import { assertNever } from '../../lib/assert-never'
-import { Block, withoutRow, withPersistedBlock, withUpsertedBlock } from '../slices/blocks'
+import {
+  type Block,
+  type Coordinate,
+  withoutRow,
+  withPersistedBlock,
+  withUpsertedBlock,
+} from '../slices/blocks'
 import { selectLevel, selectTickrate } from '../slices/level'
 import { advanceShapeQueue, selectCurrentShape } from '../slices/shape'
 import { createInitialState, spawnState, TetrisState, TetrisStore } from '../tetris'
-import type { Coordinate } from '../slices/blocks'
 
 type TetrisUpdate = Partial<TetrisState>
 
@@ -84,17 +88,16 @@ const calculateScore = (level: number, linesCleared: number): number => {
   )
 }
 
-/** Returns true if the blocks were persisted. */
-const attemptPersistBlocks = (store: TetrisStore, blocks: Block[]): boolean => {
+const attemptPersistBlocks = (store: TetrisStore, blocks: readonly Block[]) => {
   const state = store.getState()
   if (state.gamestate === 'gameover') {
-    return false
+    return
   }
 
-  if (blocks.some((e) => state.blocks.some((f) => e.x === f.x && e.y === f.y))) {
+  if (!arePositionsFree(blocks, state.blocks)) {
     // One or more blocks overlap with existing blocks, the game is over.
     store.setState({ gamestate: 'gameover' } satisfies TetrisUpdate)
-    return false
+    return
   }
 
   // Persist the blocks, reset various things and go to the next shape.
@@ -115,15 +118,13 @@ const attemptPersistBlocks = (store: TetrisStore, blocks: Block[]): boolean => {
   if (!arePositionsFree(newShapeBlocks, newState.blocks)) {
     const newBlockColor = colorFromShape(newCurrentShape.shape)
     store.setState({
-      blocks: newShapeBlocks.reduce<Block[]>(
-        (acc, block) => withUpsertedBlock(acc, { ...block, color: newBlockColor }),
+      blocks: newShapeBlocks.reduce<readonly Block[]>(
+        (acc, block) => withUpsertedBlock(acc, { ...block, color: newBlockColor } satisfies Block),
         newState.blocks
       ),
       gamestate: 'gameover',
     } satisfies TetrisUpdate)
   }
-
-  return true
 }
 
 /** Attempts the move, if there's space. */
@@ -198,12 +199,12 @@ const doTick = (store: TetrisStore): 'moved-down' | 'persisted-and-new-shape' | 
       direction,
       x: position.x,
       y: position.y,
-    }).map((block) => ({ ...block, color: blockColor }))
+    }).map((block) => ({ ...block, color: blockColor }) satisfies Block)
   )
   return 'persisted-and-new-shape'
 }
 
-const arePositionsFree = (positions: Coordinates, blocks: readonly Block[]): boolean =>
+const arePositionsFree = (positions: readonly Coordinate[], blocks: readonly Block[]): boolean =>
   positions.every(
     (e) => e.x >= 0 && e.x < 10 && e.y < 20 && !blocks.some((f) => f.x === e.x && f.y === e.y)
   )

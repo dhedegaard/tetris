@@ -5,15 +5,17 @@ import type { Block, Coordinate } from './slices/blocks'
 
 export type Gamestate = 'alive' | 'gameover'
 
+// Readonly so in-place mutation fails to compile: Zustand only re-renders on a
+// new reference, and nothing checks for mutation at runtime.
 export interface TetrisState {
-  gamestate: Gamestate
-  position: Coordinate
-  direction: Direction
-  shapeQueue: ShapeElement[]
-  hasRandomizedInitialQueue: boolean
-  score: number
-  rowsCleared: number
-  blocks: Block[]
+  readonly gamestate: Gamestate
+  readonly position: Readonly<Coordinate>
+  readonly direction: Direction
+  readonly shapeQueue: readonly ShapeElement[]
+  readonly hasRandomizedInitialQueue: boolean
+  readonly score: number
+  readonly rowsCleared: number
+  readonly blocks: readonly Readonly<Block>[]
 }
 
 export type TetrisStore = StoreApi<TetrisState>
@@ -38,7 +40,9 @@ export const createInitialState = () =>
   }) satisfies TetrisState
 
 export const createTetrisStore = (initialState: Partial<TetrisState> = {}): TetrisStore =>
-  createStore<TetrisState>()(() => ({ ...createInitialState(), ...initialState }))
+  createStore<TetrisState>()(
+    () => ({ ...createInitialState(), ...initialState }) satisfies TetrisState
+  )
 
 export const tetrisStore = createTetrisStore()
 

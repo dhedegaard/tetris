@@ -12,7 +12,7 @@ import {
 import { Block, Coordinate } from '../store/slices/blocks'
 import { selectLevel, selectTickrate } from '../store/slices/level'
 import { selectCurrentShape, upcomingShapes } from '../store/slices/shape'
-import { createTetrisStore, Gamestate } from '../store/tetris'
+import { createTetrisStore, Gamestate, type TetrisState } from '../store/tetris'
 
 export interface GameSetup {
   blocks?: Block[]
@@ -61,7 +61,7 @@ export const createGame = (setup: GameSetup = {}): GameDriver => {
       ? {}
       : { shapeQueue: queue.map((shape, i) => createShapeElement(shape, `test-${String(i)}`)) }),
     hasRandomizedInitialQueue: isShapeQueueReady,
-  })
+  } satisfies Partial<TetrisState>)
 
   return {
     snapshot: () => {

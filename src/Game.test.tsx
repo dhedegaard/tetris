@@ -2,9 +2,12 @@
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, expect, it, vi } from 'vitest'
 import { Game } from './Game'
+import { createInitialState, tetrisStore } from './store/tetris'
 
 afterEach(() => {
   cleanup()
+  // <Game /> uses the app's singleton store; start the next test fresh.
+  tetrisStore.setState(createInitialState(), true)
   vi.restoreAllMocks()
 })
 
