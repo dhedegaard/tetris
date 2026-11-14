@@ -15,7 +15,6 @@ Gamepad (`useGamepad`) and the touch D-pad (`DPad`, touch screens only) have no 
 - Landing a piece scores using the level from *before* the line clear.
 - `useTetrisStore` selectors must return stored references or primitives. A selector that builds a new array or object causes an infinite render loop, so derive in `useMemo` instead.
 - The shape queue starts in a fixed order so the static HTML matches the first render; `randomizeInitialQueue` shuffles it once on mount. Don't randomize at store creation.
-- lodash's `shuffle` keeps its own `Math.random`, so mocking `Math.random` in tests doesn't affect it. Assert on shape keys instead.
 
 ## Conventions
 
