@@ -1,12 +1,10 @@
 import { useMemo } from 'react'
-import { TetrisStoreState, useTetrisSelector } from '../store/tetris'
+import { type TetrisState, useTetrisStore } from '../store/tetris'
 
-/** Calculate the amount of score points earned, based on the number of lines cleared and the level. */
-
-const scoreSelector = (state: TetrisStoreState) => state.score.score
+const selectScore = (state: TetrisState) => state.score
 
 /** Handles keeping track of the current score in the game. */
 export const useScore = () => {
-  const score = useTetrisSelector(scoreSelector)
+  const score = useTetrisStore(selectScore)
   return useMemo(() => ({ score }), [score])
 }

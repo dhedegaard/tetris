@@ -1,5 +1,4 @@
 import { memo } from 'react'
-import { Provider } from 'react-redux'
 import { Block } from './components/Block'
 import { Bounds } from './components/Bounds'
 import { DPad } from './components/DPad'
@@ -9,9 +8,14 @@ import { ShapeRenderer } from './components/shapes'
 import { GameOver } from './GameOver'
 import { useTetris } from './hooks'
 import { useBottomShape } from './hooks/useBottomShape'
+import { startNewGame } from './store/actions/game'
 import { tetrisStore } from './store/tetris'
 
-const Game = memo(function Game() {
+const restart = () => {
+  startNewGame(tetrisStore)
+}
+
+export const Game = memo(function Game() {
   const {
     direction,
     shape,
@@ -21,7 +25,6 @@ const Game = memo(function Game() {
     score,
     peekShapes,
     level,
-    startNewGame,
     shapeBounds,
     isShapeQueueReady,
   } = useTetris()
@@ -77,7 +80,7 @@ const Game = memo(function Game() {
                 renderType="normal"
               />
             ))}
-          {gamestate === 'gameover' && <GameOver onClick={startNewGame} />}
+          {gamestate === 'gameover' && <GameOver onClick={restart} />}
         </Grid>
       </div>
       <Legend
@@ -87,13 +90,5 @@ const Game = memo(function Game() {
         isShapeQueueReady={isShapeQueueReady}
       />
     </div>
-  )
-})
-
-export const GameWithStore = memo(function GameWithStore() {
-  return (
-    <Provider store={tetrisStore}>
-      <Game />
-    </Provider>
   )
 })

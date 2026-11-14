@@ -1,18 +1,10 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { attemptToDoMove, moveGoToBottom, startNewGame } from '../store/actions/game'
-import { useTetrisDispatch } from '../store/tetris'
-import { Gamestate, useGamestate } from './useGamestate'
+import { tetrisStore } from '../store/tetris'
 
 const DEFAULT_INTERVAL = 150
 
 export const useGamepad = () => {
-  const dispatch = useTetrisDispatch()
-  const { gamestate } = useGamestate()
-  const gamestateRef = useRef<Gamestate>(gamestate)
-  useEffect(() => {
-    gamestateRef.current = gamestate
-  }, [gamestate])
-
   const mountedRef = useRef(false)
   const animationFrameRefs = useRef(new Map<number, number>())
   const lastClickedRef = useRef<{ [key: string]: number }>({})
@@ -50,7 +42,7 @@ export const useGamepad = () => {
 
         const now = Date.now()
         const { buttons, axes } = gamepad
-        if (gamestateRef.current === 'alive') {
+        if (tetrisStore.getState().gamestate === 'alive') {
           if (
             buttons[12]?.pressed === true ||
             buttons[0]?.pressed === true ||
@@ -58,49 +50,49 @@ export const useGamepad = () => {
           ) {
             // Up or A
             if (moveNullOrAfterInterval('ROTATE')) {
-              dispatch(attemptToDoMove('ROTATE'))
+              attemptToDoMove(tetrisStore, 'ROTATE')
               lastClickedRef.current['ROTATE'] = now
             }
           }
           if (buttons[13]?.pressed === true || (axes[1] != null && axes[1] > 0.9)) {
             // Down
             if (moveNullOrAfterInterval('DOWN')) {
-              dispatch(attemptToDoMove('DOWN'))
+              attemptToDoMove(tetrisStore, 'DOWN')
               lastClickedRef.current['DOWN'] = now - 125
             }
           }
           if (buttons[14]?.pressed === true || (axes[0] != null && axes[0] < -0.9)) {
             // Left
             if (moveNullOrAfterInterval('LEFT')) {
-              dispatch(attemptToDoMove('LEFT'))
+              attemptToDoMove(tetrisStore, 'LEFT')
               lastClickedRef.current['LEFT'] = now
             }
           }
           if (buttons[15]?.pressed === true || (axes[0] != null && axes[0] > 0.9)) {
             // Right
             if (moveNullOrAfterInterval('RIGHT')) {
-              dispatch(attemptToDoMove('RIGHT'))
+              attemptToDoMove(tetrisStore, 'RIGHT')
               lastClickedRef.current['RIGHT'] = now
             }
           }
           if (buttons[1]?.pressed === true) {
             // B
             if (moveNullOrAfterInterval('moveToBottom')) {
-              dispatch(moveGoToBottom())
+              moveGoToBottom(tetrisStore)
               lastClickedRef.current['moveToBottom'] = now + 850
             }
           }
         }
-        if (gamestateRef.current === 'gameover' && buttons[0]?.pressed === true) {
+        if (tetrisStore.getState().gamestate === 'gameover' && buttons[0]?.pressed === true) {
           // A
-          dispatch(startNewGame())
+          startNewGame(tetrisStore)
         }
 
         animationFrameRefs.current.set(gamepadIndex, requestAnimationFrame(handler))
       }
       animationFrameRefs.current.set(gamepadIndex, requestAnimationFrame(handler))
     },
-    [dispatch, stopGamepad]
+    [stopGamepad]
   )
 
   const scanGamepads = useCallback(() => {

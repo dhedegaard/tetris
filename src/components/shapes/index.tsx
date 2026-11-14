@@ -1,7 +1,7 @@
 import { shuffle } from 'lodash-es'
-import { FC, memo, useMemo } from 'react'
+import { type FC, memo, useMemo } from 'react'
 import { assertNever } from '../../lib/assert-never'
-import { Coordinates, ShapeDrawer, type ShapeDrawerProps } from '../ShapeDrawer'
+import { type Coordinates, ShapeDrawer, type ShapeDrawerProps } from '../ShapeDrawer'
 import { COLOR_I, I } from './I'
 import { COLOR_J, J } from './J'
 import { COLOR_L, L } from './L'
@@ -108,7 +108,7 @@ export const ShapeRenderer: FC<Props> = memo(function ShapeRenderer({
   return <ShapeDrawer shape={shape} x={x} y={y} coordinates={coordinates} renderType={renderType} />
 })
 
-const createShapeElement = (shape: Shape, key: string): ShapeElement =>
+export const createShapeElement = (shape: Shape, key: string): ShapeElement =>
   ({
     shape,
     key,

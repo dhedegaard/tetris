@@ -1,5 +1,5 @@
-import { ShapeProps } from '.'
-import { Coordinates } from '../ShapeDrawer'
+import { type ShapeProps } from '.'
+import { type Coordinates } from '../ShapeDrawer'
 
 export const COLOR_J = 'lightblue'
 

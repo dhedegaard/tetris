@@ -3,17 +3,19 @@ import { calculateCoordinates } from '../components/shapes'
 import {
   selectCurrentShape,
   selectIsShapeQueueReady,
-  selectPeekShapes,
+  selectShapeQueue,
+  upcomingShapes,
 } from '../store/slices/shape'
-import { useTetrisSelector } from '../store/tetris'
+import { useTetrisStore } from '../store/tetris'
 import { useDirection } from './useDirection'
 import { usePosition } from './usePosition'
 
 /** Handles logic for determining the next shape to use. */
 export const useShape = () => {
-  const peekShapes = useTetrisSelector(selectPeekShapes)
-  const currentShape = useTetrisSelector(selectCurrentShape)
-  const isShapeQueueReady = useTetrisSelector(selectIsShapeQueueReady)
+  const shapeQueue = useTetrisStore(selectShapeQueue)
+  const peekShapes = useMemo(() => upcomingShapes(shapeQueue), [shapeQueue])
+  const currentShape = useTetrisStore(selectCurrentShape)
+  const isShapeQueueReady = useTetrisStore(selectIsShapeQueueReady)
   const { position } = usePosition()
   const { direction } = useDirection()
 
