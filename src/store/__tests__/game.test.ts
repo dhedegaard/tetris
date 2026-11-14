@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { SHAPES } from '../../components/shapes'
 import { createGame, rowWithGaps } from './game.test-driver'
 
@@ -306,17 +306,16 @@ describe('level and tick rate', () => {
 
 describe('tick loop', () => {
   // Node has no requestAnimationFrame, so emulate 60 fps frames on fake timers.
-  const fakeTime = () => {
+  beforeEach(() => {
     vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] })
     vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) =>
       setTimeout(() => {
         callback(Date.now())
       }, 16)
     )
-  }
+  })
 
   it('moves the shape down once per tick at level 0', async () => {
-    fakeTime()
     const game = createGame({ queue: ['O', 'I'] })
     const cancel = game.runTicks()
     await vi.advanceTimersByTimeAsync(780)
@@ -329,7 +328,6 @@ describe('tick loop', () => {
   })
 
   it('ticks faster at higher levels', async () => {
-    fakeTime()
     const game = createGame({ queue: ['O', 'I'], rowsCleared: 50 })
     const cancel = game.runTicks()
     // Level 5 ticks every 380 ms.
@@ -339,7 +337,6 @@ describe('tick loop', () => {
   })
 
   it('lands the shape when a tick cannot move it down', async () => {
-    fakeTime()
     const game = createGame({ queue: ['O', 'I'], position: { x: 4, y: 18 } })
     const cancel = game.runTicks()
     await vi.advanceTimersByTimeAsync(820)
@@ -349,7 +346,6 @@ describe('tick loop', () => {
   })
 
   it('restarts the tick timer after a manual move down', async () => {
-    fakeTime()
     const game = createGame({ queue: ['O', 'I'] })
     const cancel = game.runTicks()
     await vi.advanceTimersByTimeAsync(500)
@@ -363,7 +359,6 @@ describe('tick loop', () => {
   })
 
   it('stops ticking once cancelled', async () => {
-    fakeTime()
     const game = createGame({ queue: ['O', 'I'] })
     const cancel = game.runTicks()
     cancel()

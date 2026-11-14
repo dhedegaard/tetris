@@ -10,8 +10,10 @@ import {
   type Block,
   type Coordinate,
   withoutRow,
-  withPersistedBlock,
   withUpsertedBlock,
+  BOARD_HEIGHT,
+  BOARD_WIDTH,
+  sameCell,
 } from '../slices/blocks'
 import { selectLevel, selectTickrate } from '../slices/level'
 import { advanceShapeQueue, selectCurrentShape } from '../slices/shape'
@@ -64,7 +66,7 @@ const findFilledRow = (blocks: readonly Block[]): number | undefined => {
   const counts = new Map<number, number>()
   for (const { y } of blocks) {
     const count = (counts.get(y) ?? 0) + 1
-    if (count === 10) {
+    if (count === BOARD_WIDTH) {
       return y
     }
     counts.set(y, count)
@@ -102,7 +104,7 @@ const attemptPersistBlocks = (store: TetrisStore, blocks: readonly Block[]) => {
 
   // Persist the blocks, reset various things and go to the next shape.
   store.setState({
-    blocks: blocks.reduce(withPersistedBlock, state.blocks),
+    blocks: [...state.blocks, ...blocks],
     ...spawnState(),
     shapeQueue: advanceShapeQueue(state.shapeQueue),
   } satisfies TetrisUpdate)
@@ -206,10 +208,20 @@ const doTick = (store: TetrisStore): 'moved-down' | 'persisted-and-new-shape' | 
 
 const arePositionsFree = (positions: readonly Coordinate[], blocks: readonly Block[]): boolean =>
   positions.every(
-    (e) => e.x >= 0 && e.x < 10 && e.y < 20 && !blocks.some((f) => f.x === e.x && f.y === e.y)
+    (e) =>
+      e.x >= 0 && e.x < BOARD_WIDTH && e.y < BOARD_HEIGHT && !blocks.some((f) => sameCell(e, f))
   )
 
-export const runTicks = async (store: TetrisStore, isCancelled: () => boolean) => {
+/** Starts the requestAnimationFrame game loop; returns a function that stops it. */
+export const runTicks = (store: TetrisStore): (() => void) => {
+  let cancelled = false
+  void tickLoop(store, () => cancelled)
+  return () => {
+    cancelled = true
+  }
+}
+
+const tickLoop = async (store: TetrisStore, isCancelled: () => boolean) => {
   let lastTick = Date.now()
   let lastY = store.getState().position.y
   while (await rafPromise()) {

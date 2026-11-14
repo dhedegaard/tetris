@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react'
-import { randomizeInitialQueue, runTicks, startNewGame } from '../store/actions/game'
+import { randomizeInitialQueue, runTicks } from '../store/actions/game'
 import { tetrisStore } from '../store/tetris'
 import { useBlocks } from './useBlocks'
 import { useDirection } from './useDirection'
@@ -35,11 +35,7 @@ export const useTetris = () => {
       return
     }
 
-    let cancelled = false
-    void runTicks(tetrisStore, () => cancelled)
-    return () => {
-      cancelled = true
-    }
+    return runTicks(tetrisStore)
   }, [isShapeQueueReady])
 
   // Handle inputs.
@@ -58,9 +54,6 @@ export const useTetris = () => {
       isShapeQueueReady,
       level,
       shapeBounds,
-      startNewGame: () => {
-        startNewGame(tetrisStore)
-      },
     }),
     [
       blocks,

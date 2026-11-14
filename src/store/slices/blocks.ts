@@ -7,15 +7,13 @@ export interface Block extends Coordinate {
   color: string
 }
 
-export const withPersistedBlock = (blocks: readonly Block[], block: Block): Block[] => {
-  if (blocks.some((e) => e.x === block.x && e.y === block.y)) {
-    throw new Error(`Block already exists: ${JSON.stringify(block)}`)
-  }
-  return [...blocks, block]
-}
+export const BOARD_WIDTH = 10
+export const BOARD_HEIGHT = 20
+
+export const sameCell = (a: Coordinate, b: Coordinate) => a.x === b.x && a.y === b.y
 
 export const withUpsertedBlock = (blocks: readonly Block[], block: Block): Block[] => [
-  ...blocks.filter((e) => e.x !== block.x || e.y !== block.y),
+  ...blocks.filter((e) => !sameCell(e, block)),
   block,
 ]
 

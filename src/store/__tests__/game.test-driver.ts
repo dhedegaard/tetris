@@ -9,9 +9,14 @@ import {
   runTicks,
   startNewGame,
 } from '../actions/game'
-import { type Block, type Coordinate } from '../slices/blocks'
+import { BOARD_WIDTH, type Block, type Coordinate } from '../slices/blocks'
 import { selectLevel, selectTickrate } from '../slices/level'
-import { selectCurrentShape, upcomingShapes } from '../slices/shape'
+import {
+  selectCurrentShape,
+  selectIsShapeQueueReady,
+  selectShapeQueue,
+  upcomingShapes,
+} from '../slices/shape'
 import { createTetrisStore, type Gamestate, type TetrisState } from '../tetris'
 
 export interface GameSetup {
@@ -73,10 +78,10 @@ export const createGame = (setup: GameSetup = {}): GameDriver => {
         position: { ...state.position },
         direction: state.direction,
         currentShape: selectCurrentShape(state).shape,
-        peekShapes: upcomingShapes(state.shapeQueue).map((e) => e.shape),
-        queue: state.shapeQueue.map((e) => e.shape),
-        queueKeys: state.shapeQueue.map((e) => e.key),
-        isShapeQueueReady: state.hasRandomizedInitialQueue,
+        peekShapes: upcomingShapes(selectShapeQueue(state)).map((e) => e.shape),
+        queue: selectShapeQueue(state).map((e) => e.shape),
+        queueKeys: selectShapeQueue(state).map((e) => e.key),
+        isShapeQueueReady: selectIsShapeQueueReady(state),
         blocks: sortBlocks(state.blocks),
         score: state.score,
         level: selectLevel(state),
@@ -95,18 +100,12 @@ export const createGame = (setup: GameSetup = {}): GameDriver => {
     randomizeInitialQueue: () => {
       randomizeInitialQueue(store)
     },
-    runTicks: () => {
-      let cancelled = false
-      void runTicks(store, () => cancelled)
-      return () => {
-        cancelled = true
-      }
-    },
+    runTicks: () => runTicks(store),
   }
 }
 
 /** A full row at `y`, except for the given x columns. */
 export const rowWithGaps = (y: number, gaps: number[], color = 'gray'): Block[] =>
-  Array.from({ length: 10 }, (_, x) => x)
+  Array.from({ length: BOARD_WIDTH }, (_, x) => x)
     .filter((x) => !gaps.includes(x))
     .map((x) => ({ x, y, color }) satisfies Block)

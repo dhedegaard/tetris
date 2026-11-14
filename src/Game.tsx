@@ -8,6 +8,12 @@ import { ShapeRenderer } from './components/shapes'
 import { GameOver } from './GameOver'
 import { useTetris } from './hooks'
 import { useBottomShape } from './hooks/useBottomShape'
+import { startNewGame } from './store/actions/game'
+import { tetrisStore } from './store/tetris'
+
+const restart = () => {
+  startNewGame(tetrisStore)
+}
 
 export const Game = memo(function Game() {
   const {
@@ -19,7 +25,6 @@ export const Game = memo(function Game() {
     score,
     peekShapes,
     level,
-    startNewGame,
     shapeBounds,
     isShapeQueueReady,
   } = useTetris()
@@ -75,7 +80,7 @@ export const Game = memo(function Game() {
                 renderType="normal"
               />
             ))}
-          {gamestate === 'gameover' && <GameOver onClick={startNewGame} />}
+          {gamestate === 'gameover' && <GameOver onClick={restart} />}
         </Grid>
       </div>
       <Legend
