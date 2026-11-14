@@ -1,4 +1,4 @@
-import { memo, SVGProps } from 'react'
+import { memo, type SVGProps } from 'react'
 
 export const Grid = memo<SVGProps<SVGSVGElement>>(function Grid(props) {
   return (

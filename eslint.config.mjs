@@ -12,6 +12,7 @@ const eslintConfig = defineConfig([
   {
     rules: {
       '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
     },
     languageOptions: {
       parserOptions: {

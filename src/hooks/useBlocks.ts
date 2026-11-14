@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
-import { TetrisState, useTetrisStore } from '../store/tetris'
+import { type TetrisState, useTetrisStore } from '../store/tetris'
 
-const blocksSelect = (state: TetrisState) => state.blocks
+const selectBlocks = (state: TetrisState) => state.blocks
 
 export const useBlocks = () => {
-  const blocks = useTetrisStore(blocksSelect)
+  const blocks = useTetrisStore(selectBlocks)
 
   return useMemo(() => ({ blocks }), [blocks])
 }

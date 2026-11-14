@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { ShapeElement } from '../shapes'
+import { type ShapeElement } from '../shapes'
 import styles from './index.module.css'
 import { Level } from './Level'
 import { NextShape } from './NextShape'

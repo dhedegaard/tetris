@@ -1,7 +1,7 @@
 import {
   calculateCoordinates,
   colorFromShape,
-  Direction,
+  type Direction,
   getRandomShapes,
   nextDirection,
 } from '../../components/shapes'
@@ -15,7 +15,7 @@ import {
 } from '../slices/blocks'
 import { selectLevel, selectTickrate } from '../slices/level'
 import { advanceShapeQueue, selectCurrentShape } from '../slices/shape'
-import { createInitialState, spawnState, TetrisState, TetrisStore } from '../tetris'
+import { createInitialState, spawnState, type TetrisState, type TetrisStore } from '../tetris'
 
 type TetrisUpdate = Partial<TetrisState>
 

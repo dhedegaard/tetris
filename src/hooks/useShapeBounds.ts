@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Coordinate } from '../store/slices/blocks'
+import { type Coordinate } from '../store/slices/blocks'
 import { useShape } from './useShape'
 
 export const useShapeBounds = () => {

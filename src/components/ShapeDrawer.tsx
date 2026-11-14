@@ -1,8 +1,8 @@
-import { memo, Reducer, useEffect, useMemo, useReducer } from 'react'
+import { memo, type Reducer, useEffect, useMemo, useReducer } from 'react'
 import { assertNever } from '../lib/assert-never'
-import { Coordinate } from '../store/slices/blocks'
+import { type Coordinate } from '../store/slices/blocks'
 import { Block, type BlockProps } from './Block'
-import { ShapeElement } from './shapes'
+import { type ShapeElement } from './shapes'
 
 export type Coordinates = Coordinate[]
 

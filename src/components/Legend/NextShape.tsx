@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { ShapeElement, ShapeRenderer } from '../shapes'
+import { type ShapeElement, ShapeRenderer } from '../shapes'
 import styles from './NextShape.module.css'
 
 interface Props {

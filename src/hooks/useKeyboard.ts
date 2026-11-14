@@ -26,75 +26,65 @@ const handledKeys = new Set(Object.values(keybinds))
 const FIRST_REPEAT_INTERVAL = 400
 const REPEAT_INTERVAL = 75
 
-export const useKeyboard = () => {
-  // Handle a key being pressed.
-  const handleKey = useCallback((key: string) => {
-    switch (key) {
-      case keybinds.newGame:
-        // r
+const handleKey = (key: string) => {
+  switch (key) {
+    case keybinds.newGame:
+      startNewGame(tetrisStore)
+      break
+
+    case keybinds.moveLeft:
+      attemptToDoMove(tetrisStore, 'LEFT')
+      break
+
+    case keybinds.moveRight:
+      attemptToDoMove(tetrisStore, 'RIGHT')
+      break
+
+    case keybinds.rotate:
+      attemptToDoMove(tetrisStore, 'ROTATE')
+      break
+
+    case keybinds.moveDown:
+      attemptToDoMove(tetrisStore, 'DOWN')
+      break
+
+    case keybinds.goToBottom:
+      if (tetrisStore.getState().gamestate === 'gameover') {
         startNewGame(tetrisStore)
-        break
+      } else {
+        moveGoToBottom(tetrisStore)
+      }
+      break
+  }
+}
 
-      case keybinds.moveLeft:
-        // left
-        attemptToDoMove(tetrisStore, 'LEFT')
-        break
-
-      case keybinds.moveRight:
-        // right
-        attemptToDoMove(tetrisStore, 'RIGHT')
-        break
-
-      case keybinds.rotate:
-        // up
-        attemptToDoMove(tetrisStore, 'ROTATE')
-        break
-
-      case keybinds.moveDown:
-        // down
-        attemptToDoMove(tetrisStore, 'DOWN')
-        break
-
-      case keybinds.goToBottom:
-        // space
-        if (tetrisStore.getState().gamestate === 'gameover') {
-          startNewGame(tetrisStore)
-        } else {
-          moveGoToBottom(tetrisStore)
-        }
-        break
-    }
-  }, [])
-
+export const useKeyboard = () => {
   const pressedKeys = useRef(new Set<string>())
   const animationFrameRefs = useRef(new Map<string, number>())
-  const handlePressedKey = useCallback(
-    (key: string) => {
-      const existingAnimationFrame = animationFrameRefs.current.get(key)
-      if (existingAnimationFrame != null) {
-        cancelAnimationFrame(existingAnimationFrame)
-        animationFrameRefs.current.delete(key)
-      }
+  const handlePressedKey = useCallback((key: string) => {
+    const existingAnimationFrame = animationFrameRefs.current.get(key)
+    if (existingAnimationFrame != null) {
+      cancelAnimationFrame(existingAnimationFrame)
+      animationFrameRefs.current.delete(key)
+    }
 
-      let start = Date.now()
-      let first = true
-      const handler: FrameRequestCallback = () => {
-        if (!pressedKeys.current.has(key)) {
-          animationFrameRefs.current.delete(key)
-          return
-        }
-        const now = Date.now()
-        if (now - start > (first ? FIRST_REPEAT_INTERVAL : REPEAT_INTERVAL)) {
-          start = now
-          first = false
-          handleKey(key)
-        }
-        animationFrameRefs.current.set(key, requestAnimationFrame(handler))
+    let start = Date.now()
+    let first = true
+    const handler: FrameRequestCallback = () => {
+      if (!pressedKeys.current.has(key)) {
+        animationFrameRefs.current.delete(key)
+        return
+      }
+      const now = Date.now()
+      if (now - start > (first ? FIRST_REPEAT_INTERVAL : REPEAT_INTERVAL)) {
+        start = now
+        first = false
+        handleKey(key)
       }
       animationFrameRefs.current.set(key, requestAnimationFrame(handler))
-    },
-    [handleKey]
-  )
+    }
+    animationFrameRefs.current.set(key, requestAnimationFrame(handler))
+  }, [])
 
   // Whenever the current shape changes, reset all the pressed keys to stop
   // moving the shape.
@@ -109,7 +99,7 @@ export const useKeyboard = () => {
       pressedKeys.current.add(key)
       handlePressedKey(key)
     },
-    [handleKey, handlePressedKey]
+    [handlePressedKey]
   )
 
   useEffect(() => {
@@ -138,5 +128,5 @@ export const useKeyboard = () => {
       }
       currentAnimationFrameRefs.clear()
     }
-  }, [handleKey, pressKey])
+  }, [pressKey])
 }

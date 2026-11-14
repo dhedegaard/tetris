@@ -1,5 +1,5 @@
-import { Metadata, Viewport } from 'next'
-import { memo, ReactNode } from 'react'
+import { type Metadata, type Viewport } from 'next'
+import { memo, type ReactNode } from 'react'
 
 export const metadata: Metadata = {
   title: 'Tetris',

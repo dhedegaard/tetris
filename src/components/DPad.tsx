@@ -1,5 +1,5 @@
-import { memo, MouseEventHandler } from 'react'
-import { attemptToDoMove, MoveOperation } from '../store/actions/game'
+import { memo, type MouseEventHandler } from 'react'
+import { attemptToDoMove, type MoveOperation } from '../store/actions/game'
 import { tetrisStore } from '../store/tetris'
 import styles from './DPad.module.css'
 

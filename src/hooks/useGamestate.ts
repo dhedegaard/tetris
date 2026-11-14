@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { TetrisState, useTetrisStore } from '../store/tetris'
+import { type TetrisState, useTetrisStore } from '../store/tetris'
 
 const selectGamestate = (state: TetrisState) => state.gamestate
 
