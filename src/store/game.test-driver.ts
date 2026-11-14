@@ -8,11 +8,11 @@ import {
   randomizeInitialQueue,
   runTicks,
   startNewGame,
-} from '../store/actions/game'
-import { type Block, type Coordinate } from '../store/slices/blocks'
-import { selectLevel, selectTickrate } from '../store/slices/level'
-import { selectCurrentShape, upcomingShapes } from '../store/slices/shape'
-import { createTetrisStore, type Gamestate, type TetrisState } from '../store/tetris'
+} from './actions/game'
+import { type Block, type Coordinate } from './slices/blocks'
+import { selectLevel, selectTickrate } from './slices/level'
+import { selectCurrentShape, upcomingShapes } from './slices/shape'
+import { createTetrisStore, type Gamestate, type TetrisState } from './tetris'
 
 export interface GameSetup {
   blocks?: Block[]
