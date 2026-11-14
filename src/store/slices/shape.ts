@@ -1,53 +1,19 @@
-import { createSelector, createSlice } from '@reduxjs/toolkit'
-import { getInitialShapes, getRandomShapes, SHAPES } from '../../components/shapes'
-import { TetrisStoreState } from '../tetris'
+import { getRandomShapes, SHAPES, type ShapeElement } from '../../components/shapes'
+import type { TetrisState } from '../tetris'
 
-const shapeSlice = createSlice({
-  name: 'shape',
-  initialState: () => ({
-    shapeQueue: getInitialShapes(),
-    hasRandomizedInitialQueue: false,
-  }),
-  reducers: {
-    randomizeInitialQueue: (state) => {
-      if (state.hasRandomizedInitialQueue) {
-        return
-      }
-      state.shapeQueue = getRandomShapes()
-      state.hasRandomizedInitialQueue = true
-    },
+/** Drops the current shape, topping the queue up first if it's running low. */
+export const advanceShapeQueue = (queue: readonly ShapeElement[]): ShapeElement[] =>
+  (queue.length < SHAPES.length ? [...queue, ...getRandomShapes()] : queue).slice(1)
 
-    resetQueue: (state) => {
-      state.shapeQueue = getRandomShapes()
-      state.hasRandomizedInitialQueue = true
-    },
+export const selectIsShapeQueueReady = (state: TetrisState) => state.hasRandomizedInitialQueue
 
-    nextShape: (state) => {
-      if (state.shapeQueue.length < SHAPES.length) {
-        // If we're in danger of running out of shapes, add more.
-        state.shapeQueue.push(...getRandomShapes())
-      }
-      state.shapeQueue.shift()
-    },
-  },
-})
-
-export const shapeActions = shapeSlice.actions
-
-export const shapeReducer = shapeSlice.reducer
-
-const selectShapeQueue = (state: TetrisStoreState) => state.shape.shapeQueue
-
-export const selectIsShapeQueueReady = (state: TetrisStoreState) =>
-  state.shape.hasRandomizedInitialQueue
-
-export const selectCurrentShape = createSelector(selectShapeQueue, ([firstShape]) => {
+export const selectCurrentShape = (state: TetrisState): ShapeElement => {
+  const [firstShape] = state.shapeQueue
   if (firstShape == null) {
     throw new Error('The shape queue is empty.')
   }
   return firstShape
-})
+}
 
-export const selectPeekShapes = createSelector(selectShapeQueue, (shapeQueue) =>
-  shapeQueue.slice(1, 3)
-)
+/** Returns a new array; subscribe with `useShallow`. */
+export const selectPeekShapes = (state: TetrisState) => state.shapeQueue.slice(1, 3)

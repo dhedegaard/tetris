@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from 'react'
-import { runTicks, startNewGame } from '../store/actions/game'
-import { shapeActions } from '../store/slices/shape'
-import { useTetrisDispatch } from '../store/tetris'
+import { randomizeInitialQueue, runTicks, startNewGame } from '../store/actions/game'
+import { tetrisStore } from '../store/tetris'
 import { useBlocks } from './useBlocks'
 import { useDirection } from './useDirection'
 import { useGamepad } from './useGamepad'
@@ -23,13 +22,12 @@ export const useTetris = () => {
   const { blocks } = useBlocks()
   const { level } = useLevel()
   const shapeBounds = useShapeBounds()
-  const dispatch = useTetrisDispatch()
 
   // Replace the deterministic SSR queue with a random client queue before
   // starting the game loop.
   useEffect(() => {
-    dispatch(shapeActions.randomizeInitialQueue())
-  }, [dispatch])
+    randomizeInitialQueue(tetrisStore)
+  }, [])
 
   // Handle ticks
   useEffect(() => {
@@ -38,11 +36,11 @@ export const useTetris = () => {
     }
 
     let cancelled = false
-    void dispatch(runTicks(() => cancelled))
+    void runTicks(tetrisStore, () => cancelled)
     return () => {
       cancelled = true
     }
-  }, [dispatch, isShapeQueueReady])
+  }, [isShapeQueueReady])
 
   // Handle inputs.
   useKeyboard()
@@ -61,13 +59,12 @@ export const useTetris = () => {
       level,
       shapeBounds,
       startNewGame: () => {
-        dispatch(startNewGame())
+        startNewGame(tetrisStore)
       },
     }),
     [
       blocks,
       direction,
-      dispatch,
       gamestate,
       isShapeQueueReady,
       level,

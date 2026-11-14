@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
-import { TetrisStoreState, useTetrisSelector } from '../store/tetris'
+import { TetrisState, useTetrisStore } from '../store/tetris'
 
-const selectDirection = (state: TetrisStoreState) => state.position.position
+const selectPosition = (state: TetrisState) => state.position
 
 export const usePosition = () => {
-  const position = useTetrisSelector(selectDirection)
+  const position = useTetrisStore(selectPosition)
   return useMemo(() => ({ position }), [position])
 }

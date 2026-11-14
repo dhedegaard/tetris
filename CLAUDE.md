@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Tetris in the browser (https://tetris.dhedegaard.dk): Next.js 16 App Router as a static export (`output: 'export'`), React 19 with the React Compiler, Redux Toolkit, Tailwind v4 + CSS modules.
+Tetris in the browser (https://tetris.dhedegaard.dk): Next.js 16 App Router as a static export (`output: 'export'`), React 19 with the React Compiler, Zustand, Tailwind v4 + CSS modules.
 
 `npm test` runs Vitest. There's no typecheck script; `npm run build` type-checks. Vercel deploys on push to `main`.
 

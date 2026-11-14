@@ -1,34 +1,42 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import { blocksReducer } from './slices/blocks'
-import { directionReducer } from './slices/direction'
-import { gamestateReducer } from './slices/gamestate'
-import { levelReducer } from './slices/level'
-import { positionReducer } from './slices/position'
-import { scoreReducer } from './slices/score'
-import { shapeReducer } from './slices/shape'
+import { useStore } from 'zustand'
+import { createStore, type StoreApi } from 'zustand/vanilla'
+import { type Direction, getInitialShapes, type ShapeElement } from '../components/shapes'
+import type { Block, Coordinate } from './slices/blocks'
 
-const rootReducer = combineReducers({
-  gamestate: gamestateReducer,
-  position: positionReducer,
-  shape: shapeReducer,
-  score: scoreReducer,
-  direction: directionReducer,
-  level: levelReducer,
-  blocks: blocksReducer,
-})
+export type Gamestate = 'alive' | 'gameover'
 
-export type TetrisStoreState = ReturnType<typeof rootReducer>
+export interface TetrisState {
+  gamestate: Gamestate
+  position: Coordinate
+  direction: Direction
+  shapeQueue: ShapeElement[]
+  hasRandomizedInitialQueue: boolean
+  score: number
+  rowsCleared: number
+  blocks: Block[]
+}
 
-export const createTetrisStore = (preloadedState?: Partial<TetrisStoreState>) =>
-  configureStore({
-    reducer: rootReducer,
-    ...(preloadedState == null ? {} : { preloadedState }),
-  })
+export type TetrisStore = StoreApi<TetrisState>
+
+export const DEFAULT_POSITION: Readonly<Coordinate> = Object.freeze({ x: 4, y: 1 })
+export const DEFAULT_DIRECTION: Direction = 'RIGHT'
+
+export const createTetrisStore = (initialState: Partial<TetrisState> = {}): TetrisStore =>
+  createStore<TetrisState>()(() => ({
+    gamestate: 'alive',
+    position: { ...DEFAULT_POSITION },
+    direction: DEFAULT_DIRECTION,
+    // Deterministic so the static HTML matches the first client render; the
+    // client shuffles it on mount.
+    shapeQueue: getInitialShapes(),
+    hasRandomizedInitialQueue: false,
+    score: 0,
+    rowsCleared: 0,
+    blocks: [],
+    ...initialState,
+  }))
 
 export const tetrisStore = createTetrisStore()
 
-export type TetrisStoreDispatch = typeof tetrisStore.dispatch
-
-export const useTetrisDispatch = () => useDispatch<TetrisStoreDispatch>()
-export const useTetrisSelector: TypedUseSelectorHook<TetrisStoreState> = useSelector
+export const useTetrisStore = <T>(selector: (state: TetrisState) => T): T =>
+  useStore(tetrisStore, selector)

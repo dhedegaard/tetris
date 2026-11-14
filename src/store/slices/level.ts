@@ -1,5 +1,4 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { TetrisStoreState } from '../tetris'
+import type { TetrisState } from '../tetris'
 
 /**
  * The various break points for the tick rate, based on what level you're on.
@@ -41,32 +40,7 @@ const calculateTickRate = (level: number): number => {
 /** Each level progresses when 10 rows have been cleared. */
 const calculateLevel = (rowsCleared: number) => Math.floor(rowsCleared / 10)
 
-const levelSlice = createSlice({
-  name: 'level',
-  initialState: {
-    rowsCleared: 0,
-  },
-  reducers: {
-    resetLevel: (state) => {
-      state.rowsCleared = 0
-    },
-    incrementRowsCleared: (state, action: PayloadAction<number>) => {
-      state.rowsCleared += action.payload
-    },
-  },
-})
+export const selectLevel = (state: TetrisState) => calculateLevel(state.rowsCleared)
 
-export const levelActions = levelSlice.actions
-
-export const levelReducer = levelSlice.reducer
-
-const selectRowsCleared = (state: TetrisStoreState) => state.level.rowsCleared
-
-export const selectLevel = createSelector(selectRowsCleared, (rowsCleared) =>
-  calculateLevel(rowsCleared)
-)
-
-export const selectTickrate = createSelector(
-  selectLevel,
-  (level) => calculateTickRate(level) * 1_000
-)
+/** Milliseconds between ticks at the current level. */
+export const selectTickrate = (state: TetrisState) => calculateTickRate(selectLevel(state)) * 1_000

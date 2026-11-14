@@ -1,5 +1,3 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
 export interface Coordinate {
   x: number
   y: number
@@ -9,40 +7,18 @@ export interface Block extends Coordinate {
   color: string
 }
 
-const blocksSlice = createSlice({
-  name: 'blocks',
-  initialState: {
-    blocks: [] as Block[],
-  },
-  reducers: {
-    clearAllBlocks: (state) => {
-      state.blocks = []
-    },
-    persistBlock: (state, action: PayloadAction<Block>) => {
-      if (state.blocks.some((e) => e.x === action.payload.x && e.y === action.payload.y)) {
-        throw new Error(`Block already exists: ${JSON.stringify(action.payload)}`)
-      }
-      state.blocks.push(action.payload)
-    },
-    upsertBlock: (state, action: PayloadAction<Block>) => {
-      state.blocks = state.blocks.filter(
-        (e) => e.x !== action.payload.x || e.y !== action.payload.y
-      )
-      state.blocks.push(action.payload)
-    },
-    clearRow: (state, action: PayloadAction<number>) => {
-      // Remove the given index.
-      state.blocks = state.blocks.filter((e) => e.y !== action.payload)
-      // Shift all the rows above one down.
-      state.blocks = state.blocks.map((e) => (e.y >= action.payload ? e : { ...e, y: e.y + 1 }))
-    },
-  },
-})
+export const withPersistedBlock = (blocks: readonly Block[], block: Block): Block[] => {
+  if (blocks.some((e) => e.x === block.x && e.y === block.y)) {
+    throw new Error(`Block already exists: ${JSON.stringify(block)}`)
+  }
+  return [...blocks, block]
+}
 
-export const blocksActions = blocksSlice.actions
+export const withUpsertedBlock = (blocks: readonly Block[], block: Block): Block[] => [
+  ...blocks.filter((e) => e.x !== block.x || e.y !== block.y),
+  block,
+]
 
-export const blocksReducer = blocksSlice.reducer
-
-/**
- * Returns true if the blocks were persisted, otherwise the
- */
+/** Removes row `y` and shifts every row above it one down. */
+export const withoutRow = (blocks: readonly Block[], y: number): Block[] =>
+  blocks.filter((e) => e.y !== y).map((e) => (e.y >= y ? e : { ...e, y: e.y + 1 }))

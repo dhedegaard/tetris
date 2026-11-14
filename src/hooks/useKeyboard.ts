@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { attemptToDoMove, moveGoToBottom, startNewGame } from '../store/actions/game'
 import { selectCurrentShape } from '../store/slices/shape'
-import { useTetrisDispatch, useTetrisSelector } from '../store/tetris'
+import { tetrisStore, useTetrisStore } from '../store/tetris'
 
 interface Keybinds {
   moveLeft: string
@@ -27,54 +27,50 @@ const FIRST_REPEAT_INTERVAL = 400
 const REPEAT_INTERVAL = 75
 
 export const useKeyboard = () => {
-  const dispatch = useTetrisDispatch()
-  const gamestate = useTetrisSelector((state) => state.gamestate.gamestate)
+  const gamestate = useTetrisStore((state) => state.gamestate)
   const gamestateRef = useRef(gamestate)
   useEffect(() => {
     gamestateRef.current = gamestate
   }, [gamestate])
 
   // Handle a key being pressed.
-  const handleKey = useCallback(
-    (key: string) => {
-      switch (key) {
-        case keybinds.newGame:
-          // r
-          dispatch(startNewGame())
-          break
+  const handleKey = useCallback((key: string) => {
+    switch (key) {
+      case keybinds.newGame:
+        // r
+        startNewGame(tetrisStore)
+        break
 
-        case keybinds.moveLeft:
-          // left
-          dispatch(attemptToDoMove('LEFT'))
-          break
+      case keybinds.moveLeft:
+        // left
+        attemptToDoMove(tetrisStore, 'LEFT')
+        break
 
-        case keybinds.moveRight:
-          // right
-          dispatch(attemptToDoMove('RIGHT'))
-          break
+      case keybinds.moveRight:
+        // right
+        attemptToDoMove(tetrisStore, 'RIGHT')
+        break
 
-        case keybinds.rotate:
-          // up
-          dispatch(attemptToDoMove('ROTATE'))
-          break
+      case keybinds.rotate:
+        // up
+        attemptToDoMove(tetrisStore, 'ROTATE')
+        break
 
-        case keybinds.moveDown:
-          // down
-          dispatch(attemptToDoMove('DOWN'))
-          break
+      case keybinds.moveDown:
+        // down
+        attemptToDoMove(tetrisStore, 'DOWN')
+        break
 
-        case keybinds.goToBottom:
-          // space
-          if (gamestateRef.current === 'gameover') {
-            dispatch(startNewGame())
-          } else {
-            dispatch(moveGoToBottom())
-          }
-          break
-      }
-    },
-    [dispatch]
-  )
+      case keybinds.goToBottom:
+        // space
+        if (gamestateRef.current === 'gameover') {
+          startNewGame(tetrisStore)
+        } else {
+          moveGoToBottom(tetrisStore)
+        }
+        break
+    }
+  }, [])
 
   const pressedKeys = useRef(new Set<string>())
   const animationFrameRefs = useRef(new Map<string, number>())
@@ -108,7 +104,7 @@ export const useKeyboard = () => {
 
   // Whenever the current shape changes, reset all the pressed keys to stop
   // moving the shape.
-  const shape = useTetrisSelector(selectCurrentShape)
+  const shape = useTetrisStore(selectCurrentShape)
   useEffect(() => {
     pressedKeys.current.clear()
   }, [shape])
@@ -148,5 +144,5 @@ export const useKeyboard = () => {
       }
       currentAnimationFrameRefs.clear()
     }
-  }, [dispatch, handleKey, pressKey])
+  }, [handleKey, pressKey])
 }

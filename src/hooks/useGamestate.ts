@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
-import { TetrisStoreState, useTetrisSelector } from '../store/tetris'
+import { Gamestate, TetrisState, useTetrisStore } from '../store/tetris'
 
-const selectGamestate = (state: TetrisStoreState) => state.gamestate.gamestate
+const selectGamestate = (state: TetrisState) => state.gamestate
 
-export type Gamestate = 'alive' | 'gameover'
+export type { Gamestate }
 
 export const useGamestate = () => {
-  const gamestate = useTetrisSelector(selectGamestate)
+  const gamestate = useTetrisStore(selectGamestate)
   return useMemo(() => ({ gamestate }), [gamestate])
 }

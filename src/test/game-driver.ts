@@ -7,10 +7,16 @@ import {
   Shape,
   ShapeElement,
 } from '../components/shapes'
-import { attemptToDoMove, moveGoToBottom, runTicks, startNewGame } from '../store/actions/game'
+import {
+  attemptToDoMove,
+  moveGoToBottom,
+  randomizeInitialQueue,
+  runTicks,
+  startNewGame,
+} from '../store/actions/game'
 import { Block } from '../store/slices/blocks'
 import { selectLevel, selectTickrate } from '../store/slices/level'
-import { selectCurrentShape, selectPeekShapes, shapeActions } from '../store/slices/shape'
+import { selectCurrentShape, selectPeekShapes } from '../store/slices/shape'
 import { createTetrisStore } from '../store/tetris'
 
 export interface GameSetup {
@@ -61,52 +67,49 @@ const sortBlocks = (blocks: readonly Block[]): Block[] =>
   [...blocks].sort((a, b) => a.y - b.y || a.x - b.x)
 
 export const createGame = (setup: GameSetup = {}): GameDriver => {
-  const fresh = createTetrisStore().getState()
   const store = createTetrisStore({
-    gamestate: { gamestate: setup.gamestate ?? 'alive' },
-    position: { position: setup.position ?? fresh.position.position },
-    direction: { direction: setup.direction ?? fresh.direction.direction },
-    score: { score: setup.score ?? 0 },
-    level: { rowsCleared: setup.rowsCleared ?? 0 },
-    blocks: { blocks: setup.blocks ?? [] },
-    shape: {
-      shapeQueue: setup.queue?.map(toShapeElement) ?? fresh.shape.shapeQueue,
-      hasRandomizedInitialQueue: setup.isShapeQueueReady ?? true,
-    },
+    ...(setup.gamestate == null ? {} : { gamestate: setup.gamestate }),
+    ...(setup.position == null ? {} : { position: setup.position }),
+    ...(setup.direction == null ? {} : { direction: setup.direction }),
+    ...(setup.score == null ? {} : { score: setup.score }),
+    ...(setup.rowsCleared == null ? {} : { rowsCleared: setup.rowsCleared }),
+    ...(setup.blocks == null ? {} : { blocks: setup.blocks }),
+    ...(setup.queue == null ? {} : { shapeQueue: setup.queue.map(toShapeElement) }),
+    hasRandomizedInitialQueue: setup.isShapeQueueReady ?? true,
   })
 
   return {
     snapshot: () => {
       const state = store.getState()
       return {
-        gamestate: state.gamestate.gamestate,
-        position: { ...state.position.position },
-        direction: state.direction.direction,
+        gamestate: state.gamestate,
+        position: { ...state.position },
+        direction: state.direction,
         currentShape: selectCurrentShape(state).shape,
         peekShapes: selectPeekShapes(state).map((e) => e.shape),
-        queue: state.shape.shapeQueue.map((e) => e.shape),
-        isShapeQueueReady: state.shape.hasRandomizedInitialQueue,
-        blocks: sortBlocks(state.blocks.blocks),
-        score: state.score.score,
+        queue: state.shapeQueue.map((e) => e.shape),
+        isShapeQueueReady: state.hasRandomizedInitialQueue,
+        blocks: sortBlocks(state.blocks),
+        score: state.score,
         level: selectLevel(state),
         tickrate: selectTickrate(state),
       } satisfies GameSnapshot
     },
     move: (operation) => {
-      store.dispatch(attemptToDoMove(operation))
+      attemptToDoMove(store, operation)
     },
     dropToBottom: () => {
-      store.dispatch(moveGoToBottom())
+      moveGoToBottom(store)
     },
     startNewGame: () => {
-      store.dispatch(startNewGame())
+      startNewGame(store)
     },
     randomizeInitialQueue: () => {
-      store.dispatch(shapeActions.randomizeInitialQueue())
+      randomizeInitialQueue(store)
     },
     runTicks: () => {
       let cancelled = false
-      void store.dispatch(runTicks(() => cancelled))
+      void runTicks(store, () => cancelled)
       return () => {
         cancelled = true
       }

@@ -1,58 +1,67 @@
-import { createSelector } from '@reduxjs/toolkit'
 import { Coordinates } from '../../components/ShapeDrawer'
-import { calculateCoordinates, colorFromShape, nextDirection } from '../../components/shapes'
+import {
+  calculateCoordinates,
+  colorFromShape,
+  getRandomShapes,
+  nextDirection,
+} from '../../components/shapes'
 import { assertNever } from '../../lib/assert-never'
-import { Block, blocksActions } from '../slices/blocks'
-import { directionActions } from '../slices/direction'
-import { gamestateActions } from '../slices/gamestate'
-import { levelActions, selectLevel, selectTickrate } from '../slices/level'
-import { positionActions } from '../slices/position'
-import { scoreActions } from '../slices/score'
-import { selectCurrentShape, shapeActions } from '../slices/shape'
-import { TetrisStoreDispatch, TetrisStoreState } from '../tetris'
+import { Block, withoutRow, withPersistedBlock, withUpsertedBlock } from '../slices/blocks'
+import { selectLevel, selectTickrate } from '../slices/level'
+import { advanceShapeQueue, selectCurrentShape } from '../slices/shape'
+import { DEFAULT_DIRECTION, DEFAULT_POSITION, TetrisState, TetrisStore } from '../tetris'
 
-export const startNewGame =
-  () => (dispatch: TetrisStoreDispatch) => {
-    dispatch(blocksActions.clearAllBlocks())
-    dispatch(shapeActions.resetQueue())
-    dispatch(positionActions.resetPosition())
-    dispatch(directionActions.resetDirection())
-    dispatch(gamestateActions.setAlive())
-    dispatch(scoreActions.resetScore())
-    dispatch(levelActions.resetLevel())
+export type MoveOperation = 'LEFT' | 'RIGHT' | 'DOWN' | 'ROTATE'
+
+export const startNewGame = (store: TetrisStore) => {
+  store.setState({
+    blocks: [],
+    shapeQueue: getRandomShapes(),
+    hasRandomizedInitialQueue: true,
+    position: { ...DEFAULT_POSITION },
+    direction: DEFAULT_DIRECTION,
+    gamestate: 'alive',
+    score: 0,
+    rowsCleared: 0,
+  })
+}
+
+/** Replaces the deterministic server-rendered queue with a random one, once. */
+export const randomizeInitialQueue = (store: TetrisStore) => {
+  if (store.getState().hasRandomizedInitialQueue) {
+    return
   }
+  store.setState({ shapeQueue: getRandomShapes(), hasRandomizedInitialQueue: true })
+}
 
-const clearFilledRows = () => (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
+const clearFilledRows = (store: TetrisStore) => {
   let rowsCleared = 0
 
   // The scoring later depends on the level before clearing rows, so we
   // calculate the level beforehand.
-  const level = selectLevel(getState())
+  const level = selectLevel(store.getState())
 
   for (;;) {
-    const state = getState()
-    const [filledRow] = selectFilledRows(state)
+    const [filledRow] = findFilledRows(store.getState().blocks)
     if (filledRow == null) {
       break
     }
 
-    // Clear the filled rows and increment.
-    dispatch(blocksActions.clearRow(filledRow))
+    store.setState((state) => ({ blocks: withoutRow(state.blocks, filledRow) }))
     rowsCleared++
   }
 
-  // Increase the score based on the nubmer of rows cleared and the current
-  // level.
   if (rowsCleared > 0) {
-    dispatch(levelActions.incrementRowsCleared(rowsCleared))
-    dispatch(scoreActions.increaseScore(calculateScore(level, rowsCleared)))
+    store.setState((state) => ({
+      rowsCleared: state.rowsCleared + rowsCleared,
+      score: state.score + calculateScore(level, rowsCleared),
+    }))
   }
 
   return rowsCleared
 }
 
-const selectBlocks = (state: TetrisStoreState) => state.blocks.blocks
-const selectFilledRows = createSelector(selectBlocks, (blocks) => {
+const findFilledRows = (blocks: readonly Block[]): number[] => {
   if (blocks.length === 0) {
     return []
   }
@@ -64,11 +73,10 @@ const selectFilledRows = createSelector(selectBlocks, (blocks) => {
     const rowBlocks = blocks.filter((e) => e.y === y)
     if (rowBlocks.length === 10) {
       result.push(y)
-      // move the blocks from the current
     }
   }
   return result
-})
+}
 
 const calculateScore = (level: number, linesCleared: number): number => {
   switch (linesCleared) {
@@ -86,215 +94,195 @@ const calculateScore = (level: number, linesCleared: number): number => {
   )
 }
 
-const attemptPersistBlocks =
-  (blocks: Block[]) =>
-  (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState): boolean => {
-    const state = getState()
-    if (state.gamestate.gamestate === 'gameover') {
-      return false
-    }
+/** Returns true if the blocks were persisted. */
+const attemptPersistBlocks = (store: TetrisStore, blocks: Block[]): boolean => {
+  const state = store.getState()
+  if (state.gamestate === 'gameover') {
+    return false
+  }
 
-    if (blocks.some((e) => state.blocks.blocks.some((f) => e.x === f.x && e.y === f.y))) {
-      // One or more blocks overlap with existing blocks, the game is over.
-      dispatch(gamestateActions.setGameover())
-      return false
-    }
+  if (blocks.some((e) => state.blocks.some((f) => e.x === f.x && e.y === f.y))) {
+    // One or more blocks overlap with existing blocks, the game is over.
+    store.setState({ gamestate: 'gameover' })
+    return false
+  }
 
-    // Persist the blocks and return true.
-    blocks.forEach((block) => dispatch(blocksActions.persistBlock(block)))
+  // Persist the blocks, reset various things and go to the next shape.
+  store.setState({
+    blocks: blocks.reduce(withPersistedBlock, state.blocks),
+    position: { ...DEFAULT_POSITION },
+    direction: DEFAULT_DIRECTION,
+    shapeQueue: advanceShapeQueue(state.shapeQueue),
+  })
+  clearFilledRows(store)
 
-    // Reset various things and go to the next shape.
-    dispatch(positionActions.resetPosition())
-    dispatch(directionActions.resetDirection())
-    dispatch(shapeActions.nextShape())
-    dispatch(clearFilledRows())
-
-    const newState = getState()
-    const newCurrentShape = selectCurrentShape(newState)
-    const newShapeBlocks = calculateCoordinates(newCurrentShape.shape, {
-      direction: newState.direction.direction,
-      x: newState.position.position.x,
-      y: newState.position.position.y,
+  const newState = store.getState()
+  const newCurrentShape = selectCurrentShape(newState)
+  const newShapeBlocks = calculateCoordinates(newCurrentShape.shape, {
+    direction: newState.direction,
+    x: newState.position.x,
+    y: newState.position.y,
+  })
+  if (!arePositionsFree(newShapeBlocks, newState.blocks)) {
+    const newBlockColor = colorFromShape(newCurrentShape.shape)
+    store.setState({
+      blocks: newShapeBlocks.reduce<Block[]>(
+        (acc, block) => withUpsertedBlock(acc, { ...block, color: newBlockColor }),
+        newState.blocks
+      ),
+      gamestate: 'gameover',
     })
-    if (!arePositionsFree(newShapeBlocks, newState.blocks.blocks)) {
-      const newBlockColor = colorFromShape(newCurrentShape.shape)
-      newShapeBlocks.forEach((block) =>
-        dispatch(blocksActions.upsertBlock({ ...block, color: newBlockColor }))
-      )
-      dispatch(gamestateActions.setGameover())
-    }
-
-    return true
   }
 
-/** Attemps to move left, if there's space. */
-export const attemptToDoMove =
-  (operation: 'LEFT' | 'RIGHT' | 'DOWN' | 'ROTATE') =>
-  (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
-    const state = getState()
-    if (state.gamestate.gamestate !== 'alive') {
-      return
-    }
-
-    const currentShape = selectCurrentShape(state)
-    const {
-      blocks: { blocks },
-      position: { position },
-      direction: { direction },
-    } = state
-
-    // Determine the position after the move (calculateCoordinates).
-    const newPositions: Coordinates = (() => {
-      switch (operation) {
-        case 'LEFT': {
-          return calculateCoordinates(currentShape.shape, {
-            direction,
-            x: position.x - 1,
-            y: position.y,
-          })
-        }
-        case 'RIGHT': {
-          return calculateCoordinates(currentShape.shape, {
-            direction,
-            x: position.x + 1,
-            y: position.y,
-          })
-        }
-        case 'DOWN': {
-          return calculateCoordinates(currentShape.shape, {
-            direction,
-            x: position.x,
-            y: position.y + 1,
-          })
-        }
-        case 'ROTATE': {
-          return calculateCoordinates(currentShape.shape, {
-            direction: nextDirection(direction),
-            x: position.x,
-            y: position.y,
-          })
-        }
-        default: {
-          return assertNever(operation satisfies never)
-        }
-      }
-    })()
-
-    // Check if the spots are free in the new positions.
-    if (arePositionsFree(newPositions, blocks)) {
-      // Apply the operations.
-      switch (operation) {
-        case 'LEFT': {
-          dispatch(positionActions.movePosition({ dx: -1, dy: 0 }))
-          break
-        }
-        case 'RIGHT': {
-          dispatch(positionActions.movePosition({ dx: 1, dy: 0 }))
-          break
-        }
-        case 'DOWN': {
-          dispatch(doTick())
-          break
-        }
-        case 'ROTATE': {
-          dispatch(directionActions.rotateDirection())
-          break
-        }
-        default: {
-          assertNever(operation satisfies never)
-        }
-      }
-    }
-  }
-
-export const moveGoToBottom = () => (dispatch: TetrisStoreDispatch) => {
-  while (dispatch(doTick()) === 'moved-down') {}
+  return true
 }
 
-const doTick =
-  () =>
-  (
-    dispatch: TetrisStoreDispatch,
-    getState: () => TetrisStoreState
-  ): 'moved-down' | 'persisted-and-new-shape' | 'not-alive' => {
-    const state = getState()
-    if (state.gamestate.gamestate !== 'alive') {
-      return 'not-alive'
-    }
-
-    const {
-      direction: { direction },
-      position: { position },
-      blocks: { blocks },
-    } = state
-    const currentShape = selectCurrentShape(state)
-
-    // Calculate the new position of the currently active shape.
-    const newPositions = calculateCoordinates(currentShape.shape, {
-      direction,
-      x: position.x,
-      y: position.y + 1,
-    })
-
-    // Move down if space is free.
-    if (arePositionsFree(newPositions, blocks)) {
-      dispatch(positionActions.movePosition({ dx: 0, dy: 1 }))
-      return 'moved-down'
-    }
-
-    // Otherwise, persist and go to the next shape.
-    const blockColor = colorFromShape(currentShape.shape)
-    dispatch(
-      attemptPersistBlocks(
-        calculateCoordinates(currentShape.shape, {
-          direction,
-          x: position.x,
-          y: position.y,
-        }).map((block) => ({ ...block, color: blockColor }))
-      )
-    )
-    return 'persisted-and-new-shape'
+/** Attempts the move, if there's space. */
+export const attemptToDoMove = (store: TetrisStore, operation: MoveOperation) => {
+  const state = store.getState()
+  if (state.gamestate !== 'alive') {
+    return
   }
 
-const arePositionsFree = (positions: Coordinates, blocks: Block[]): boolean =>
+  const currentShape = selectCurrentShape(state)
+  const { blocks, position, direction } = state
+
+  // Determine the position after the move (calculateCoordinates).
+  const newPositions: Coordinates = (() => {
+    switch (operation) {
+      case 'LEFT': {
+        return calculateCoordinates(currentShape.shape, {
+          direction,
+          x: position.x - 1,
+          y: position.y,
+        })
+      }
+      case 'RIGHT': {
+        return calculateCoordinates(currentShape.shape, {
+          direction,
+          x: position.x + 1,
+          y: position.y,
+        })
+      }
+      case 'DOWN': {
+        return calculateCoordinates(currentShape.shape, {
+          direction,
+          x: position.x,
+          y: position.y + 1,
+        })
+      }
+      case 'ROTATE': {
+        return calculateCoordinates(currentShape.shape, {
+          direction: nextDirection(direction),
+          x: position.x,
+          y: position.y,
+        })
+      }
+      default: {
+        return assertNever(operation satisfies never)
+      }
+    }
+  })()
+
+  if (!arePositionsFree(newPositions, blocks)) {
+    return
+  }
+
+  switch (operation) {
+    case 'LEFT': {
+      store.setState({ position: { x: position.x - 1, y: position.y } })
+      break
+    }
+    case 'RIGHT': {
+      store.setState({ position: { x: position.x + 1, y: position.y } })
+      break
+    }
+    case 'DOWN': {
+      doTick(store)
+      break
+    }
+    case 'ROTATE': {
+      store.setState({ direction: nextDirection(direction) })
+      break
+    }
+    default: {
+      assertNever(operation satisfies never)
+    }
+  }
+}
+
+export const moveGoToBottom = (store: TetrisStore) => {
+  while (doTick(store) === 'moved-down') {}
+}
+
+const doTick = (store: TetrisStore): 'moved-down' | 'persisted-and-new-shape' | 'not-alive' => {
+  const state = store.getState()
+  if (state.gamestate !== 'alive') {
+    return 'not-alive'
+  }
+
+  const { direction, position, blocks } = state
+  const currentShape = selectCurrentShape(state)
+
+  // Calculate the new position of the currently active shape.
+  const newPositions = calculateCoordinates(currentShape.shape, {
+    direction,
+    x: position.x,
+    y: position.y + 1,
+  })
+
+  // Move down if space is free.
+  if (arePositionsFree(newPositions, blocks)) {
+    store.setState({ position: { x: position.x, y: position.y + 1 } })
+    return 'moved-down'
+  }
+
+  // Otherwise, persist and go to the next shape.
+  const blockColor = colorFromShape(currentShape.shape)
+  attemptPersistBlocks(
+    store,
+    calculateCoordinates(currentShape.shape, {
+      direction,
+      x: position.x,
+      y: position.y,
+    }).map((block) => ({ ...block, color: blockColor }))
+  )
+  return 'persisted-and-new-shape'
+}
+
+const arePositionsFree = (positions: Coordinates, blocks: readonly Block[]): boolean =>
   positions.every(
     (e) => e.x >= 0 && e.x < 10 && e.y < 20 && !blocks.some((f) => f.x === e.x && f.y === e.y)
   )
 
-export const runTicks =
-  (isCancelled: () => boolean) =>
-  async (dispatch: TetrisStoreDispatch, getState: () => TetrisStoreState) => {
-    const {
-      position: {
-        position: { y: oldY },
-      },
-    } = getState()
+export const runTicks = async (store: TetrisStore, isCancelled: () => boolean) => {
+  const positionY = (state: TetrisState) => state.position.y
 
-    let lastTick = Date.now()
-    let lastY = oldY
-    while (await rafPromise()) {
-      const now = Date.now()
-      const state = getState()
+  let lastTick = Date.now()
+  let lastY = positionY(store.getState())
+  while (await rafPromise()) {
+    const now = Date.now()
+    const state = store.getState()
 
-      if (isCancelled()) {
-        break
-      }
+    if (isCancelled()) {
+      break
+    }
 
-      // If we moved down, reset the last tick.
-      if (lastY !== state.position.position.y) {
-        lastY = state.position.position.y
-        lastTick = Date.now()
-        continue
-      }
+    // If we moved down, reset the last tick.
+    if (lastY !== positionY(state)) {
+      lastY = positionY(state)
+      lastTick = Date.now()
+      continue
+    }
 
-      const tickrate = selectTickrate(state)
-      const delta = now - lastTick
-      if (delta >= tickrate) {
-        lastTick += Math.floor(delta / tickrate) * tickrate
-        dispatch(doTick())
-      }
+    const tickrate = selectTickrate(state)
+    const delta = now - lastTick
+    if (delta >= tickrate) {
+      lastTick += Math.floor(delta / tickrate) * tickrate
+      doTick(store)
     }
   }
+}
 
 const rafPromise = (): Promise<boolean> =>
   new Promise<boolean>((resolve) => {

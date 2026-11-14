@@ -1,5 +1,4 @@
 import { memo } from 'react'
-import { Provider } from 'react-redux'
 import { Block } from './components/Block'
 import { Bounds } from './components/Bounds'
 import { DPad } from './components/DPad'
@@ -9,7 +8,6 @@ import { ShapeRenderer } from './components/shapes'
 import { GameOver } from './GameOver'
 import { useTetris } from './hooks'
 import { useBottomShape } from './hooks/useBottomShape'
-import { tetrisStore } from './store/tetris'
 
 const Game = memo(function Game() {
   const {
@@ -91,9 +89,5 @@ const Game = memo(function Game() {
 })
 
 export const GameWithStore = memo(function GameWithStore() {
-  return (
-    <Provider store={tetrisStore}>
-      <Game />
-    </Provider>
-  )
+  return <Game />
 })

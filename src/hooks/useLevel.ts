@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 import { selectLevel } from '../store/slices/level'
-import { useTetrisSelector } from '../store/tetris'
+import { useTetrisStore } from '../store/tetris'
 
 /** The level of the game */
 export const useLevel = () => {
-  const level = useTetrisSelector(selectLevel)
+  const level = useTetrisStore(selectLevel)
 
   return useMemo(() => ({ level }), [level])
 }
