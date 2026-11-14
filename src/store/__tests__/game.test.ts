@@ -262,16 +262,14 @@ describe('shape queue', () => {
 
   it('shuffles the initial queue once on the client', () => {
     const game = createGame({ isShapeQueueReady: false })
-    vi.spyOn(Math, 'random').mockReturnValue(0)
     game.randomizeInitialQueue()
     const first = game.snapshot()
     expect(first.isShapeQueueReady).toBe(true)
     expect([...first.queue].sort()).toEqual(ALL_SHAPES)
 
-    // A second shuffle with different randomness would change the order.
-    vi.spyOn(Math, 'random').mockReturnValue(0.999)
+    // A second shuffle would create new shapes with new keys.
     game.randomizeInitialQueue()
-    expect(game.snapshot().queue).toEqual(first.queue)
+    expect(game.snapshot().queueKeys).toEqual(first.queueKeys)
   })
 
   it('refills with all seven shapes when fewer than seven are queued', () => {

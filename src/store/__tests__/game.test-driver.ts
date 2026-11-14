@@ -33,6 +33,8 @@ export interface GameSnapshot {
   currentShape: Shape
   peekShapes: Shape[]
   queue: Shape[]
+  /** Unique per shape instance; a reshuffle creates new keys. */
+  queueKeys: string[]
   isShapeQueueReady: boolean
   blocks: Block[]
   score: number
@@ -73,6 +75,7 @@ export const createGame = (setup: GameSetup = {}): GameDriver => {
         currentShape: selectCurrentShape(state).shape,
         peekShapes: upcomingShapes(state.shapeQueue).map((e) => e.shape),
         queue: state.shapeQueue.map((e) => e.shape),
+        queueKeys: state.shapeQueue.map((e) => e.key),
         isShapeQueueReady: state.hasRandomizedInitialQueue,
         blocks: sortBlocks(state.blocks),
         score: state.score,
