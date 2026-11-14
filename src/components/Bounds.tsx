@@ -2,6 +2,7 @@ import { memo, useMemo } from 'react'
 import { useBlocks } from '../hooks/useBlocks'
 import { useShape } from '../hooks/useShape'
 import { assertNever } from '../lib/assert-never'
+import { BOARD_HEIGHT } from '../store/slices/blocks'
 
 interface Props {
   x: number
@@ -20,7 +21,8 @@ export const Bounds = memo<Props>(function Bounds({ x, y, side, ...props }) {
   // there. Or proceed to the max y value of the board.
   const { blocks } = useBlocks()
   const y2 = useMemo(
-    () => blocks.filter((e) => e.x === x && e.y >= y).sort((a, b) => a.y - b.y)[0]?.y ?? 20,
+    () =>
+      blocks.filter((e) => e.x === x && e.y >= y).sort((a, b) => a.y - b.y)[0]?.y ?? BOARD_HEIGHT,
     [blocks, x, y]
   )
 

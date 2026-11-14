@@ -46,5 +46,10 @@ export const createTetrisStore = (initialState: Partial<TetrisState> = {}): Tetr
 
 export const tetrisStore = createTetrisStore()
 
+/** Puts the app's store back to a fresh game, for tests that render the app. */
+export const resetTetrisStore = () => {
+  tetrisStore.setState(createInitialState(), true)
+}
+
 export const useTetrisStore = <T>(selector: (state: TetrisState) => T): T =>
   useStore(tetrisStore, selector)

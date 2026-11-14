@@ -4,6 +4,7 @@ import {
   type Direction,
   getRandomShapes,
   nextDirection,
+  type ShapeProps,
 } from '../../components/shapes'
 import { assertNever } from '../../lib/assert-never'
 import {
@@ -90,19 +91,9 @@ const calculateScore = (level: number, linesCleared: number): number => {
   )
 }
 
-const attemptPersistBlocks = (store: TetrisStore, blocks: readonly Block[]) => {
+/** Lands the current piece, clears full rows and spawns the next piece. */
+const landPiece = (store: TetrisStore, blocks: readonly Block[]) => {
   const state = store.getState()
-  if (state.gamestate === 'gameover') {
-    return
-  }
-
-  if (!arePositionsFree(blocks, state.blocks)) {
-    // One or more blocks overlap with existing blocks, the game is over.
-    store.setState({ gamestate: 'gameover' } satisfies TetrisUpdate)
-    return
-  }
-
-  // Persist the blocks, reset various things and go to the next shape.
   store.setState({
     blocks: [...state.blocks, ...blocks],
     ...spawnState(),
@@ -116,7 +107,7 @@ const attemptPersistBlocks = (store: TetrisStore, blocks: readonly Block[]) => {
     direction: newState.direction,
     x: newState.position.x,
     y: newState.position.y,
-  })
+  } satisfies ShapeProps)
   if (!arePositionsFree(newShapeBlocks, newState.blocks)) {
     const newBlockColor = colorFromShape(newCurrentShape.shape)
     store.setState({
@@ -157,14 +148,10 @@ export const attemptToDoMove = (store: TetrisStore, operation: MoveOperation) =>
   ) {
     return
   }
-  if (operation === 'DOWN') {
-    doTick(store)
-  } else {
-    store.setState({
-      position: { x: target.x, y: target.y },
-      direction: target.direction,
-    } satisfies TetrisUpdate)
-  }
+  store.setState({
+    position: { x: target.x, y: target.y },
+    direction: target.direction,
+  } satisfies TetrisUpdate)
 }
 
 export const moveGoToBottom = (store: TetrisStore) => {
@@ -185,7 +172,7 @@ const doTick = (store: TetrisStore): 'moved-down' | 'persisted-and-new-shape' | 
     direction,
     x: position.x,
     y: position.y + 1,
-  })
+  } satisfies ShapeProps)
 
   // Move down if space is free.
   if (arePositionsFree(newPositions, blocks)) {
@@ -195,13 +182,13 @@ const doTick = (store: TetrisStore): 'moved-down' | 'persisted-and-new-shape' | 
 
   // Otherwise, persist and go to the next shape.
   const blockColor = colorFromShape(currentShape.shape)
-  attemptPersistBlocks(
+  landPiece(
     store,
     calculateCoordinates(currentShape.shape, {
       direction,
       x: position.x,
       y: position.y,
-    }).map((block) => ({ ...block, color: blockColor }) satisfies Block)
+    } satisfies ShapeProps).map((block) => ({ ...block, color: blockColor }) satisfies Block)
   )
   return 'persisted-and-new-shape'
 }
