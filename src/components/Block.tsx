@@ -8,12 +8,10 @@ export interface BlockProps extends Pick<SVGProps<SVGRectElement>, 'fill'> {
   y: number
 }
 
-export const Block = memo<BlockProps>(function Block({ renderType, x, y, ...props }) {
-  void renderType
-
+export const Block = memo<BlockProps>(function Block({ fill, x, y }) {
   return (
     <rect
-      {...props}
+      fill={fill}
       x={x}
       y={y}
       width={1}
